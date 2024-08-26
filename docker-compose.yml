@@ -1,0 +1,34 @@
+version: '3.1'
+
+services:
+  app_comedor:
+    build: comedor
+    mem_limit: 1024m
+    ports:
+      - "8080:8080"
+    environment:
+      DB_URL: jdbc:mysql://comedor_db:3306/comedor
+      DB_USER: comedor
+      DB_PASSWORD: comida
+    restart: always
+    depends_on:
+      comedor_db:
+          condition: service_healthy
+  comedor_db:
+    image: mysql:8.0.33 
+    ports:
+      - "30022:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: got.C12
+      MYSQL_USER: comedor
+      MYSQL_PASSWORD: comida
+      MYSQL_DATABASE: comedor
+    volumes:
+      - comedor-db:/var/lib/mysql
+    restart: always
+    healthcheck:
+      test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
+      timeout: 10s
+      retries: 4
+volumes:
+    comedor-db:

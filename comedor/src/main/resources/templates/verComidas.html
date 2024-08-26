@@ -1,0 +1,58 @@
+<!doctype html>
+<html xmlns:th="http://thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="favicon.ico">
+
+    <title>Comidas Cargadas</title>
+    <!-- Bootstrap core CSS -->
+    <link th:href="@{bootstrap/css/bootstrap.min.css}" rel="stylesheet">
+    <!-- Custom styles for this template -->
+    <link th:href="@{bootstrap/css/jumbotron.css}" rel="stylesheet">
+    <link th:href="@{bootstrap/css/sticky-footer-navbar.css}" rel="stylesheet">
+</head>
+
+<body>
+
+<header th:insert="fragments/menu :: menu-principal">
+
+</header>
+
+<main role="main">
+
+
+    <div class="container">
+        <h2 class="font-weight-bold text-center text-capitalize">Comidas</h2>
+        <hr>
+        <div class="row" th:each="comida :${comidas}">
+            <div class="col-md-3">
+                <img class="rounded mx-auto d-block" th:src="@{images/logo1.png}" alt="Generic placeholder image" width="220" height="220">
+            </div>
+            <div class="col-md-9">
+                <h6 class="card-title"><strong>Entrada: </strong> <span th:text="${comida.entrada}"></span></h6>
+                <h6 class="card-title"><strong>Principal: </strong> <span th:text="${comida.comida}"> </span></h6>
+                <h6 class="card-title"><strong>Postre: </strong> <span th:text="${comida.postre}"> </span></h6>
+                <h6 class="card-title"><strong>Tipo: </strong> <span th:text="${comida.tipo_comida}"> </span></h6>
+                <p><a class="btn btn-secondary" href="#" role="button">Agregar a Menu &raquo;</a></p>
+            </div>
+        </div>
+
+        <hr>
+    </div> <!-- /container -->
+
+</main>
+
+<footer th:insert="fragments/footer :: footer" class="footer">
+
+</footer>
+
+<!-- Bootstrap core JavaScript
+================================================== -->
+<!-- Placed at the end of the document so the pages load faster -->
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+<script th:src="@{bootstrap/js/bootstrap.min.js}"></script>
+</body>
+</html>
