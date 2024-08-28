@@ -1,118 +1,36 @@
-body{
-    margin-top: 10%;
-    padding: 0px;    
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: black;
-h1{
-    font-family: Arial, Helvetica, sans-serif;
-    font-weight: bolder;
-    text-align: center;
-    text-shadow: rgb(255, 255, 255) 0px 0px 5px;
-}
-}
-.caja1 {
-    background-color: rgb(243, 108, 59);
-    color: #000000;
-    border: 5px solid #432604;
-    border-radius: 20px;
-    font-family: Arial, Helvetica, sans-serif;
-    font-weight: bold;
-    font-size: smaller;
-    padding: 15px;
-    width: 300px;
-    display: flex;
-    flex-direction: column;
-    transition: box-shadow 1.5s ease-in-out;
-  }
-  
-  .caja1:hover {
-    box-shadow: azure 0
 
-    }
-    
-  .btn-success {
-    font-family: Arial, Helvetica, sans-serif;
-    font-weight: bolder;
-    margin-top: 15px;
-    border-radius: 20px;
-    background-color: black;
-    border: 10px;
-  }
-  .menues {
-   margin: 20px;
-   padding: 20px;
-    color: azure;
-    background-color: orange;
-    font-family: Arial, Helvetica, sans-serif;
-    font-weight: bolder;
-    border:solid 5px rgb(58, 39, 5);
-    border-radius: 30px;
-    box-shadow: 0px 0px 20px white;
-    align-items: center;
-    
-  }
-  #miSelect option:first-child {
-    display: none;
-}
-.caja2 {
-    background-color: rgb(243, 108, 59);
-    color: #1d1002;
-    border: 5px solid #432604;
-    border-radius: 20px;
-    font-family: Arial, Helvetica, sans-serif;
-    font-weight: bold;
-    font-size:x-large;
-    padding: 15px;
-    width: 400px;
-    height:200px ;
-    display: flex;
-    justify-content: center;
-    transition: box-shadow 1.5s ease-in-out; 
-  }
-  .caja2 label,
-.caja2 input,
-.caja2 select,
-.caja2 btn{
-  width: 100%;
-  margin-bottom: 10px; 
-  height: 25px;
-  width: 100%; 
-  
-}
-  .caja2:hover {
-    box-shadow: azure 0px 0px 20px;
-    }
-    .formOrden{
-        height: 100%;
+
+      .caja1 {
+        background-color: #f0f0f0; /* Light gray background */
+        border-radius: 10px; /* Rounded corners */
+        padding: 30px;
+        text-align: center;
         display: flex;
+        flex-direction: column;
+        justify-content: center;
         align-items: center;
-    flex-direction: column;
-    justify-content: space-around;
-    width: 200px;
-    }
-    .input-group-mb-3{
-        margin: 0;
-        padding: 0;
-        display: flex;
-        height: 26px;
-        width: 200px;
-
-    }
-    #button-addon2{
-        height: 30.5px;
-    }
-    .menues label {
-        display: flex; /* Make labels behave like flex containers */
-        align-items: center; /* Align elements vertically within the label */
+        height: 100vh;
       }
       
-      .menues label img {
-        margin-right: 10px; /* Add margin to the right of the image */
+      .caja1 h1 {
+        color: #333; /* Darker text color */
+        margin-bottom: 20px;
       }
       
-      .menues input[type="radio"] {
-        margin-top: 0; /* Remove top margin from radio buttons */
-        align-self: center; /* Align radio buttons vertically within the label */
+      .caja1 h2 {
+        color: #666; /* Lighter text color */
+        margin-bottom: 10px;
+      }
+      
+      .form-floating {
+        margin-bottom: 15px;
+      }
+      
+      .btn-success {
+        width: 150px;
+        background-color: #28a745; /* Green button color */
+        border-color: #28a745; /* Green button border */
+      }
+      .form-control {
+        font-size: 1.2rem;
       }
