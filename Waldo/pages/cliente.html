@@ -6,35 +6,39 @@
   <link rel="shortcut icon" href="../multimedia/img/El-Doce-TV-en-vivo-Online-1.png" type="image/x-icon">
   <title>Vista de usuario</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY03lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 </head>
 <body>
   <div class="container mt-5">
     <div class="row justify-content-center">
-      <div class="col-md-6 rounded border border-secondary p-5"> <h1>Vista de usuario: </h1>
-        <p>Fecha: <span id="fecha"></span></p>
+      <div class="col-md-6 rounded border border-secondary p-5">
+        <h1>Vista de usuario: </h1>
+        <h2>Fecha: <span id="fecha"></span></h2>
+        <br>
 
         <form>
-          <div class="form-check">
-            <label class="form-check-label" for="menuA">
+          <div class="form-check d-flex align-items-center">
+            <label class="form-check-label me-5" for="menuA">
               <h2>Menú A</h2>
             </label>
             <input class="form-check-input" type="radio" name="menu" id="menuA">
           </div>
-          <div class="form-check">
-            <label class="form-check-label" for="menuB">
+          <div class="form-check d-flex align-items-center">
+            <label class="form-check-label me-5" for="menuB">
               <h2>Menú B</h2>
             </label>
             <input class="form-check-input" type="radio" name="menu" id="menuB">
           </div>
-          <div class="form-check">
-            <label class="form-check-label" for="menuC">
+          <div class="form-check d-flex align-items-center">
+            <label class="form-check-label me-5" for="menuC">
               <h2>Menú C</h2>
             </label>
             <input class="form-check-input" type="radio" name="menu" id="menuC">
           </div>
         </form>
+
         <br>
+
         <form>
           <div class="form-check">
             <label class="form-check-label" for="comerEnLugar">
@@ -47,9 +51,11 @@
               Para llevar
             </label>
             <input class="form-check-input" type="radio" name="tipo" id="paraLlevar">
-          </div><br>
+          </div>
           <br>
-          <button type="submit" class="btn btn-primary rounded-pill">Aceptar</button>  </form>
+          <br>
+          <button type="submit" class="btn btn-primary rounded-pill">Aceptar</button>
+        </form>
       </div>
     </div>
   </div>
