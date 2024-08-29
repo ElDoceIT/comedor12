@@ -33,4 +33,10 @@ public class ComidasController {
         comidaRepository.save(comida);
         return "redirect:/comida/ver";
     }
+
+    @GetMapping("/agregar")
+    public String guardaComida(){
+        return "comida/agregar_comida";
+    }
+
 }
