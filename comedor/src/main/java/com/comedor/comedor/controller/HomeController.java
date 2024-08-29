@@ -20,6 +20,15 @@ public class HomeController {
         return "Home";
     }
 
+    @GetMapping("/fer")
+    public String HomeFer(){
+        return "fer";
+    }
+
+    @GetMapping("/waldo")
+    public String HomeWaldo(){
+        return "waldo";
+    }
 
 
 
