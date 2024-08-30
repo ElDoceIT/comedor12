@@ -20,12 +20,12 @@ public class ComidasController {
     @GetMapping("/ver")
     public String VerComidas(Model model){
         model.addAttribute("comidas", comidaRepository.findAll());
-        return "comida/verComidas";
+        return "comidas_ver";
     }
 
     @GetMapping("/new")
     public String guardarComida(){
-        return "comida/nuevaComida";
+        return "comida_new";
     }
 
     @PostMapping("/save")
@@ -33,11 +33,5 @@ public class ComidasController {
         comidaRepository.save(comida);
         return "redirect:/comida/ver";
     }
-
-    @GetMapping("/agregar")
-    public String guardaComida(){
-        return "comida/agregar_comida";
-    }
-
-
+    
 }
