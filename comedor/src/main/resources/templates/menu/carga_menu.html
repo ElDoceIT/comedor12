@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns:th="http://thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <link rel="shortcut icon" th:href="@{/images/El-Doce-TV-en-vivo-Online-1.png}" type="image/x-icon">
+
+  <link th:href="@{/bootstrap/css/bootstrap.min.css}" rel="stylesheet">
+  <!-- Custom styles for this template -->
+  <link th:href="@{/bootstrap/css/jumbotron.css}" rel="stylesheet">
+  <link th:href="@{/bootstrap/css/sticky-footer-navbar.css}" rel="stylesheet">
+
+  <title>Carga del Menu</title>
+</head>
+<body>
+<header th:insert="fragments/menu :: menu-principal">
+
+</header>
+
+  
+  <div class="container mt-5">
+    <div class="row justify-content-center">
+      <div class="col-md-6">
+        <h1><img th:src="@{/images/menu.png}" width="64" height="64" alt="menu">Cargar menu: </h1>
+        <form th:action="@{/menu/save}"  method="post" action="ingresar_comida">
+        <div class="input-group mb-3">
+          <label for="fecha" class="input-group-text">Fecha:</label>
+          <input type="date" class="form-control form-control-lg" name="dia" id="fecha">
+        </div>
+
+          <div class="input-group mb-3">
+            <input type="text" class="form-control form-control-lg" id="floatingInput" name="comida" placeholder="Nombre de la comida">
+            <button class="btn btn-outline-secondary btn-lg" type="button" id="button-addon2">+</button> </div>
+          
+          <button type="submit" class="btn btn-primary btn-lg">Agregar</button>
+        </form>
+      </div>
+    </div>
+  </div>
+  <footer th:insert="fragments/footer :: footer" class="footer">
+    <script th:src="@{/bootstrap/js/bootstrap.min.js}"></script>
+  </footer>
+</body>
+</html>
