@@ -10,6 +10,7 @@
   <!-- Custom styles for this template -->
   <link th:href="@{/bootstrap/css/jumbotron.css}" rel="stylesheet">
   <link th:href="@{/bootstrap/css/sticky-footer-navbar.css}" rel="stylesheet">
+  <link rel="stylesheet" href="../../static/css/style.css">
 
   <title>Carga del Menu</title>
 </head>
@@ -18,28 +19,51 @@
 
 </header>
 
-  
-  <div class="container mt-5">
-    <div class="row justify-content-center">
-      <div class="col-md-6">
-        <h1><img th:src="@{/images/menu.png}" width="64" height="64" alt="menu">Cargar menu: </h1>
-        <form th:action="@{/menu/save}"  method="post" action="ingresar_comida">
-        <div class="input-group mb-3">
-          <label for="fecha" class="input-group-text">Fecha:</label>
-          <input type="date" class="form-control form-control-lg" name="dia" id="fecha">
+<h1 class="text-center">Carga de menú</h1>
+<div class="container mt-4">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="card shadow">  <div class="card-body card1">
+          <form onsubmit="return false;">
+            <div class="mb-3">
+              <label for="fecha" class="form-label"><h2>Fecha:</h2></label>
+              <input type="date" class="form-control" id="fecha" placeholder="Fecha">
+            </div>
+            <div class="mb-3">
+              <label for="menu" class="form-label"><h2>Comida:</h2></label>
+              <div class="d-flex">
+                <input type="text" class="form-control flex-grow-1" id="menu" placeholder="Ingresar comida" onkeypress="if (event.keyCode == 13) { agregarItem(); }">
+                <button class="btn btn-outline-secondary" type="button" onclick="window.location.href='../pages/new_comida.html'">
+                  <i class="fas fa-plus"><h3>+</h3></i>
+                </button>
+              </div>
+            </div>
+            <button class="btn btn-outline-secondary float-end" type="button" id="button-addon2" onclick="agregarItem()">Agregar</button>
+          </form>
         </div>
-
-          <div class="input-group mb-3">
-            <input type="text" class="form-control form-control-lg" id="floatingInput" name="comida" placeholder="Nombre de la comida">
-            <button class="btn btn-outline-secondary btn-lg" type="button" id="button-addon2">+</button> </div>
-          
-          <button type="submit" class="btn btn-primary btn-lg">Agregar</button>
-        </form>
       </div>
+      <div class="card mt-4 shadow">  <div class="card1 card-body">
+          <ul id="listaMenus" class="list-group">
+            <li class="list-group-item d-flex justify-content-between">
+              <strong>Fecha</strong>
+              <strong>Comida</strong>
+              <strong>X</strong>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <br>
+      <button class="btn btn-outline-secondary float-end" type="submit">Enviar</button>
     </div>
   </div>
+</div>
+
+
+
+
   <footer th:insert="fragments/footer :: footer" class="footer">
     <script th:src="@{/bootstrap/js/bootstrap.min.js}"></script>
+    <script src="../../static/js/script.js"></script>
   </footer>
 </body>
 </html>
