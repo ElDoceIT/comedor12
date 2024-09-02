@@ -25,18 +25,18 @@
 
 
     <div class="container">
-        <h2 class="font-weight-bold text-center text-capitalize">Comidas</h2>
+        <h2 class="font-weight-bold text-center text-capitalize">Comidas Cargadas</h2>
         <hr>
         <div class="row" th:each="comida :${comidas}">
             <div class="col-md-3">
-                <img class="rounded mx-auto d-block" th:src="@{/images/logo1.png}" alt="Generic placeholder image" width="220" height="220">
+                <!-- <img class="rounded mx-auto d-block" th:src="@{/images/logo1.png}" alt="Generic placeholder image" width="220" height="220">-->
             </div>
             <div class="col-md-9">
-                <h6 class="card-title"><strong>Entrada: </strong> <span th:text="${comida.entrada}"></span></h6>
-                <h6 class="card-title"><strong>Principal: </strong> <span th:text="${comida.principal}"> </span></h6>
-                <h6 class="card-title"><strong>Postre: </strong> <span th:text="${comida.postre}"> </span></h6>
-                <h6 class="card-title"><strong>Tipo: </strong> <span th:text="${comida.tipo_comida}"> </span></h6>
-                <p><a class="btn btn-secondary" href="#" role="button">Agregar a Menu &raquo;</a></p>
+                <h6 class="card-title"><strong>Entrada: </strong> <span th:text="${comida.entrada}"></span>
+                <strong>Principal: </strong> <span th:text="${comida.principal}"> </span>
+                <strong>Postre: </strong> <span th:text="${comida.postre}"> </span>
+               <strong>Tipo: </strong> <span th:text="${comida.tipo_comida}"> </span>
+                <a class="btn btn-secondary" href="#" role="button">Agregar a Menu &raquo;</a></h6>
             </div>
         </div>
 
