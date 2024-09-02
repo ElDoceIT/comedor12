@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html xmlns:th="http://thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <link rel="shortcut icon" th:href="@{/images/El-Doce-TV-en-vivo-Online-1.png}" type="image/x-icon">
+
+  <link th:href="@{/bootstrap/css/bootstrap.min.css}" rel="stylesheet">
+  <!-- Custom styles for this template -->
+  <link th:href="@{/bootstrap/css/jumbotron.css}" rel="stylesheet">
+  <link th:href="@{/bootstrap/css/sticky-footer-navbar.css}" rel="stylesheet">
+
+  <title>Productos</title>
+</head>
+<body>
+<header th:insert="fragments/menu :: menu-principal">
+
+</header>
+
+<main role="main">
+  <hr>
+  <div class="container">
+
+    <div class="card">
+      <h4 class="card-header"><strong>Listado de Productos</strong></h4>
+      <div class="card-body">
+        <a class="btn btn-primary" href="#" role="button"><i class="fas fa-file" aria-hidden="true"></i> NuevoProducto</a>
+        <hr>
+        <table class="table table-hover">
+          <thead class="thead-light">
+          <tr>
+            <th scope="col">Id</th>
+            <th scope="col">Descripción</th>
+
+          </tr>
+          </thead>
+          <tbody>
+          <tr th:each="producto :${productos}">
+            <th scope="row" th:text="${producto.id_producto}">1</th>
+            <td th:text="${producto.descripcion}">CocaCola</td>
+            <td>
+              <a href="#" class="btn btn-success btn-sm" role="button" title="Editar"><i class="bi bi-pencil" aria-hidden="true"></i></a>
+              <a href="#" class="btn btn-success btn-sm confirmar" role="button" title="Eliminar"><i class="fas fa-trash" aria-hidden="true"></i></a>
+            </td>
+          </tr>
+
+          </tbody>
+        </table>
+
+      </div>
+    </div>
+  </div> <!-- /container -->
+
+</main>
+
+
+
+
+
+<footer th:insert="fragments/footer :: footer" class="footer">
+  <script th:src="@{/bootstrap/js/bootstrap.min.js}"></script>
+</footer>
+</body>
+</html>
