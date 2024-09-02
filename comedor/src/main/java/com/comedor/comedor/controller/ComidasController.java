@@ -20,18 +20,18 @@ public class ComidasController {
     @GetMapping("/ver")
     public String VerComidas(Model model){
         model.addAttribute("comidas", comidaRepository.findAll());
-        return "comidas_ver";
+        return "comida/comida_ver";
     }
 
     @GetMapping("/new")
     public String guardarComida(){
-        return "comida_new";
+        return "comida/comida_new";
     }
 
     @PostMapping("/save")
     public String guardarComida(Comida comida){
         comidaRepository.save(comida);
-        return "redirect:/comida/ver";
+        return "redirect:/comida/comida_ver";
     }
     
 }

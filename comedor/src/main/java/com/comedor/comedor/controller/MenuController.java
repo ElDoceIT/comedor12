@@ -21,13 +21,18 @@ public class MenuController {
 
     @GetMapping("/new")
     public String guardarMenu(){
-        return "menu_new";
+        return "menu/menu_new";
     }
 
     @PostMapping("/save")
     public String guardarMenu(Menu menu){
         menuRepository.save(menu);
-        return "redirect:/menu/ver";
+        return "redirect:/menu/comida_ver";
+    }
+
+    @GetMapping("/ver")
+    public String verMenu(){
+        return "menu/menu_ver";
     }
 
     @InitBinder
