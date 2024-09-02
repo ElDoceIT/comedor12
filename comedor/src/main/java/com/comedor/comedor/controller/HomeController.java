@@ -21,7 +21,7 @@ public class HomeController {
 
     @GetMapping("/waldo")
     public String HomeWaldo(){
-        return "waldo";
+        return "comida_new";
     }
 
 

@@ -21,7 +21,7 @@ public class MenuController {
 
     @GetMapping("/new")
     public String guardarMenu(){
-        return "menu/menu_new";
+        return "waldo";
     }
 
     @PostMapping("/save")
