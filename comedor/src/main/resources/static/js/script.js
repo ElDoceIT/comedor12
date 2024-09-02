@@ -18,7 +18,7 @@ function agregarItem() {
 
     newItem.appendChild(itemContent);
 
-    // Botón eliminar
+    // boton para eliminar
     const btnEliminar = document.createElement('button');
     btnEliminar.classList.add('btn', 'btn-danger', 'btn-sm', 'rounded-circle');
     btnEliminar.textContent = 'X';
