@@ -12,6 +12,7 @@
   <link th:href="@{/bootstrap/css/sticky-footer-navbar.css}" rel="stylesheet">
 
   <title>Productos</title>
+  <script th:src="@{/js/toogleText.js}"></script>
 </head>
 <body>
 <header th:insert="fragments/menu :: menu-principal">
@@ -26,12 +27,26 @@
       <h4 class="card-header"><strong>Listado de Productos</strong></h4>
       <div class="card-body">
         <div>
-        <a class="btn btn-primary" href="#" role="button"><i class="fas fa-file" aria-hidden="true"></i> NuevoProducto</a>
+          <button class="btn btn-primary" onclick="toggleText()">NuevoProducto</button>
+
         </div>
-        <div class="col-md-6">
-          <label for="producto">Entrada</label>
+
+        <div  class="col-md-10">
+          <form th:action="@{/productos/save}" method="post">
+          <div id="thymeleafText" style="display:none;" class="col-md-6">
+            <label for="producto">Cargar nuevo producto</label>
+            <input type="text" class="form-control" id="descripcion" name="descripcion" placeholder="nuevo producto" required="required">
+            <button type="submit" title="Guardar el registro." class="btn btn-primary">Guardar</button>
+          </div>
+          </form>
+
           <input type="text" class="form-control" id="producto" name="producto" placeholder="buscar producto" required="required">
-         </div>
+            <label for="producto">Entrada</label>
+
+
+          </div>
+
+
 
 
         <hr>
@@ -67,7 +82,9 @@
 
 
 <footer th:insert="fragments/footer :: footer" class="footer">
+
   <script th:src="@{/bootstrap/js/bootstrap.min.js}"></script>
+
 </footer>
 </body>
 </html>
