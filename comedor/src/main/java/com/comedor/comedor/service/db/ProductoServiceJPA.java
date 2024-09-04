@@ -3,6 +3,7 @@ import com.comedor.comedor.model.Producto;
 import com.comedor.comedor.repository.ProductoRepository;
 import com.comedor.comedor.service.IProductoService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -21,6 +22,11 @@ public class ProductoServiceJPA implements IProductoService {
     @Override
     public List<Producto> buscarTodas() {
         return productoRepository.findAll();
+    }
+
+    @Override
+    public List<Producto> buscarByExample(Example<Producto> example) {
+        return productoRepository.findAll(example);
     }
 
 
