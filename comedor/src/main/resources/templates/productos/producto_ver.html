@@ -10,6 +10,7 @@
   <!-- Custom styles for this template -->
   <link th:href="@{/bootstrap/css/jumbotron.css}" rel="stylesheet">
   <link th:href="@{/bootstrap/css/sticky-footer-navbar.css}" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.5.0/font/bootstrap-icons.min.css">
 
   <title>Productos</title>
   <script th:src="@{/js/toogleText.js}"></script>
@@ -65,15 +66,36 @@
           <tr th:each="producto :${productos}">
             <td th:text="${producto.descripcion}">CocaCola</td>
             <td>
-              <a href="#" class="btn btn-success btn-sm" role="button" title="Editar"><i class="bi bi-pencil" aria-hidden="true"></i></a>
-              <a href="#" class="btn btn-success btn-sm confirmar" role="button" title="Eliminar"><i class="fas fa-trash" aria-hidden="true"></i></a>
+              <a th:href="@{/productos/editar/{id} (id=${producto.id_producto})}" class="btn btn-success btn-sm" role="button" title="Editar"><i class="bi bi-pencil" aria-hidden="true"></i></a>
             </td>
           </tr>
 
           </tbody>
         </table>
+        <!--<nav th:if="${pagina.totalPages > 0}" aria-label="Page navigation example" >
+            <ul class="pagination">
+              <li class="page-item"><a th:href="@{/productos/ver(page=${pagina.number - 1})}" class="page-link">Anterior</a></li>
+              <li class="page-item"><a th:href="@{/productos/ver(page=${pagina.number + 1})}" class="page-link">Siguiente</a></li>
+            </ul>
+          </nav>
 
+       <nav th:if="${pagina.totalPages > 0}" aria-label="Page navigation example" >
+         <ul class="pagination justify-content-center">
+           <li class="page-item" th:classappend="${pagina.number == 0 ? 'disabled' : ''}">
+             <a th:href="@{/productos/ver(page=${pagina.number - 1})}" class="page-link">Anterior</a>
+           </li>
+
+           <li class="page-item" th:classappend="${i eq pagina.number + 1} ? 'active'" th:each="i : ${#numbers.sequence( 1, pagina.totalPages, 1)}">
+             <a class="page-link" th:href="@{/productos/ver?page={tmpPag} (tmpPag=${i-1}) }" th:text="${i}" th:title="${'Page '+ i}" data-toggle="tooltip"></a>
+           </li>
+           <li class="page-item" th:classappend="${pagina.number == (pagina.totalPages - 1) ? 'disabled' : ''}">
+             <a th:href="@{/productos/ver(page=${pagina.number + 1})}" class="page-link">Siguiente</a>
+           </li>
+         </ul>
+       </nav>-->
       </div>
+
+
     </div>
   </div> <!-- /container -->
 

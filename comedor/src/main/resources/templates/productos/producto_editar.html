@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html xmlns:th="http://thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="shortcut icon" th:href="@{/images/El-Doce-TV-en-vivo-Online-1.png}" type="image/x-icon">
+
+    <link th:href="@{/bootstrap/css/bootstrap.min.css}" rel="stylesheet">
+    <!-- Custom styles for this template -->
+    <link th:href="@{/bootstrap/css/jumbotron.css}" rel="stylesheet">
+    <link th:href="@{/bootstrap/css/sticky-footer-navbar.css}" rel="stylesheet">
+
+    <title>Modificar producto</title>
+</head>
+<body>
+<header th:insert="fragments/menu :: menu-principal">
+
+</header>
+
+<main role="main">
+    <hr>
+    <div class="container">
+
+        <div class="card">
+            <h4 class="card-header"><strong>Modifica producto</strong></h4>
+            <div class="card-body">
+                <form th:action="@{/productos/save}" method="post" th:object="${producto}">
+                    <div class="row">
+                        <div class="col-md-6">
+
+                            <label for="producto">Entrada</label>
+                            <input type="hidden" th:field="*{id_producto}">
+                            <input type="text" class="form-control" th.field="*{descripcion}" id="producto" name="descripcion" placeholder="Modificar producto" required="required">
+
+                        </div>
+
+                    </div>
+
+                    <hr>
+                    <button type="submit" title="Actualizar Producto" class="btn btn-primary">Guardar</button>
+                </form>
+            </div>
+        </div>
+    </div> <!-- /container -->
+
+</main>
+
+
+
+
+
+<footer th:insert="fragments/footer :: footer" class="footer">
+    <script th:src="@{/bootstrap/js/bootstrap.min.js}"></script>
+</footer>
+</body>
+</html>

@@ -7,12 +7,11 @@ import com.comedor.comedor.service.IProductoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -28,8 +27,10 @@ public class ProductoController {
     private IProductoService productoService;
 
     @GetMapping("ver")
-    public String productoVer(Model model) {
+    public String productoVer(Model model, Pageable page) {
         model.addAttribute("productos",productoRepository.findAll());
+        Page<Producto> lista =productoService.buscarTodas(page);
+        model.addAttribute("pagina",lista);
         return "productos/producto_ver";
     }
 
@@ -42,17 +43,34 @@ public class ProductoController {
 
     @GetMapping("/search")
     public String buscar(@ModelAttribute("search") Producto producto, Model model) {
-        //System.out.println("buscando por Producto");
+        //buscar cualquier coincidencia
         ExampleMatcher matcher = ExampleMatcher.matching().withMatcher("descripcion",ExampleMatcher.GenericPropertyMatchers.contains());
+
         Example<Producto> example = Example.of(producto, matcher);
         List<Producto> lista = productoService.buscarByExample(example);
         model.addAttribute("productos",lista);
         return "productos/producto_ver";
     }
 
+    @GetMapping("/editar/{id}")
+    public String editar(@PathVariable("id") int id_Producto, Model model) {
+        Producto producto = productoRepository.findById(id_Producto).get();
+        model.addAttribute("producto",producto);
+        return "productos/producto_editar";
+
+
+    }
+
     @ModelAttribute
     public void setGenericos(Model model){
         Producto productoSearch = new Producto();
         model.addAttribute("search",productoSearch);
+    }
+
+    @GetMapping("/verpaginte")
+    public String mostrarPaginado(Model model, Pageable page){
+        Page<Producto> lista =productoService.buscarTodas(page);
+        model.addAttribute("pagina",lista);
+        return "productos/producto_ver";
     }
 }

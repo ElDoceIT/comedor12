@@ -4,6 +4,8 @@ import com.comedor.comedor.repository.ProductoRepository;
 import com.comedor.comedor.service.IProductoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -27,6 +29,11 @@ public class ProductoServiceJPA implements IProductoService {
     @Override
     public List<Producto> buscarByExample(Example<Producto> example) {
         return productoRepository.findAll(example);
+    }
+
+    @Override
+    public Page<Producto> buscarTodas(Pageable page) {
+        return productoRepository.findAll(page);
     }
 
 
