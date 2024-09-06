@@ -9,6 +9,7 @@ import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -28,12 +29,17 @@ public class ProductoController {
 
     @GetMapping("ver")
     public String productoVer(Model model, Pageable page) {
-        model.addAttribute("productos",productoRepository.findAll());
+        //muestra todos los productos cargados
+        //model.addAttribute("productos",productoRepository.findAll());
+
+        //realiza la paginacion en 5 items
         Page<Producto> lista =productoService.buscarTodas(page);
-        model.addAttribute("pagina",lista);
+        model.addAttribute("productos",lista);
+
         return "productos/producto_ver";
     }
 
+    //Guardar nuevos y modificar productos
     @PostMapping("/save")
     public String guardarComida(Producto producto) {
         productoRepository.save(producto);
@@ -48,10 +54,34 @@ public class ProductoController {
         ExampleMatcher matcher = ExampleMatcher.matching().withMatcher("descripcion",ExampleMatcher.GenericPropertyMatchers.contains());
 
         Example<Producto> example = Example.of(producto, matcher);
-        List<Producto> lista = productoService.buscarByExample(example);
-        model.addAttribute("productos",lista);
+        List<Producto> lista1 = productoService.buscarByExample(example);
+        model.addAttribute("productos",lista1);
         return "productos/producto_ver";
     }
+
+    @GetMapping("/search1")
+    public String listarProductos(
+            @RequestParam(value = "descripcion", required = false) String descripcion,
+            @PageableDefault(size = 5) Pageable pageable, Model model) {
+
+        Page<Producto> productos;
+
+        if (descripcion != null && !descripcion.isEmpty()) {
+            Producto productoExample = new Producto();
+            productoExample.setDescripcion(descripcion);
+
+
+            productos = productoService.buscarPorNombre(productoExample, pageable);
+        } else {
+            productos = productoService.buscarTodas(pageable);
+        }
+
+        model.addAttribute("productos", productos);
+        model.addAttribute("descripcion", descripcion);
+
+        return "productos/producto_ver";
+    }
+
 
     //metodo encargado de editar los productos
     @GetMapping("/editar/{id}")
@@ -69,10 +99,10 @@ public class ProductoController {
         model.addAttribute("search",productoSearch);
     }
 
-    @GetMapping("/verpaginte")
+    /*@GetMapping("/verpaginte")
     public String mostrarPaginado(Model model, Pageable page){
         Page<Producto> lista =productoService.buscarTodas(page);
         model.addAttribute("pagina",lista);
         return "productos/producto_ver";
-    }
+    }*/
 }

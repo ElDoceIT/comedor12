@@ -41,10 +41,10 @@
           </div>
           </form>
 
-
-          <form class="form-inline" th:action="@{/productos/search}" method="get" th:object="${search}">
+          <!-- Formulario de Búsqueda -->
+          <form class="form-inline" th:action="@{/productos/search1}" method="get" th:object="${search1}">
             <label for="producto">Filtrar busqueda</label>
-          <input type="text" class="form-control" id="producto" th:field="*{descripcion}" name="producto" placeholder="buscar producto" required="required">
+          <input type="text" class="form-control" id="producto" th:value="${descripcion}" name="descripcion" placeholder="buscar producto" required="required">
             <button type="submit" class="btn btn-primary mb-3">buscar</button>
           </form>
 
@@ -72,27 +72,33 @@
 
           </tbody>
         </table>
-        <!--<nav th:if="${pagina.totalPages > 0}" aria-label="Page navigation example" >
+        <!-- Paginación -->
+        <div>
+        <nav th:if="${productos.totalPages > 1}" aria-label="Page navigation example">
+          <ul class="pagination">
+                <li th:if="${productos.hasPrevious()}">
+                    <a th:href="@{/productos/ver(keyword=${keyword}, page=${productos.number - 1})}" class="page-link">Anterior</a>
+                </li>
+                <!-- <li th:each="i : ${#numbers.sequence(0, productos.totalPages - 1)}">
+                    <a th:href="@{/productos/ver(keyword=${keyword}, page=${i})}"
+                       th:text="${i + 1}"
+                       th:class="${productos.number == i} ? 'active' : ''" class="page-link">1</a>
+                </li>-->
+                <li th:if="${productos.hasNext()}">
+                    <a th:href="@{/productos/ver(keyword=${keyword}, page=${productos.number + 1})}" class="page-link">Siguiente</a>
+                </li>
+          </ul>
+        </nav>
+        </div>
+
+        <!--
+        <nav th:if="${productos != null and productos.totalPages > 0}" aria-label="Page navigation example" >
             <ul class="pagination">
-              <li class="page-item"><a th:href="@{/productos/ver(page=${pagina.number - 1})}" class="page-link">Anterior</a></li>
-              <li class="page-item"><a th:href="@{/productos/ver(page=${pagina.number + 1})}" class="page-link">Siguiente</a></li>
+              <li class="page-item"><a th:href="@{/productos/ver(page=${productos.number - 1})}" class="page-link">Anterior</a></li>
+              <li class="page-item"><a th:href="@{/productos/ver(page=${productos.number + 1})}" class="page-link">Siguiente</a></li>
             </ul>
           </nav>
-
-       <nav th:if="${pagina.totalPages > 0}" aria-label="Page navigation example" >
-         <ul class="pagination justify-content-center">
-           <li class="page-item" th:classappend="${pagina.number == 0 ? 'disabled' : ''}">
-             <a th:href="@{/productos/ver(page=${pagina.number - 1})}" class="page-link">Anterior</a>
-           </li>
-
-           <li class="page-item" th:classappend="${i eq pagina.number + 1} ? 'active'" th:each="i : ${#numbers.sequence( 1, pagina.totalPages, 1)}">
-             <a class="page-link" th:href="@{/productos/ver?page={tmpPag} (tmpPag=${i-1}) }" th:text="${i}" th:title="${'Page '+ i}" data-toggle="tooltip"></a>
-           </li>
-           <li class="page-item" th:classappend="${pagina.number == (pagina.totalPages - 1) ? 'disabled' : ''}">
-             <a th:href="@{/productos/ver(page=${pagina.number + 1})}" class="page-link">Siguiente</a>
-           </li>
-         </ul>
-       </nav>-->
+        -->
       </div>
 
 

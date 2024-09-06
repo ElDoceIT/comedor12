@@ -14,4 +14,5 @@ public interface IProductoService {
     List<Producto> buscarTodas();
     List<Producto> buscarByExample(Example<Producto> example);
     Page<Producto> buscarTodas(Pageable page);
+    Page<Producto> buscarPorNombre(Producto example, Pageable pageable);
 }
