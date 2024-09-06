@@ -41,6 +41,7 @@ public class ProductoController {
         return "redirect:/productos/ver";
     }
 
+    //metodo encargado de realizar la busqueda dentro de productos
     @GetMapping("/search")
     public String buscar(@ModelAttribute("search") Producto producto, Model model) {
         //buscar cualquier coincidencia
@@ -52,6 +53,7 @@ public class ProductoController {
         return "productos/producto_ver";
     }
 
+    //metodo encargado de editar los productos
     @GetMapping("/editar/{id}")
     public String editar(@PathVariable("id") int id_Producto, Model model) {
         Producto producto = productoRepository.findById(id_Producto).get();
