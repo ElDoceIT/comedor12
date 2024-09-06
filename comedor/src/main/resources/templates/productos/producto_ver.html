@@ -42,7 +42,7 @@
           </form>
 
           <!-- Formulario de Búsqueda -->
-          <form class="form-inline" th:action="@{/productos/search1}" method="get" th:object="${search1}">
+          <form class="form-inline" th:action="@{/productos/search}" method="get" th:object="${search}">
             <label for="producto">Filtrar busqueda</label>
           <input type="text" class="form-control" id="producto" th:value="${descripcion}" name="descripcion" placeholder="buscar producto" required="required">
             <button type="submit" class="btn btn-primary mb-3">buscar</button>
@@ -79,11 +79,7 @@
                 <li th:if="${productos.hasPrevious()}">
                     <a th:href="@{/productos/ver(keyword=${keyword}, page=${productos.number - 1})}" class="page-link">Anterior</a>
                 </li>
-                <!-- <li th:each="i : ${#numbers.sequence(0, productos.totalPages - 1)}">
-                    <a th:href="@{/productos/ver(keyword=${keyword}, page=${i})}"
-                       th:text="${i + 1}"
-                       th:class="${productos.number == i} ? 'active' : ''" class="page-link">1</a>
-                </li>-->
+
                 <li th:if="${productos.hasNext()}">
                     <a th:href="@{/productos/ver(keyword=${keyword}, page=${productos.number + 1})}" class="page-link">Siguiente</a>
                 </li>
@@ -91,14 +87,7 @@
         </nav>
         </div>
 
-        <!--
-        <nav th:if="${productos != null and productos.totalPages > 0}" aria-label="Page navigation example" >
-            <ul class="pagination">
-              <li class="page-item"><a th:href="@{/productos/ver(page=${productos.number - 1})}" class="page-link">Anterior</a></li>
-              <li class="page-item"><a th:href="@{/productos/ver(page=${productos.number + 1})}" class="page-link">Siguiente</a></li>
-            </ul>
-          </nav>
-        -->
+
       </div>
 
 
