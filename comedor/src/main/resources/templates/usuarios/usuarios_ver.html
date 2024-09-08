@@ -11,7 +11,7 @@
     <link th:href="@{/bootstrap/css/jumbotron.css}" rel="stylesheet">
     <link th:href="@{/bootstrap/css/sticky-footer-navbar.css}" rel="stylesheet">
 
-    <title>Ingreso comida</title>
+    <title>Listado Usuarios</title>
 </head>
 <body>
 <header th:insert="fragments/menu :: menu-principal">
@@ -28,6 +28,7 @@
         <th>CC</th>
         <th>Grupo</th>
         <th>Empresa</th>
+        <th>Estado</th>
     </tr>
     </thead>
     <tbody th:each="usuario :${usuarios}">
@@ -39,7 +40,7 @@
         <td th:text="${usuario.cc}"></td>
         <td th:text="${usuario.grupo}"></td>
         <td th:text="${usuario.empresa}"></td>
-
+        <td th:text="${usuario.estado}"></td>
     </tr>
     </tbody>
 </table>

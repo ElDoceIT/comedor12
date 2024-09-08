@@ -33,6 +33,8 @@ public class Usuario {
     @Column(name = "pass")
     private String pass;
 
+    private String estado;
+
     public Integer getId_usuario() {
         return id_usuario;
     }
@@ -97,6 +99,14 @@ public class Usuario {
         this.pass = pass;
     }
 
+    public String getEstado() {
+        return estado;
+    }
+
+    public void setEstado(String estado) {
+        this.estado = estado;
+    }
+
     @Override
     public String toString() {
         return "Usuario{" +
@@ -106,8 +116,9 @@ public class Usuario {
                 ", apellido='" + apellido + '\'' +
                 ", cc='" + cc + '\'' +
                 ", grupo='" + grupo + '\'' +
-                ", empresa=" + empresa +
+                ", empresa='" + empresa + '\'' +
                 ", pass='" + pass + '\'' +
+                ", estado='" + estado + '\'' +
                 '}';
     }
 }
