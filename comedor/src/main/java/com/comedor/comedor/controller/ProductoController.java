@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/productos")
 public class ProductoController {
 
+
     @Autowired
     private ProductoRepository productoRepository;
 
