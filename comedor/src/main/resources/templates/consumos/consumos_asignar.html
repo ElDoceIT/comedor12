@@ -18,6 +18,62 @@
 
 </header>
 
+<main role="main">
+  <hr>
+  <div class="container">
+
+    <div class="card">
+      <h4 class="card-header"><strong>Asginar consumos</strong></h4>
+      <div class="card-body">
+        <form th:action="@{/consumos/save}" method="post">
+
+          <div class="row">
+            <div class="col-md-3">
+              <div class="form-group">
+                <label for="Producto">Producto</label>
+                <select class="form-control" name="producto" id="producto">
+                  <option selected> Seleccione un producto</option>
+                  <option th:each="producto :${productos}" th:value="${producto.id_producto}" th:text="${producto.descripcion}"></option>
+                </select>
+              </div>
+            </div>
+
+            <div class="col-md-5">
+              <div class="form-group">
+                <label for="usuario">Cliente</label>
+                <select class="form-control" name="usuario" id="usuario">
+                  <option selected> Seleccione un usuario</option>
+                  <option th:each="usuario :${usuarios}" th:value="${usuario.id_usuario}" th:text="${usuario.apellido} +' ' + ${usuario.nombre} "></option>
+                </select>
+              </div>
+
+            </div>
+            <div class="col-md-2">
+              <div class="form-group">
+                <label for="fecha">Fecha</label>
+                <input type="date" class="form-control" name="fecha" id="fecha" placeholder="Fecha" required="required">
+              </div>
+            </div>
+
+
+              <div class="col-md-2">
+                <div class="form-group">
+                  <label for="cantidad">Cantidad</label>
+                  <input type="text" class="form-control" name="cantidad" id="cantidad" placeholder="unidades" required="required">
+                </div>
+              </div>
+
+
+          </div>
+
+          <button type="submit" class="btn btn-primary">Guardar</button>
+        </form>
+      </div>
+    </div>
+  </div> <!-- /container -->
+
+</main>
+
 
 
 

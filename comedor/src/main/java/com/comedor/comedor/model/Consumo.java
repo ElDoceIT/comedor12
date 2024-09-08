@@ -1,6 +1,7 @@
 package com.comedor.comedor.model;
 
 import jakarta.persistence.*;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.Date;
 
@@ -16,7 +17,9 @@ public class Consumo {
     @Column(name ="cant")
     private int cantidad;
 
+
     @Column(name ="fecha")
+    @DateTimeFormat(pattern = "dd-MM-yyyy")
     private Date fecha;
 
     @OneToOne

@@ -6,4 +6,5 @@ import java.util.List;
 
 public interface IConsumoService {
     List<Consumo> buscarTodas();
+    void guardar(Consumo consumo);
 }

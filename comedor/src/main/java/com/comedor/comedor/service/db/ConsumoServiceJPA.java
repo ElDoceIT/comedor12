@@ -18,4 +18,10 @@ public class ConsumoServiceJPA implements IConsumoService {
     public List<Consumo> buscarTodas() {
         return consumoRepository.findAll();
     }
+
+    @Override
+    public void guardar(Consumo consumo) {
+        consumoRepository.save(consumo);
+
+    }
 }
