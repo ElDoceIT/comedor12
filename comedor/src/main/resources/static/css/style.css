@@ -36,6 +36,12 @@
       }
 
       .card1{
-        box-shadow: 105px 10px 20px rgba(255, 0, 0, 0.2);
-        
+        box-shadow: grey 15px 10px 20px;
+        border-radius: 15px;
+          --bs-border-radius-2xl: 15px;
+          border: lightgrey solid 1px;
     }
+      .botocito1{
+          box-shadow: grey 5px 5px 10px;
+          border-radius: 7px;
+      }
