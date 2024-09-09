@@ -37,8 +37,15 @@
         <tr>
             <td th:text="${reserva.f_reserva}"></td>
             <td th:text="${reserva.usuario.apellido} +' '+ ${reserva.usuario.nombre}"></td>
-            <td th:text="${reserva.menu.id_menu}"></td>
-            <td th:text="${reserva.medio}"></td>
+            <td th:text="${reserva.menu.comida.entrada}+' ++++ '+ ${reserva.menu.comida.principal}+' ++++ '+ ${reserva.menu.comida.postre}"></td>
+            <td>
+                <div th:switch="${reserva.medio}">
+                    <p th:case="'1'">Comedor</p>
+                    <p th:case="'2'">Retira</p>
+                    <p th:case="'3'">Vianda</p>
+
+                </div>
+            </td>
             <td th:text="${reserva.idReserva}"></td>
         </tr>
         </tbody>
