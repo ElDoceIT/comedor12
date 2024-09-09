@@ -15,6 +15,7 @@
   <title>ConsumosVer</title>
 </head>
 <body>
+
 <header th:insert="fragments/menu :: menu-principal">
 
 </header>
@@ -44,7 +45,7 @@
       <td>
         <a th:href="@{/consumos/editar/{id} (id=${consumo.idConsumo})}"class="btn btn-warning btn-sm" role="button" title="Editar"><i class="bi bi-pencil"  aria-hidden="true"></i></a>
 
-        <a th:href="@{/consumos/delete/{id} (id=${consumo.idConsumo})}" class="btn btn-danger btn-sm" role="button" title="Eliminar"><i class="bi bi-trash"  aria-hidden="true"></i></a>
+        <a th:href="@{/consumos/delete/{id} (id=${consumo.idConsumo})}" class="btn btn-danger btn-sm btn-eliminar" role="button" title="Eliminar" ><i class="bi bi-trash"  aria-hidden="true"></i></a>
       </td>
     </tr>
     </tbody>
@@ -53,7 +54,20 @@
 
 
 
+<script>
+  // Agregar event listener a todos los botones de eliminar
+  document.querySelectorAll('.btn-eliminar').forEach(function(button) {
+    button.addEventListener('click', function(event) {
+      // Mostrar el cuadro de confirmación
+      const confirmed = confirm("¿Estás seguro de que deseas eliminar este registro?");
 
+      // Si no está confirmado, redirige a # (no hace nada)
+      if (!confirmed) {
+        event.preventDefault();
+      }
+    });
+  });
+</script>
 
 <footer th:insert="fragments/footer :: footer" class="footer">
   <script th:src="@{/bootstrap/js/bootstrap.min.js}"></script>
