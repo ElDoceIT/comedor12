@@ -19,7 +19,7 @@ public class Consumo {
 
 
     @Column(name ="fecha")
-    @DateTimeFormat(pattern = "dd-MM-yyyy")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date fecha;
 
     @OneToOne

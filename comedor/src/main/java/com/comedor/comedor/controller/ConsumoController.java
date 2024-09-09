@@ -1,6 +1,7 @@
 package com.comedor.comedor.controller;
 
 import com.comedor.comedor.model.Consumo;
+import com.comedor.comedor.model.Producto;
 import com.comedor.comedor.repository.ConsumoRepository;
 import com.comedor.comedor.repository.ProductoRepository;
 import com.comedor.comedor.repository.UsuarioRepository;
@@ -9,10 +10,7 @@ import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.WebDataBinder;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.InitBinder;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -33,7 +31,7 @@ public class ConsumoController {
 
     @InitBinder
     public void initBinder(WebDataBinder binder) {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         dateFormat.setLenient(false);
         binder.registerCustomEditor(Date.class, new CustomDateEditor(dateFormat, true));
     }
@@ -57,6 +55,19 @@ public class ConsumoController {
     @PostMapping("/save")
     public String guardarConsumo(Consumo consumo) {
         consumoRepository.save(consumo);
+        return "redirect:/consumos/ver";
+    }
+
+    @GetMapping("/editar/{id}")
+    public String editarConsumo(@PathVariable("id") int idConsumo, Model model) {
+        Consumo consumo = consumoRepository.findById(idConsumo).get();
+        model.addAttribute("consumo",consumo);
+        return "consumo/consumo_editar";
+    }
+
+    @GetMapping("/delete/{id}")
+    public String eliminarConsumo(@PathVariable("id") int IdConsumo) {
+        consumoRepository.deleteById(IdConsumo);
         return "redirect:/consumos/ver";
     }
 }

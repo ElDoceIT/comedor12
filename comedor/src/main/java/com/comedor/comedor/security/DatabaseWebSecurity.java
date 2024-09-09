@@ -40,6 +40,7 @@ public UserDetailsManager usersCustom(DataSource dataSource) {
                 .requestMatchers("/usuarios/**").hasAnyAuthority("Admin", "Jefe")
                 .requestMatchers("/menu/**").hasAnyAuthority("Admin", "Jefe")
                 .requestMatchers("/productos/**").hasAnyAuthority("Admin", "Jefe")
+                .requestMatchers("/consumos/**").hasAnyAuthority("Admin", "Jefe")
 // Todas las demás URLs de la Aplicación requieren autenticación
                 .anyRequest().authenticated());
 // El formulario de Login no requiere autenticacion
