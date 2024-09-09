@@ -44,6 +44,13 @@ public class ConsumoController {
 
     }
 
+    @GetMapping("/verfiltrados")
+    public String consumosVerFiltrados(Model model) {
+        model.addAttribute("consumos", consumoRepository.findAll());
+        return "consumos/consumos_filtrados";
+
+    }
+
     @GetMapping("/asignar")
     public String consumosAsignar(Model model) {
         model.addAttribute("productos", productoRepository.findAll());

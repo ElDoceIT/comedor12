@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Filtrar Registros</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+
+<div class="container mt-4">
+    <h2>Filtrar Registros</h2>
+
+    <!-- Botones para filtrar -->
+    <div class="btn-group mb-3" role="group" aria-label="Filtros">
+        <!-- Botón Mostrar todo -->
+        <button id="btn-mostrar-todo" class="btn btn-primary" onclick="mostrarTodo()">
+            Mostrar todo
+        </button>
+
+        <!-- Botón Mostrar por usuario y fecha -->
+        <button id="btn-mostrar-usuario-fecha" class="btn btn-success" onclick="mostrarUsuarioFecha()">
+            Mostrar por usuario y fecha
+        </button>
+
+        <!-- Botón Mostrar por fecha -->
+        <button id="btn-mostrar-fecha" class="btn btn-warning" onclick="mostrarPorFecha()">
+            Mostrar por fecha
+        </button>
+    </div>
+
+    <!-- Formulario de Filtros (Oculto inicialmente) -->
+    <form id="form-filtros" action="#" method="GET" class="mb-4" style="display:none;">
+        <div class="form-row">
+            <!-- Input para Usuario -->
+            <div class="form-group col-md-4">
+                <label for="usuario">Usuario</label>
+                <input type="text" class="form-control" id="usuario" name="usuario" placeholder="Nombre de usuario">
+            </div>
+
+            <!-- Input para Fecha Inicio -->
+            <div class="form-group col-md-4">
+                <label for="fecha-inicio">Fecha Inicio</label>
+                <input type="date" class="form-control" id="fecha-inicio" name="fechaInicio">
+            </div>
+
+            <!-- Input para Fecha Fin -->
+            <div class="form-group col-md-4">
+                <label for="fecha-fin">Fecha Fin</label>
+                <input type="date" class="form-control" id="fecha-fin" name="fechaFin">
+            </div>
+        </div>
+
+        <!-- Botón para Aplicar Filtro -->
+        <button type="submit" class="btn btn-primary">Aplicar Filtro</button>
+    </form>
+
+    <!-- Tabla de Resultados -->
+    <table class="table table-striped table-hover">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Usuario</th>
+            <th>Fecha</th>
+            <th>Acciones</th>
+        </tr>
+        </thead>
+        <tbody>
+        <!-- Se muestran los resultados según el filtro -->
+        <tr th:each="item : ${items}">
+            <td th:text="${item.id}"></td>
+            <td th:text="${item.usuario}"></td>
+            <td th:text="${#dates.format(item.fecha, 'dd-MM-yyyy')}"></td>
+            <td>
+                <!-- Botón de editar/eliminar si se necesita -->
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+<script>
+    // Función para mostrar todos los registros
+    function mostrarTodo() {
+        document.getElementById("form-filtros").style.display = "none"; // Oculta el formulario
+        window.location.href = '/items'; // Redirige a la ruta que muestra todo
+    }
+
+    // Función para mostrar el formulario de filtro por usuario y fecha
+    function mostrarUsuarioFecha() {
+        document.getElementById("form-filtros").style.display = "block"; // Muestra el formulario
+        document.getElementById("usuario").style.display = "block"; // Muestra campo de usuario
+        document.getElementById("fecha-inicio").style.display = "block"; // Muestra campo fecha inicio
+        document.getElementById("fecha-fin").style.display = "block"; // Muestra campo fecha fin
+    }
+
+    // Función para mostrar el formulario de filtro solo por fecha
+    function mostrarPorFecha() {
+        document.getElementById("form-filtros").style.display = "block"; // Muestra el formulario
+        document.getElementById("usuario").style.display = "none"; // Oculta campo de usuario
+        document.getElementById("fecha-inicio").style.display = "block"; // Muestra campo fecha inicio
+        document.getElementById("fecha-fin").style.display = "block"; // Muestra campo fecha fin
+    }
+</script>
+
+</body>
+</html>
