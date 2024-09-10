@@ -69,7 +69,9 @@ public class ConsumoController {
     public String editarConsumo(@PathVariable("id") int idConsumo, Model model) {
         Consumo consumo = consumoRepository.findById(idConsumo).get();
         model.addAttribute("consumo",consumo);
-        return "consumo/consumo_editar";
+        model.addAttribute("productos", productoRepository.findAll());
+        model.addAttribute("usuarios", usuarioRepository.findAll());
+        return "consumos/consumos_editar";
     }
 
     @GetMapping("/delete/{id}")
