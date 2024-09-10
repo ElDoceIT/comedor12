@@ -10,6 +10,7 @@
     <!-- Custom styles for this template -->
     <link th:href="@{/bootstrap/css/jumbotron.css}" rel="stylesheet">
     <link th:href="@{/bootstrap/css/sticky-footer-navbar.css}" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
 
     <title>Modificar producto</title>
 </head>
@@ -20,25 +21,25 @@
 
 <main role="main">
     <hr>
-    <div class="container">
+    <div class="container col-sm-4">
 
-        <div class="card">
-            <h4 class="card-header"><strong>Modifica producto</strong></h4>
-            <div class="card-body">
+        <div class="card1">
+            <h4 class="card-header text-center"><strong>Modifica producto</strong></h4>
+            <div class="card-body ">
                 <form th:action="@{/productos/save}" method="post" th:object="${producto}">
                     <div class="row">
                         <div class="col-md-6">
 
-                            <label for="producto">Entrada</label>
+                            <label for="producto"><h5>Producto:</h5></label>
                             <input type="hidden" th:field="*{id_producto}">
-                            <input type="text" class="form-control" th:field="*{descripcion}" id="producto" name="descripcion" placeholder="Modificar producto" required="required">
+                            <input type="text" class="form-control col-auto" th:field="*{descripcion}" id="producto" name="descripcion" placeholder="Modificar producto" required="required">
 
                         </div>
 
                     </div>
 
                     <hr>
-                    <button type="submit" title="Actualizar Producto" class="btn btn-primary">Guardar</button>
+                    <button type="submit" title="Actualizar Producto" class="botocito1 btn btn-outline-secondary float-end">Guardar</button>
                 </form>
             </div>
         </div>

@@ -25,31 +25,31 @@
   <div class="container">
 
     <div class="card">
-      <h4 class="card-header"><strong>Listado de Productos</strong></h4>
+      <h4 class="card-header text-center"><strong>Listado de Productos</strong></h4>
       <div class="card-body">
-        <div>
-          <button class="btn btn-primary" onclick="toggleText()">NuevoProducto</button>
 
-        </div>
-
-        <div  class="col-md-10">
-          <form th:action="@{/productos/save}" method="post">
-          <div id="thymeleafText" style="display:none;" class="col-md-6">
-            <label for="producto">Cargar nuevo producto</label>
-            <input type="text" class="form-control" id="descripcion" name="descripcion" placeholder="nuevo producto" required="required">
-            <button type="submit" title="Guardar el registro." class="btn btn-primary">Guardar</button>
-          </div>
-          </form>
 
           <!-- Formulario de Búsqueda -->
           <form class="form-inline" th:action="@{/productos/search}" method="get" th:object="${search}">
-            <label for="producto">Filtrar busqueda</label>
+            <label for="producto"><h5>Buscar:</h5>  </label>
           <input type="text" class="form-control" id="producto" th:value="${descripcion}" name="descripcion" placeholder="buscar producto" required="required">
-            <button type="submit" class="btn btn-primary mb-3">buscar</button>
+            <button type="submit" class="btn btn-outline-secondary float-end">buscar</button>
           </form>
 
           </div>
+      <div>
+        <button class="btn btn-outline-secondary float-end" onclick="toggleText()">NuevoProducto</button>
 
+      </div>
+
+      <div  class="col-md-10">
+        <form th:action="@{/productos/save}" method="post">
+          <div id="thymeleafText" style="display:none;" class="col-md-6">
+            <label for="producto"><h6>Cargar nuevo producto:</h6></label>
+            <input type="text" class="form-control" id="descripcion" name="descripcion" placeholder="Nuevo producto" required="required">
+            <button type="submit" title="Guardar el registro." class="btn btn-outline-secondary float-end">Guardar</button>
+          </div>
+        </form>
 
 
 
