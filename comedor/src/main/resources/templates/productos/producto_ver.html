@@ -11,7 +11,7 @@
   <link th:href="@{/bootstrap/css/jumbotron.css}" rel="stylesheet">
   <link th:href="@{/bootstrap/css/sticky-footer-navbar.css}" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.5.0/font/bootstrap-icons.min.css">
-
+  <link rel="stylesheet" th:href="@{/css/style.css}">
   <title>Productos</title>
   <script th:src="@{/js/toogleText.js}"></script>
 </head>
@@ -22,51 +22,51 @@
 
 <main role="main">
   <hr>
-  <div class="container">
+  <div class="container ">
 
-    <div class="card">
-      <h4 class="card-header text-center"><strong>Listado de Productos</strong></h4>
-      <div class="card-body">
+    <div class=" card card1 thead1">
+      <h2 class=" margen2">Listado de Productos</h2>
+      <div class="card-body botocito1">
 
 
           <!-- Formulario de Búsqueda -->
           <form class="form-inline" th:action="@{/productos/search}" method="get" th:object="${search}">
             <label for="producto"><h5>Buscar:</h5>  </label>
-          <input type="text" class="form-control" id="producto" th:value="${descripcion}" name="descripcion" placeholder="buscar producto" required="required">
-            <button type="submit" class="btn btn-outline-secondary float-end">buscar</button>
+          <input type="text" class="form-control small a margen1" id="producto" th:value="${descripcion}" name="descripcion" placeholder="Buscar producto" required="required">
+            <button type="submit" class="btn btn-outline-secondary botoncito1 b">Buscar</button>
           </form>
 
           </div>
       <div>
-        <button class="btn btn-outline-secondary float-end" onclick="toggleText()">NuevoProducto</button>
+        <button class="btn btn-outline-secondary float-start botoncito1 margen1" onclick="toggleText()">Nuevo producto</button>
 
       </div>
 
-      <div  class="col-md-10">
+      <div  class="col">
         <form th:action="@{/productos/save}" method="post">
           <div id="thymeleafText" style="display:none;" class="col-md-6">
-            <label for="producto"><h6>Cargar nuevo producto:</h6></label>
-            <input type="text" class="form-control" id="descripcion" name="descripcion" placeholder="Nuevo producto" required="required">
-            <button type="submit" title="Guardar el registro." class="btn btn-outline-secondary float-end">Guardar</button>
+            <label for="producto"><h5>Cargar nuevo producto:</h5></label>
+            <input type="text" class="form-control margen1" id="descripcion" name="descripcion" placeholder="Nuevo producto" required="required">
+            <button type="submit" title="Guardar el registro." class="btn btn-outline-secondary float-end  botoncito1 margen1">Guardar</button>
           </div>
         </form>
 
 
 
         <hr>
-        <table class="table table-hover">
+        <table class="table w-100 striped-table">
           <thead class="thead-light">
           <tr>
 
-            <th scope="col">Nombre Producto</th>
+            <th scope=colspan="2" class="text-lg-left"><h3>Nombre Producto</h3></th>
 
           </tr>
           </thead>
           <tbody>
           <tr th:each="producto :${productos}">
-            <td th:text="${producto.descripcion}">CocaCola</td>
-            <td>
-              <a th:href="@{/productos/editar/{id} (id=${producto.id_producto})}" class="btn btn-success btn-sm" role="button" title="Editar"><i class="bi bi-pencil" aria-hidden="true"></i></a>
+            <td class="float-left" th:text="${producto.descripcion}">CocaCola</td>
+            <td class="float-right">
+              <a th:href="@{/productos/editar/{id} (id=${producto.id_producto})}" class=" btn btn-outline-secondary botoncito1 justify-content-end round-button" role="button" title="Editar"><i class="bi bi-pencil" aria-hidden="true"></i></a>
             </td>
           </tr>
 
@@ -77,11 +77,11 @@
         <nav th:if="${productos.totalPages > 1}" aria-label="Page navigation example">
           <ul class="pagination">
                 <li th:if="${productos.hasPrevious()}">
-                    <a th:href="@{/productos/ver(keyword=${keyword}, page=${productos.number - 1})}" class="page-link">Anterior</a>
+                    <a th:href="@{/productos/ver(keyword=${keyword}, page=${productos.number - 1})}" class="btn btn-outline-secondary botoncito1 table-light">Anterior</a>
                 </li>
 
                 <li th:if="${productos.hasNext()}">
-                    <a th:href="@{/productos/ver(keyword=${keyword}, page=${productos.number + 1})}" class="page-link">Siguiente</a>
+                    <a th:href="@{/productos/ver(keyword=${keyword}, page=${productos.number + 1})}" class="btn btn-outline-secondary botoncito1 table-light">Siguiente</a>
                 </li>
           </ul>
         </nav>
