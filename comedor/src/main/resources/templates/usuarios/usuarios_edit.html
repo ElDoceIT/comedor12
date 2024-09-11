@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html xmlns:th="http://thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="shortcut icon" th:href="@{/images/El-Doce-TV-en-vivo-Online-1.png}" type="image/x-icon">
+
+    <link th:href="@{/bootstrap/css/bootstrap.min.css}" rel="stylesheet">
+    <!-- Custom styles for this template -->
+    <link th:href="@{/bootstrap/css/jumbotron.css}" rel="stylesheet">
+    <link th:href="@{/bootstrap/css/sticky-footer-navbar.css}" rel="stylesheet">
+
+    <title>Usuario nuevo</title>
+</head>
+<body>
+<header th:insert="fragments/menu :: menu-principal">
+
+</header>
+<div class="card">
+    <h4 class="card-header"><strong>Editar usuario</strong></h4>
+    <div class="card-body">
+        <form th:action="@{/usuarios/save}" method="post"  th:object="${usuario}">
+            <input type="hidden" th:field="*{id_usuario}">
+            <div class="col-md-2">
+                <div class="form-group">
+                    <label for="dni">DNI</label>
+                    <input type="text" class="form-control" th:field="*{dni}"  name="dni" id="dni" placeholder="nro DNI" required="required">
+                </div>
+            </div>
+
+            <div class="col-md-2">
+                <div class="form-group">
+                    <label for="apellido">Apellido</label>
+                    <input type="text" class="form-control" th:field="*{apellido}"  name="apellido" id="apellido" placeholder="apellido" required="required">
+                </div>
+            </div>
+
+            <div class="col-md-2">
+                <div class="form-group">
+                    <label for="nombre">NOmbre</label>
+                    <input type="text" class="form-control" th:field="*{nombre}"  name="nombre" id="nombre" placeholder="nombre" required="required">
+                </div>
+            </div>
+
+
+            <div class="col-md-5">
+                <div class="form-group">
+                    <label for="ceco">CeCo</label>
+                    <select class="form-control" th:field="*{cc}"  name="cc" id="ceco">
+                        <option th:each="usuario :${usuarios}" th:value="${cc}" th:text="${cc}"></option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="col-md-5">
+                <div class="form-group">
+                    <label for="grupo">Grupo</label>
+                    <select class="form-control" th:field="*{grupo}"  name="grupo" id="grupo">
+                        <option th:each="usuario :${usuarios}" th:value="${grupo}" th:text="${grupo}"></option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="col-md-5">
+                <div class="form-group">
+                    <label for="empresa">Empresa</label>
+                    <select class="form-control" th:field="*{empresa}"  name="empresa" id="empresa">
+                        <option th:each="usuario :${usuarios}" th:value="${empresa}" th:text="${empresa}"></option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="col-md-5">
+                <div class="form-group">
+                    <label for="estado">estado</label>
+                    <select class="form-control" th:field="*{estado}"  name="estado" id="estado">
+                        <option th:each="usuario :${usuarios}" th:value="${estado}" th:text="${estado}"></option>
+                    </select>
+                </div>
+            </div>
+
+
+
+
+            <button type="submit" class="btn btn-primary">Guardar</button>
+        </form>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+<footer th:insert="fragments/footer :: footer" class="footer">
+    <script th:src="@{/bootstrap/js/bootstrap.min.js}"></script>
+</footer>
+</body>
+</html>
