@@ -38,26 +38,31 @@
 
             <div class="col-md-2">
                 <div class="form-group">
-                    <label for="nombre">NOmbre</label>
+                    <label for="nombre">Nombre</label>
                     <input type="text" class="form-control" th:field="*{nombre}"  name="nombre" id="nombre" placeholder="nombre" required="required">
                 </div>
             </div>
 
-
-            <div class="col-md-5">
+            <div class="col-md-2">
                 <div class="form-group">
                     <label for="ceco">CeCo</label>
-                    <select class="form-control" th:field="*{cc}"  name="cc" id="ceco">
-                        <option th:each="usuario :${usuarios}" th:value="${cc}" th:text="${cc}"></option>
+                    <select class="form-control" th:field="*{cc}" name="ceco" id="ceco">
+                        <option value="" disabled selected>Seleccione CeCo</option>
+                        <!-- Mostrar todos los grupos en el select -->
+                        <option th:each="ceco : ${cecos}" th:value="${ceco}" th:text="${ceco}"></option>
                     </select>
                 </div>
             </div>
 
+
+
             <div class="col-md-5">
                 <div class="form-group">
                     <label for="grupo">Grupo</label>
-                    <select class="form-control" th:field="*{grupo}"  name="grupo" id="grupo">
-                        <option th:each="usuario :${usuarios}" th:value="${grupo}" th:text="${grupo}"></option>
+                    <select class="form-control" th:field="*{grupo}" name="grupo" id="grupo">
+                        <option value="" disabled selected>Seleccione un grupo</option>
+                        <!-- Mostrar todos los grupos en el select -->
+                        <option th:each="grupo : ${grupos}" th:value="${grupo}" th:text="${grupo}"></option>
                     </select>
                 </div>
             </div>
@@ -65,17 +70,21 @@
             <div class="col-md-5">
                 <div class="form-group">
                     <label for="empresa">Empresa</label>
-                    <select class="form-control" th:field="*{empresa}"  name="empresa" id="empresa">
-                        <option th:each="usuario :${usuarios}" th:value="${empresa}" th:text="${empresa}"></option>
+                    <select class="form-control" th:field="*{empresa}" name="empresa" id="empresa">
+                        <option value="" disabled selected>Seleccione empresa</option>
+                        <!-- Mostrar todos los grupos en el select -->
+                        <option th:each="empresa : ${empresas}" th:value="${empresa}" th:text="${empresa}"></option>
                     </select>
                 </div>
             </div>
 
             <div class="col-md-5">
                 <div class="form-group">
-                    <label for="estado">estado</label>
-                    <select class="form-control" th:field="*{estado}"  name="estado" id="estado">
-                        <option th:each="usuario :${usuarios}" th:value="${estado}" th:text="${estado}"></option>
+                    <label for="estado">Estado</label>
+                    <select class="form-control" th:field="*{estado}" name="estado" id="estado">
+                        <option value="" disabled selected>Seleccione estado</option>
+                        <!-- Mostrar todos los grupos en el select -->
+                        <option th:each="estado : ${estados}" th:value="${estado}" th:text="${estado}"></option>
                     </select>
                 </div>
             </div>

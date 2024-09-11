@@ -12,6 +12,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @Controller
 @RequestMapping("/usuarios")
 public class UsuarioController {
@@ -23,7 +25,16 @@ public class UsuarioController {
     private IUsuarioService usuarioService;
 
     @GetMapping("/new")
-    public String nuevoUsuarios(){
+    public String nuevoUsuarios(Model model) {
+        List<String> grupos = usuarioRepository.findDistinctGrupos();
+        List<String> empresas = usuarioRepository.findDistinctEmpresa();
+        List<String> estados = usuarioRepository.findDistinctEstado();
+        List<String> cecos = usuarioRepository.findDistinctCC();
+
+        model.addAttribute("grupos",grupos);
+        model.addAttribute("empresas",empresas);
+        model.addAttribute("estados",estados);
+        model.addAttribute("cecos",cecos);
         return "usuarios/usuarios_new";
     }
 
@@ -42,7 +53,15 @@ public class UsuarioController {
     @GetMapping("/editar/{id}")
     public String editarUsuario(@PathVariable("id") int id_usuario, Model model) {
         Usuario usuario= usuarioRepository.findById(id_usuario).get();
+        List<String> grupos = usuarioRepository.findDistinctGrupos();
+        List<String> empresas = usuarioRepository.findDistinctEmpresa();
+        List<String> estados = usuarioRepository.findDistinctEstado();
+        List<String> cecos = usuarioRepository.findDistinctCC();
         model.addAttribute("usuario",usuario);
+        model.addAttribute("grupos",grupos);
+        model.addAttribute("empresas",empresas);
+        model.addAttribute("estados",estados);
+        model.addAttribute("cecos",cecos);
         return "usuarios/usuarios_edit";
     }
 

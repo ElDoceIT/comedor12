@@ -75,8 +75,10 @@
       <div class="col-md-2">
         <div class="form-group">
           <label for="ceco">CeCo</label>
-          <select class="form-control"  name="cc" id="ceco">
-            <option></option>
+          <select class="form-control" name="ceco" id="ceco">
+            <option value="" disabled selected>Seleccione CeCo</option>
+            <!-- Mostrar todos los grupos en el select -->
+            <option th:each="ceco : ${cecos}" th:value="${ceco}" th:text="${ceco}"></option>
           </select>
         </div>
       </div>
@@ -84,11 +86,10 @@
         <div class="col-md-2">
           <div class="form-group">
             <label for="grupo">Grupo</label>
-            <select class="form-control"  name="grupo" id="grupo">
-              <option value="usuario">Usuario</option>
-              <option value="jefe">Jefe</option>
-              <option value="comedor">Comedor</option>
-              <option value="rrhh">RRHH</option>
+            <select class="form-control" name="grupo" id="grupo">
+              <option value="" disabled selected>Seleccione un grupo</option>
+              <!-- Mostrar todos los grupos en el select -->
+              <option th:each="grupo : ${grupos}" th:value="${grupo}" th:text="${grupo}"></option>
             </select>
           </div>
         </div>
@@ -96,19 +97,21 @@
           <div class="col-md-2">
             <div class="form-group">
               <label for="empresa">Empresa</label>
-              <select class="form-control"   name="empresa" id="empresa">
-                <option value="ElDoce">ElDoce</option>
-                <option value="Mitre">Mitre</option>
+              <select class="form-control"  name="empresa" id="empresa">
+                <option value="" disabled selected>Seleccione empresa</option>
+                <!-- Mostrar todos los grupos en el select -->
+                <option th:each="empresa : ${empresas}" th:value="${empresa}" th:text="${empresa}"></option>
               </select>
             </div>
           </div>
 
             <div class="col-md-2">
               <div class="form-group">
-                <label for="estado">estado</label>
+                <label for="estado">Estado</label>
                 <select class="form-control"  name="estado" id="estado">
-                  <option value=1>Activo</option>
-                  <option value=0>No Activo</option>
+                  <option value="" disabled selected>Seleccione estado</option>
+                  <!-- Mostrar todos los grupos en el select -->
+                  <option th:each="estado : ${estados}" th:value="${estado}" th:text="${estado}"></option>
                 </select>
               </div>
             </div>
