@@ -27,17 +27,33 @@
     <div class="container">
         <h2 class="font-weight-bold text-center text-capitalize">Comidas Cargadas</h2>
         <hr>
-        <div class="row" th:each="comida :${comidas}">
+        <div class="row">
             <div class="col-md-3">
                 <!-- <img class="rounded mx-auto d-block" th:src="@{/images/logo1.png}" alt="Generic placeholder image" width="220" height="220">-->
             </div>
-            <div class="col-md-9">
-                <h6 class="card-title"><strong>Entrada: </strong> <span th:text="${comida.entrada}"></span>
-                <strong>Principal: </strong> <span th:text="${comida.principal}"> </span>
-                <strong>Postre: </strong> <span th:text="${comida.postre}"> </span>
-               <strong>Tipo: </strong> <span th:text="${comida.tipo_comida}"> </span>
-                <a class="btn btn-secondary" href="#" role="button">Agregar a Menu &raquo;</a></h6>
-            </div>
+
+            <table class="table w-100 striped-table">
+                <thead class="thead-dark">
+                <tr>
+                    <th>Entrada</th>
+                    <th>Principal</th>
+                    <th>Postre</th>
+                    <th>Tipo</th>
+
+                </tr>
+                </thead>
+                <tbody th:each="comida :${comidas}">
+                <tr>
+                    <td th:text="${comida.entrada}"></td>
+                    <td th:text="${comida.principal}"></td>
+                    <td th:text="${comida.postre}"></td>
+                    <td th:text="${comida.tipo_comida}"></td>
+                </tr>
+
+                </tbody>
+            </table>
+
+
         </div>
 
         <hr>

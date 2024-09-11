@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html xmlns:th="http://thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <link rel="shortcut icon" th:href="@{/images/El-Doce-TV-en-vivo-Online-1.png}" type="image/x-icon">
+
+  <link th:href="@{/bootstrap/css/bootstrap.min.css}" rel="stylesheet">
+  <!-- Custom styles for this template -->
+  <link th:href="@{/bootstrap/css/jumbotron.css}" rel="stylesheet">
+  <link th:href="@{/bootstrap/css/sticky-footer-navbar.css}" rel="stylesheet">
+
+  <title>Usuario nuevo</title>
+</head>
+<body>
+<header th:insert="fragments/menu :: menu-principal">
+
+</header>
+<div class="card">
+  <h4 class="card-header"><strong>Agregar usuario</strong></h4>
+  <div class="card-body">
+    <form th:action="@{/usuarios/save}" method="post"  th:object="${usuario}">
+
+        <div class="col-md-2">
+          <div class="form-group">
+            <label for="dni">DNI</label>
+            <input type="text" class="form-control"  name="dni" id="dni" placeholder="nro DNI" required="required">
+          </div>
+        </div>
+
+      <div class="col-md-3">
+        <div class="form-group">
+          <!-- Primer campo de contraseña -->
+          <label for="password">Contraseña:</label>
+          <input type="password" id="password"  name="pass" required />
+
+          <!-- Segundo campo de contraseña para confirmación -->
+          <label for="confirmPassword">Confirmar Contraseña:</label>
+          <input type="password" id="confirmPassword" required />
+
+          <span id="errorMensaje" style="color:red; display:none;">Las contraseñas no coinciden</span>
+          <script>
+            function validarPassword() {
+              // Obtener los valores de los campos de contraseña
+              var password = document.getElementById("password").value;
+              var confirmPassword = document.getElementById("confirmPassword").value;
+
+              // Comparar si las contraseñas coinciden
+              if (password !== confirmPassword) {
+                // Mostrar mensaje de error
+                document.getElementById("errorMensaje").style.display = "block";
+                return false; // Evitar que el formulario se envíe
+              }
+              return true; // Permitir el envío si coinciden
+            }
+          </script>
+
+        </div>
+
+          <div class="form-group">
+          <label for="apellido">Apellido</label>
+          <input type="text" class="form-control"  name="apellido" id="apellido" placeholder="apellido" required="required">
+          </div>
+      </div>
+
+      <div class="col-md-3">
+        <div class="form-group">
+          <label for="nombre">Nombre</label>
+          <input type="text" class="form-control" name="nombre" id="nombre" placeholder="nombre" required="required">
+        </div>
+      </div>
+
+
+      <div class="col-md-2">
+        <div class="form-group">
+          <label for="ceco">CeCo</label>
+          <select class="form-control" name="ceco" id="ceco">
+            <option value="" disabled selected>Seleccione CeCo</option>
+            <!-- Mostrar todos los grupos en el select -->
+            <option th:each="ceco : ${cecos}" th:value="${ceco}" th:text="${ceco}"></option>
+          </select>
+        </div>
+      </div>
+
+        <div class="col-md-2">
+          <div class="form-group">
+            <label for="grupo">Grupo</label>
+            <select class="form-control" name="grupo" id="grupo">
+              <option value="" disabled selected>Seleccione un grupo</option>
+              <!-- Mostrar todos los grupos en el select -->
+              <option th:each="grupo : ${grupos}" th:value="${grupo}" th:text="${grupo}"></option>
+            </select>
+          </div>
+        </div>
+
+          <div class="col-md-2">
+            <div class="form-group">
+              <label for="empresa">Empresa</label>
+              <select class="form-control"  name="empresa" id="empresa">
+                <option value="" disabled selected>Seleccione empresa</option>
+                <!-- Mostrar todos los grupos en el select -->
+                <option th:each="empresa : ${empresas}" th:value="${empresa}" th:text="${empresa}"></option>
+              </select>
+            </div>
+          </div>
+
+            <div class="col-md-2">
+              <div class="form-group">
+                <label for="estado">Estado</label>
+                <select class="form-control"  name="estado" id="estado">
+                  <option value="" disabled selected>Seleccione estado</option>
+                  <!-- Mostrar todos los grupos en el select -->
+                  <option th:each="estado : ${estados}" th:value="${estado}" th:text="${estado}"></option>
+                </select>
+              </div>
+            </div>
+
+
+
+
+      <button type="submit" class="btn btn-primary">Guardar</button>
+    </form>
+  </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+<footer th:insert="fragments/footer :: footer" class="footer">
+  <script th:src="@{/bootstrap/js/bootstrap.min.js}"></script>
+</footer>
+</body>
+</html>
