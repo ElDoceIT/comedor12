@@ -66,7 +66,7 @@ public class UsuarioController {
         // Usar el método de búsqueda personalizada
         usuarios = usuarioRepository.buscarPorFiltros(dni, apellido, pageable);
 
-       
+
 
             // Añadir atributos al modelo para ser usados en la vista
             model.addAttribute("usuarios", usuarios);
