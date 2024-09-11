@@ -31,7 +31,7 @@ public class ComidasController {
     @PostMapping("/save")
     public String guardarComida(Comida comida){
         comidaRepository.save(comida);
-        return "redirect:/comida/comida_ver";
+        return "redirect:/comida/ver";
     }
     
 }
