@@ -10,11 +10,15 @@
   <!-- Custom styles for this template -->
   <link th:href="@{/bootstrap/css/jumbotron.css}" rel="stylesheet">
   <link th:href="@{/bootstrap/css/sticky-footer-navbar.css}" rel="stylesheet">
-
-  <title>Ingreso comida</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.5.0/font/bootstrap-icons.min.css">
+  <link rel="stylesheet" th:href="@{/css/style.css}">
+  <title>Productos</title>
+  <script th:src="@{/js/toogleText.js}"></script>
 </head>
 <body>
 <header th:insert="fragments/menu :: menu-principal">
+
+</header>
 
 <main>
 <h1 class="text-center">Carga de menú</h1>
@@ -59,7 +63,9 @@
 
 </main>
 <footer th:insert="fragments/footer :: footer" class="footer">
+
   <script th:src="@{/bootstrap/js/bootstrap.min.js}"></script>
+
 </footer>
 </body>
 </html>
