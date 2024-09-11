@@ -26,24 +26,14 @@
     <!-- Formulario de Búsqueda -->
     <form class="form-inline" th:action="@{/usuarios/search}" method="get" th:object="${search}">
         <label for="dni"><h5>Filtrar por:</h5>  </label>
-        <input type="number" class="form-control small a margen1" id="dni" th:value="${dni}" name="dni" placeholder="Buscar por DNI" >
+        <input type="number" class="form-control small a margen1" id="dni" th:value="${dni}" name="dni" placeholder="DNI" />
+        <label for="apellido"><h5></h5>  </label>
+        <input type="text" class="form-control small a margen1" id="apellido" th:value="${apellido}" name="apellido" placeholder="apellido"/>
+
         <button type="submit" class="btn btn-outline-secondary botoncito1 b">Buscar</button>
 
-        <input type="text" class="form-control small a margen1" id="apellido" th:value="${apellido}" name="apellido" placeholder="Buscar por apellido">
-        <button type="submit" class="btn btn-outline-secondary botoncito1 b">Buscar</button>
 
 
-    <!-- <form th:action="@{/usuarios/search}" method="get"> -->
-
-        <!-- Campo de filtro por DNI (número) -->
-    <!-- <label for="dni">DNI:</label>
-    <input type="number" class="form-control small a margen1" id="dni" name="dni" th:value="${dni}" /> -->
-
-    <!-- Campo de filtro por Apellido -->
-    <!--<label for="apellido">Apellido:</label>
-    <input type="text" class="form-control small a margen1" id="apellido" name="apellido" th:value="${apellido}" />
-
-    <button type="submit" class="btn btn-outline-secondary botoncito1 b">Buscar</button>-->
 </form>
 
 </div>

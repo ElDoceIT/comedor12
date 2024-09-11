@@ -48,30 +48,25 @@ public class UsuarioController {
 
     @GetMapping("/search")
     public String listarUsuarios(
-            @RequestParam(value = "dni", required = false) Integer dni,
+            @RequestParam(value = "dni", required = false)  String dniParam,
             @RequestParam(value = "apellido", required = false) String apellido,
             @PageableDefault(size = 10) Pageable pageable, Model model) {
 
         Page<Usuario> usuarios;
-        //dni = null;
-
-            if (dni != null || (apellido != null && !apellido.isEmpty())) {
-                // Crear un objeto Usuario para el ejemplo de búsqueda
-                Usuario usuarioExample = new Usuario();
-
-                if (dni != null) {
-                    usuarioExample.setDni(dni);
-                }
-
-                if (apellido != null && !apellido.isEmpty()) {
-                    usuarioExample.setApellido(apellido);
-                }
-
-                // Buscar usuarios por los filtros de dni y/o apellido
-                usuarios = usuarioService.buscarPorFiltros(usuarioExample, pageable);
-            } else {
-                usuarios = usuarioService.buscarTodas(pageable);
+        Integer dni = null;
+        // Convertir dniParam a Integer si es posible
+        if (dniParam != null && !dniParam.isEmpty()) {
+            try {
+                dni = Integer.parseInt(dniParam);
+            } catch (NumberFormatException e) {
+                // Ignorar si no es un número válido
             }
+        }
+
+        // Usar el método de búsqueda personalizada
+        usuarios = usuarioRepository.buscarPorFiltros(dni, apellido, pageable);
+
+       
 
             // Añadir atributos al modelo para ser usados en la vista
             model.addAttribute("usuarios", usuarios);
