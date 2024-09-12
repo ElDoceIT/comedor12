@@ -25,6 +25,16 @@
 
 <main role="main">
 
+    <!-- Formulario de Búsqueda -->
+    <form class="form-inline" th:action="@{/comida/search}" method="get">
+
+        <label for="comida"><h5></h5>  </label>
+        <input type="text" class="form-control small a margen1" id="comida" th:value="${principal}" name="principal" placeholder="Comida"/>
+
+        <button type="submit" class="btn btn-outline-secondary botoncito1 b">Buscar</button>
+
+    </form>
+
 
     <div class="container">
         <h2 class="font-weight-bold text-center text-capitalize">Comidas Cargadas</h2>
@@ -50,7 +60,15 @@
                     <td th:text="${comida.entrada}"></td>
                     <td th:text="${comida.principal}"></td>
                     <td th:text="${comida.postre}"></td>
-                    <td th:text="${comida.tipo_comida}"></td>
+                    <td>
+                         <span th:switch="${comida.tipo_comida}">
+                    <span th:case="1">Principal</span>
+                    <span th:case="2">Vegetariana</span>
+                    <span th:case="3">Celiaco</span>
+                    <span th:case="4">Fruta</span>
+                    <span th:case="*">Desconocido</span>
+                        </span>
+                    </td>
                     <td class="float-right">
                         <a th:href="@{/comida/editar/{id} (id=${comida.id_comida})}" class=" btn btn-outline-secondary botoncito1 justify-content-end round-button" role="button" title="Editar"><i class="bi bi-pencil" aria-hidden="true"></i></a>
                     </td>
@@ -58,6 +76,36 @@
 
                 </tbody>
             </table>
+
+            <!-- Paginación -->
+            <nav aria-label="Page navigation">
+                <ul class="pagination justify-content-center">
+                    <!-- Botón para ir a la primera página -->
+                    <li class="page-item" th:classappend="${currentPage == 0} ? 'disabled'">
+                        <a class="page-link" th:href="@{/comida/search (page=0, size=${pageSize}, principal=${principal})}">&laquo;</a>
+                    </li>
+
+                    <!-- Botón de página previa -->
+                    <li class="page-item" th:classappend="${currentPage == 0} ? 'disabled'">
+                        <a class="page-link" th:href="@{/comida/search (page=${currentPage - 1}, size=${pageSize}, principal=${principal})}">Anterior</a>
+                    </li>
+
+                    <!-- Botones de páginas intermedias -->
+                    <li class="page-item" th:each="i : ${#numbers.sequence(0, totalPages - 1)}" th:classappend="${i == currentPage} ? 'active'">
+                        <a class="page-link" th:href="@{/comida/search (page=${i}, size=${pageSize}, principal=${principal})}" th:text="${i + 1}">1</a>
+                    </li>
+
+                    <!-- Botón de página siguiente -->
+                    <li class="page-item" th:classappend="${currentPage + 1 == totalPages} ? 'disabled'">
+                        <a class="page-link" th:href="@{/comida/search (page=${currentPage + 1}, size=${pageSize}, principal=${principal})}">Siguiente</a>
+                    </li>
+
+                    <!-- Botón para ir a la última página -->
+                    <li class="page-item" th:classappend="${currentPage + 1 == totalPages} ? 'disabled'">
+                        <a class="page-link" th:href="@{/comida/search (page=${totalPages - 1}, size=${pageSize}, principal=${principal})}">&raquo;</a>
+                    </li>
+                </ul>
+            </nav>
 
 
         </div>
