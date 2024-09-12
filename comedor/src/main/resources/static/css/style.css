@@ -83,3 +83,14 @@
       .margen3{
           margin: 10px;
       }
+      @media (max-width: 576px) {
+          .form-inline {
+              flex-direction: column;
+          }
+          .form-inline .form-control {
+              width: 100%;
+          }
+          .form-inline .btn {
+              width: 100%;
+          }
+      }
