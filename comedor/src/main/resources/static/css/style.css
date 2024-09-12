@@ -80,6 +80,9 @@
       .striped-table tr:nth-child(even) {
           background-color: #f2f2f2;
       }
+      .striped-table1 td:nth-last-child(){
+          background-color: #f2f2f2;
+      }
       .margen3{
           margin: 10px;
       }
@@ -93,4 +96,9 @@
           .form-inline .btn {
               width: 100%;
           }
+      }
+      .custom-card {
+          width: 80%;
+          max-width: 1200px;
+          margin: 0 auto;
       }
