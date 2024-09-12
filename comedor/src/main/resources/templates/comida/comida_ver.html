@@ -13,6 +13,8 @@
     <!-- Custom styles for this template -->
     <link th:href="@{/bootstrap/css/jumbotron.css}" rel="stylesheet">
     <link th:href="@{/bootstrap/css/sticky-footer-navbar.css}" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.5.0/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
 </head>
 
 <body>
@@ -28,26 +30,30 @@
         <h2 class="font-weight-bold text-center text-capitalize">Comidas Cargadas</h2>
         <hr>
         <div class="row">
-            <div class="col-md-3">
-                <!-- <img class="rounded mx-auto d-block" th:src="@{/images/logo1.png}" alt="Generic placeholder image" width="220" height="220">-->
-            </div>
+
 
             <table class="table w-100 striped-table">
                 <thead class="thead-dark">
                 <tr>
+
                     <th>Entrada</th>
                     <th>Principal</th>
                     <th>Postre</th>
                     <th>Tipo</th>
+                    <th></th>
 
                 </tr>
                 </thead>
                 <tbody th:each="comida :${comidas}">
                 <tr>
+
                     <td th:text="${comida.entrada}"></td>
                     <td th:text="${comida.principal}"></td>
                     <td th:text="${comida.postre}"></td>
                     <td th:text="${comida.tipo_comida}"></td>
+                    <td class="float-right">
+                        <a th:href="@{/comida/editar/{id} (id=${comida.id_comida})}" class=" btn btn-outline-secondary botoncito1 justify-content-end round-button" role="button" title="Editar"><i class="bi bi-pencil" aria-hidden="true"></i></a>
+                    </td>
                 </tr>
 
                 </tbody>

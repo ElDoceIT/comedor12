@@ -7,8 +7,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+
 
 @Controller
 @RequestMapping("/comida")
@@ -16,6 +18,7 @@ public class ComidasController {
 
     @Autowired
     private ComidaRepository comidaRepository;
+
 
     @GetMapping("/ver")
     public String VerComidas(Model model){
@@ -32,6 +35,13 @@ public class ComidasController {
     public String guardarComida(Comida comida){
         comidaRepository.save(comida);
         return "redirect:/comida/ver";
+    }
+
+    @GetMapping("/editar/{id}")
+    public String editarComida(@PathVariable("id") Integer id_comida, Model model) {
+        Comida comidas = comidaRepository.findById(id_comida).get();
+        model.addAttribute("comidas",comidas);
+        return "comida/comida_editar";
     }
     
 }

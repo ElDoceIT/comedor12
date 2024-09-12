@@ -27,8 +27,8 @@ public class ComidaServiceJPA implements IComidaService {
     }
 
     @Override
-    public Comida buscarPorId(Integer id_comida) {
-        Optional<Comida> comi= comidaRepository.findById(id_comida);
+    public Comida buscarPorId(Integer id) {
+        Optional<Comida> comi= comidaRepository.findById(id);
         if(comi.isPresent()){
             return comi.get();
         }

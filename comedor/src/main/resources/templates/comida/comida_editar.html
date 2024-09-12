@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html xmlns:th="http://thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="shortcut icon" th:href="@{/images/El-Doce-TV-en-vivo-Online-1.png}" type="image/x-icon">
+
+    <link th:href="@{/bootstrap/css/bootstrap.min.css}" rel="stylesheet">
+    <!-- Custom styles for this template -->
+    <link th:href="@{/bootstrap/css/jumbotron.css}" rel="stylesheet">
+    <link th:href="@{/bootstrap/css/sticky-footer-navbar.css}" rel="stylesheet">
+
+    <title>Ingreso comida</title>
+</head>
+<body>
+<header th:insert="fragments/menu :: menu-principal">
+
+</header>
+
+<form th:action="@{/comida/save}" method="post"  th:object="${comida}">
+
+    <input type="hidden" th:field="*{id_comida}">
+
+        <div class="col-md-2">
+            <div class="form-group">
+                <label for="entrada">Entrada</label>
+                <input type="text" class="form-control" th:field="*{entrada}"  name="entrada" id="entrada"  required="required">
+            </div>
+        </div>
+
+    <div class="col-md-2">
+        <div class="form-group">
+            <label for="principal">Principal</label>
+            <input type="text" class="form-control" th:field="*{principal}"  name="principal" id="principal" required="required">
+        </div>
+    </div>
+
+    <div class="col-md-2">
+        <div class="form-group">
+            <label for="postre">Postre</label>
+            <input type="text" class="form-control" th:field="*{postre}"  name="postre" id="postre" required="required">
+        </div>
+    </div>
+
+
+        <div class="col-md-3">
+            <div class="form-group">
+
+                <label for="tipo">Tipo</label>
+                <select class="form-control" th:field="*{tipo_comida}" name="tipo_comida" id="tipo">
+                    <option value="0">Principal</option>
+                    <option value="1">Vegetariano</option>
+                    <option value="2">Celiaco</option>
+                </select>
+            </div>
+        </div>
+
+
+
+
+
+    <button type="submit" class="btn btn-primary">Guardar</button>
+</form>
+
+
+
+
+
+
+<footer th:insert="fragments/footer :: footer" class="footer">
+    <script th:src="@{/bootstrap/js/bootstrap.min.js}"></script>
+</footer>
+</body>
+</html>

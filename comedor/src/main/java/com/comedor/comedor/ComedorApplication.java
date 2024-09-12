@@ -111,8 +111,8 @@ public class ComedorApplication implements CommandLineRunner {
     }
 
     private void mostrarTodos(){
-        Iterable<Producto> pr=productoRepository.findAll();
-        for(Producto prod: pr){
+        Iterable<Comida> pr=comidaRepository.findAll();
+        for(Comida prod: pr){
             System.out.println(prod);
         }
     }

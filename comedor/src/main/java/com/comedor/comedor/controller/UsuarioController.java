@@ -1,6 +1,5 @@
 package com.comedor.comedor.controller;
 
-import com.comedor.comedor.model.Producto;
 import com.comedor.comedor.model.Usuario;
 import com.comedor.comedor.repository.UsuarioRepository;
 import com.comedor.comedor.service.IUsuarioService;
