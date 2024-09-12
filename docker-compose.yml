@@ -5,11 +5,12 @@ services:
     build: comedor
     mem_limit: 1024m
     ports:
-      - "8080:8080"
+      - "80:8080"
     environment:
       DB_URL: jdbc:mysql://comedor_db:3306/comedor
       DB_USER: comedor
       DB_PASSWORD: comida
+      SPORT: 8080
     restart: always
     depends_on:
       comedor_db:
