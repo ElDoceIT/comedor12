@@ -2,6 +2,7 @@ package com.comedor.comedor.model;
 
 import jakarta.persistence.*;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 @Entity
@@ -13,11 +14,14 @@ public class Menu {
     private Integer id_menu;
 
     @Column(name = "dia")
-    private Date dia;
+    private LocalDate fechaMenu;
 
     @OneToOne
     @JoinColumn(name = "comida")
     private Comida comida;
+
+    @Column(name = "publica")
+    private Integer publicar;
 
     public Integer getId_menu() {
         return id_menu;
@@ -27,12 +31,12 @@ public class Menu {
         this.id_menu = id_menu;
     }
 
-    public Date getDia() {
-        return dia;
+    public LocalDate getFechaMenu() {
+        return fechaMenu;
     }
 
-    public void setDia(Date dia) {
-        this.dia = dia;
+    public void setFechaMenu(LocalDate dia) {
+        this.fechaMenu = dia;
     }
 
     public Comida getComida() {
@@ -43,12 +47,22 @@ public class Menu {
         this.comida = comida;
     }
 
+    public Integer getPublicar() {
+        return publicar;
+    }
+
+    public void setPublicar(Integer publicar) {
+        this.publicar = publicar;
+    }
+
     @Override
     public String toString() {
         return "Menu{" +
                 "id_menu=" + id_menu +
-                ", dia=" + dia +
+                ", dia=" + fechaMenu +
                 ", comida=" + comida +
+                ", publicar=" + publicar +
                 '}';
     }
+
 }

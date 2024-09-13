@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html xmlns:th="http://thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="shortcut icon" th:href="@{/images/El-Doce-TV-en-vivo-Online-1.png}" type="image/x-icon">
+
+    <link th:href="@{/bootstrap/css/bootstrap.min.css}" rel="stylesheet">
+    <!-- Custom styles for this template -->
+    <link th:href="@{/bootstrap/css/jumbotron.css}" rel="stylesheet">
+    <link th:href="@{/bootstrap/css/sticky-footer-navbar.css}" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.5.0/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <title>Productos</title>
+    <script th:src="@{/js/toogleText.js}"></script>
+</head>
+<body>
+<header th:insert="fragments/menu :: menu-principal">
+
+</header>
+
+<h1 class="text-center">Carga de Menú</h1>
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-9">
+            <div class="card shadow">
+                <div class="card-body card1">
+                    <form th:action="@{/menu/guardar}" method="post">
+                        <div class="mb-3">
+                            <label for="fecha" class="form-label"><h4>Fecha:</h4></label>
+                            <input type="date" class="form-control" id="fecha" name="fechaMenu" min="[[${#dates.format(#dates.createNow(), 'yyyy-MM-dd')}]]" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="comida" class="form-label"><h4>Comida:</h4></label>
+                            <div class="d-flex">
+                                <select class="form-control flex-grow-1" id="comida" name="comidaId" required>
+                                    <option value="">Seleccionar comida</option>
+                                    <option th:each="comida : ${comidas}" th:value="${comida.id_comida}" th:text="${comida.principal}"></option>
+                                </select>
+                            </div>
+                        </div>
+                        <button class="btn btn-outline-secondary float-end" type="submit">Agregar</button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Tabla de menús no procesados -->
+            <div class="card mt-4 shadow">
+                <div class="card1 card-body">
+                    <h4>Últimas cargas no procesadas</h4>
+                    <table class="table table-striped">
+                        <thead>
+                        <tr>
+                            <th>Fecha</th>
+                            <th>Comida</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="menu : ${menus}">
+                            <td th:text="${menu.fechaMenu}"></td>
+                            <td th:text="${menu.comida}"></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <br>
+            <!-- Botón para procesar menús -->
+            <form th:action="@{/menu/procesar}" method="post">
+                <button class="btn btn-outline-secondary float-end" type="submit">Publicar Menús</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+</main>
+<footer th:insert="fragments/footer :: footer" class="footer">
+
+    <script th:src="@{/bootstrap/js/bootstrap.min.js}"></script>
+
+</footer>
+</body>
+</html>

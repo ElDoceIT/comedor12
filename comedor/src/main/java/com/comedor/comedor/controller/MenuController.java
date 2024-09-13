@@ -1,44 +1,73 @@
 package com.comedor.comedor.controller;
 
+import com.comedor.comedor.model.Comida;
 import com.comedor.comedor.model.Menu;
+import com.comedor.comedor.repository.ComidaRepository;
 import com.comedor.comedor.repository.MenuRepository;
-import org.springframework.beans.propertyeditors.CustomDateEditor;
+import com.comedor.comedor.service.IComidaService;
+import com.comedor.comedor.service.IMenuService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.WebDataBinder;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.InitBinder;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.time.LocalDate;
+import java.util.List;
 
 @Controller
 @RequestMapping("/menu")
 public class MenuController {
-
+    @Autowired
     private MenuRepository menuRepository;
 
-    @GetMapping("/new")
-    public String guardarMenu(){
-        return "waldo";
+    @Autowired
+    private IMenuService menuService;
+
+    @Autowired
+    private ComidaRepository comidaRepository;
+
+    @Autowired
+    private IComidaService comidaService;
+
+
+    @GetMapping("/crear")
+    public String mostrarFormulario(Model model) {
+        List<Comida> listaComidas = comidaService.buscarTodas();
+        List<Menu> menusNoProcesados = menuService.obtenerMenusNoProcesados();
+        model.addAttribute("comidas", listaComidas);
+        model.addAttribute("menus", menusNoProcesados);
+        return "menu/menu_asignar";
     }
 
-    @PostMapping("/save")
-    public String guardarMenu(Menu menu){
-        menuRepository.save(menu);
-        return "redirect:/menu/comida_ver";
+    @PostMapping("/guardar")
+    public String guardarMenu(@RequestParam("fechaMenu") LocalDate fechaMenu,
+                              @RequestParam("comidaId") Integer id_comida,
+                              Model model, RedirectAttributes redirectAttributes) {
+
+        // Validar que la fecha no sea anterior a la actual
+        if (fechaMenu.isBefore(LocalDate.now())) {
+            redirectAttributes.addFlashAttribute("error", "No puedes guardar un menú con una fecha anterior a la actual.");
+            return "redirect:/menu/crear";
+        }
+
+        // Obtener la comida seleccionada
+        Comida comida = comidaService.buscarPorId(id_comida);
+
+        // Crear y guardar el nuevo menú
+        Menu menu = new Menu();
+        menu.setFechaMenu(fechaMenu);
+        menu.setComida(comida);
+        menu.setPublicar(0);  // Inicialmente no procesado
+        menuService.guardar(menu);
+
+        return "redirect:/menu/crear";
     }
 
-    @GetMapping("/ver")
-    public String verMenu(){
-        return "menu/menu_ver";
-    }
-
-    @InitBinder
-    public void initBinder(WebDataBinder webDataBinder) {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
-        webDataBinder.registerCustomEditor(Date.class, new CustomDateEditor(dateFormat, false));
+    @PostMapping("/procesar")
+    public String procesarMenus() {
+        menuService.marcarMenusComoProcesados();
+        return "redirect:/menu/crear";
     }
 
 }

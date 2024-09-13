@@ -30,4 +30,19 @@ public class MenuServiceJPA implements IMenuService {
     public Menu buscarPorId(Integer id_menu) {
         return null;
     }
+
+    @Override
+    public List<Menu> obtenerMenusNoProcesados() {
+        return menuRepository.findByPublicar(0);
+    }
+
+    @Override
+    public void marcarMenusComoProcesados() {
+        List<Menu> menus = menuRepository.findByPublicar(0);
+        for (Menu menu : menus) {
+            menu.setPublicar(1);  // Marcar como procesado
+            menuRepository.save(menu);
+        }
+    }
+
 }
