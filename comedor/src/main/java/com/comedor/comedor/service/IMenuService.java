@@ -14,4 +14,5 @@ public interface IMenuService {
     Menu buscarPorId(Integer id_menu);
     List<Menu> obtenerMenusNoProcesados();
     void marcarMenusComoProcesados();
+    void eliminarPorId(Integer id);
 }

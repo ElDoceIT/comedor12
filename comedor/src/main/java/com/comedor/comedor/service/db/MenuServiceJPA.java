@@ -45,4 +45,9 @@ public class MenuServiceJPA implements IMenuService {
         }
     }
 
+    @Override
+    public void eliminarPorId(Integer id) {
+        menuRepository.deleteById(id);
+    }
+
 }

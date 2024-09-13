@@ -70,4 +70,10 @@ public class MenuController {
         return "redirect:/menu/crear";
     }
 
+    @PostMapping("/eliminar/{id}")
+    public String eliminarMenu(@PathVariable("id") Integer id_menu) {
+        menuService.eliminarPorId(id_menu);
+        return "redirect:/menu/crear";
+    }
+
 }

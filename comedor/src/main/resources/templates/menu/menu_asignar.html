@@ -36,7 +36,7 @@
                             <div class="d-flex">
                                 <select class="form-control flex-grow-1" id="comida" name="comidaId" required>
                                     <option value="">Seleccionar comida</option>
-                                    <option th:each="comida : ${comidas}" th:value="${comida.id_comida}" th:text="${comida.principal}"></option>
+                                    <option th:each="comida : ${comidas}" th:value="${comida.id_comida}" th:text="${comida.principal}+' --- ' + ${comida.entrada} +' --- ' + ${comida.postre}"></option>
                                 </select>
                             </div>
                         </div>
@@ -57,10 +57,37 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <tr th:each="menu : ${menus}">
+                       <!-- <tr th:each="menu : ${menus}">
                             <td th:text="${menu.fechaMenu}"></td>
-                            <td th:text="${menu.comida}"></td>
-                        </tr>
+                            <td th:text="${menu.comida.entrada}+ --- + ${menu.comida.principal}+ ---- + ${menu.comida.postre}"></td>
+                        </tr>-->
+                       <tr th:each="menu : ${menus}">
+                           <!-- Formatear fecha con día de la semana
+                           <td th:text="${#dates.format(menu.fechaMenu, 'EEEE dd \'de\' MMMM \'del\' yyyy', 'es')}"></td>-->
+                           <td th:text="${menu.fechaMenu}"></td>
+
+                           <!-- Formatear la comida con una separación visual -->
+                           <td>
+                               <div>
+                                   <strong>Entrada:</strong> <span th:text="${menu.comida.entrada}"></span>
+                               </div>
+                               <div>
+                                   <strong>Plato Principal:</strong> <span th:text="${menu.comida.principal}"></span>
+                               </div>
+                               <div>
+                                   <strong>Postre:</strong> <span th:text="${menu.comida.postre}"></span>
+                               </div>
+                           </td>
+
+                           <!-- Botón de eliminar -->
+                           <td>
+                               <form th:action="@{/menu/eliminar/{id}(id=${menu.id_menu})}" method="post">
+                                   <button class="btn btn-danger btn-sm" type="submit" title="Eliminar">
+                                       <i class="bi bi-trash"></i> Eliminar
+                                   </button>
+                               </form>
+                           </td>
+                       </tr>
                         </tbody>
                     </table>
                 </div>
