@@ -80,11 +80,25 @@
       .striped-table tr:nth-child(even) {
           background-color: #f2f2f2;
       }
-      .striped-table1 td:nth-last-child(){
+      .striped-table2 td:nth-child(even){
           background-color: #f2f2f2;
+      }
+      tbody.striped-table1 > tr:nth-child(even) {
+          background-color: #f2f2f2 !important; /* Gris claro */
+      }
+
+      /* Restablece el fondo de las filas impares */
+      tbody.striped-table1 > tr:nth-child(odd) {
+          background-color: white !important; /* Blanco */
       }
       .margen3{
           margin: 10px;
+      }
+      .margen4 {
+          margin: 30px;
+      }
+      .margen5{
+          margin-left: 30px;
       }
       @media (max-width: 576px) {
           .form-inline {
@@ -97,8 +111,11 @@
               width: 100%;
           }
       }
-      .custom-card {
+      .custom-card1 {
           width: 80%;
           max-width: 1200px;
-          margin: 0 auto;
+          margin: 30px;
+      }
+      .pepe{
+      background-color: #1c7430;
       }

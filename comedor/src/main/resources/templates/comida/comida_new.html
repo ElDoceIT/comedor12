@@ -1,18 +1,18 @@
-<!doctype html>
+<!DOCTYPE html>
 <html xmlns:th="http://thymeleaf.org">
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="">
-    <meta name="author" content="">
-    <link rel="icon" href="favicon.ico">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>ComidaAPP | Ingresar al Sistema</title>
-    <!-- Bootstrap core CSS -->
+    <link rel="shortcut icon" th:href="@{/images/El-Doce-TV-en-vivo-Online-1.png}" type="image/x-icon">
+
     <link th:href="@{/bootstrap/css/bootstrap.min.css}" rel="stylesheet">
     <!-- Custom styles for this template -->
     <link th:href="@{/bootstrap/css/jumbotron.css}" rel="stylesheet">
     <link th:href="@{/bootstrap/css/sticky-footer-navbar.css}" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.5.0/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <title>ComidaNew</title>
 
 </head>
 
@@ -23,24 +23,24 @@
 </header>
 
 <main role="main">
-    <hr>
-    <div class="container">
 
-        <div class="card">
-            <h4 class="card-header"><strong>Carga de comida</strong></h4>
+    <div class="container mt-3">
+
+        <div class="card1">
+            <h1 class="card-header text-center "><strong>Carga de comida</strong></h1>
             <div class="card-body">
                 <form th:action="@{/comida/save}" method="post">
                     <div class="row">
                         <div class="col-md-3">
 
-                                <label for="entrada">Entrada</label>
+                            <label for="entrada"><h4>Entrada</h4></label>
                                 <input type="text" class="form-control" id="entrada" name="entrada" placeholder="Escriba el nombre de la entrada" required="required">
 
                         </div>
 
                         <div class="col-md-6">
 
-                                <label for="principal">Principal</label>
+                                <label for="principal"><h4>Principal</h4></label>
                                 <input type="text" class="form-control"  id="principal" name="principal" placeholder="Escriba el nombre de la comida" required="required">
 
                         </div>
@@ -48,7 +48,7 @@
 
                         <div class="col-md-3">
 
-                                <label for="postre">Postre</label>
+                                <label for="postre"><h4>Postre</h4></label>
                                 <input type="text" class="form-control" id="postre" name="postre" placeholder="Escriba el nombre del postre" required="required">
 
                         </div>
@@ -56,8 +56,8 @@
                     </div>
                     <div class="row">
                         <div class="col-md-3">
-                            <div class="form-group">
-                                <label for="categoria">Tipo de Menu</label>
+                            <div class="form-group mt-3">
+                                <label for="categoria"><h4>Tipo de Menu</h4></label>
                                 <select class="form-control"   id="categoria" name="tipo_comida">
                                     <option value="1">Principal</option>
                                     <option value="2">Vegetariano</option>
@@ -68,7 +68,9 @@
                     </div>
 
                     <hr>
-                    <button type="submit" title="Guardar el registro." class="btn btn-primary">Guardar</button>
+                    <div class="d-flex justify-content-center">
+                    <button type="submit" title="Guardar el registro." class="btn btn-outline-secondary botoncito1 table-light margen3">Guardar</button>
+                    </div>
                 </form>
             </div>
         </div>

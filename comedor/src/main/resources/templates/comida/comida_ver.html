@@ -1,22 +1,19 @@
-<!doctype html>
+<!DOCTYPE html>
 <html xmlns:th="http://thymeleaf.org">
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="">
-    <meta name="author" content="">
-    <link rel="icon" href="favicon.ico">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Comidas Cargadas</title>
-    <!-- Bootstrap core CSS -->
+    <link rel="shortcut icon" th:href="@{/images/El-Doce-TV-en-vivo-Online-1.png}" type="image/x-icon">
+
     <link th:href="@{/bootstrap/css/bootstrap.min.css}" rel="stylesheet">
     <!-- Custom styles for this template -->
     <link th:href="@{/bootstrap/css/jumbotron.css}" rel="stylesheet">
     <link th:href="@{/bootstrap/css/sticky-footer-navbar.css}" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.5.0/font/bootstrap-icons.min.css">
     <link rel="stylesheet" th:href="@{/css/style.css}">
+    <title>ComidasCargadas</title>
 </head>
-
 <body>
 
 <header th:insert="fragments/menu :: menu-principal">
@@ -26,83 +23,92 @@
 <main role="main">
 
     <!-- Formulario de Búsqueda -->
-    <form class="form-inline" th:action="@{/comida/search}" method="get">
-
-        <label for="comida"><h5></h5>  </label>
-        <input type="text" class="form-control small a margen1" id="comida" th:value="${principal}" name="principal" placeholder="Comida"/>
-
-        <button type="submit" class="btn btn-outline-secondary botoncito1 b">Buscar</button>
-
-    </form>
+    <div class="d-flex justify-content-center">
+        <form class="form-inline margen4" th:action="@{/comida/search}" method="get">
+            <label class="" for="comida"><h5>Buscar:</h5></label>
+            <input type="text" class="form-control small a margen1" id="comida" th:value="${principal}" name="principal" placeholder="Comida"/>
+            <button type="submit" class="btn btn-outline-secondary botoncito1 b ">
+                <i class="bi bi-search"></i>
+            </button>
+        </form>
+    </div>
 
 
     <div class="container">
-        <h2 class="font-weight-bold text-center text-capitalize">Comidas Cargadas</h2>
-        <hr>
-        <div class="row">
+        <div class="card1">
+            <h1 class="card-header text-center"><strong>Comidas Cargadas</strong></h1>
 
 
-            <table class="table w-100 striped-table">
-                <thead class="thead-dark">
+
+
+            <table class="table">
+                <thead class="thead-dark ">
                 <tr>
-
-                    <th>Entrada</th>
-                    <th>Principal</th>
-                    <th>Postre</th>
-                    <th>Tipo</th>
-                    <th></th>
-
+                    <th class="text-left col-2">Entrada</th>
+                    <th class="text-center col-5">Principal</th>
+                    <th class="text-center col-3">Postre</th>
+                    <th class="text-center">Tipo</th>
+                    <th class="text-right col-2">Funcion</th>
                 </tr>
                 </thead>
-                <tbody th:each="comida :${comidas}">
-                <tr>
-
-                    <td th:text="${comida.entrada}"></td>
-                    <td th:text="${comida.principal}"></td>
-                    <td th:text="${comida.postre}"></td>
-                    <td>
-                         <span th:switch="${comida.tipo_comida}">
-                    <span th:case="1">Principal</span>
-                    <span th:case="2">Vegetariana</span>
-                    <span th:case="3">Celiaco</span>
-                    <span th:case="4">Fruta</span>
-                    <span th:case="*">Desconocido</span>
-                        </span>
-                    </td>
-                    <td class="float-right">
-                        <a th:href="@{/comida/editar/{id} (id=${comida.id_comida})}" class=" btn btn-outline-secondary botoncito1 justify-content-end round-button" role="button" title="Editar"><i class="bi bi-pencil" aria-hidden="true"></i></a>
-                    </td>
-                </tr>
-
-                </tbody>
             </table>
+            <table class="table-borderless w-100 striped-table">
+                <tbody>
+
+                <table class="table table-borderless w-100 striped-table">
+                    <tbody>
+                    <tr th:each="comida :${comidas}">
+                        <td class="text-left" th:text="${comida.entrada}"></td>
+                        <td class="text-center" th:text="${comida.principal}"></td>
+                        <td class="text-center" th:text="${comida.postre}"></td>
+                        <td class="text-center">
+        <span th:switch="${comida.tipo_comida}">
+          <span th:case="1">Principal</span>
+          <span th:case="2">Vegetariana</span>
+          <span th:case="3">Celiaco</span>
+          <span th:case="4">Fruta</span>
+          <span th:case="*">Desconocido</span>
+        </span>
+                        </td>
+                        <td class="text-center"> <!-- Alinea el botón a la derecha -->
+                            <a th:href="@{/comida/editar/{id} (id=${comida.id_comida})}" class="btn btn-outline-secondary botoncito1 round-button" role="button" title="Editar">
+                                <i class="bi bi-pencil" aria-hidden="true"></i>
+                            </a>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+
+            </table>
+                </tbody>
+
 
             <!-- Paginación -->
             <nav aria-label="Page navigation">
                 <ul class="pagination justify-content-center">
                     <!-- Botón para ir a la primera página -->
                     <li class="page-item" th:classappend="${currentPage == 0} ? 'disabled'">
-                        <a class="page-link" th:href="@{/comida/search (page=0, size=${pageSize}, principal=${principal})}">&laquo;</a>
+                        <a class="btn btn-outline-secondary" th:href="@{/comida/search (page=0, size=${pageSize}, principal=${principal})}">&laquo;</a>
                     </li>
 
                     <!-- Botón de página previa -->
                     <li class="page-item" th:classappend="${currentPage == 0} ? 'disabled'">
-                        <a class="page-link" th:href="@{/comida/search (page=${currentPage - 1}, size=${pageSize}, principal=${principal})}">Anterior</a>
+                        <a class="btn btn-outline-secondary" th:href="@{/comida/search (page=${currentPage - 1}, size=${pageSize}, principal=${principal})}">Anterior</a>
                     </li>
 
                     <!-- Botones de páginas intermedias -->
                     <li class="page-item" th:each="i : ${#numbers.sequence(0, totalPages - 1)}" th:classappend="${i == currentPage} ? 'active'">
-                        <a class="page-link" th:href="@{/comida/search (page=${i}, size=${pageSize}, principal=${principal})}" th:text="${i + 1}">1</a>
+                        <a class="btn btn-outline-secondary" th:href="@{/comida/search (page=${i}, size=${pageSize}, principal=${principal})}" th:text="${i + 1}">1</a>
                     </li>
 
                     <!-- Botón de página siguiente -->
                     <li class="page-item" th:classappend="${currentPage + 1 == totalPages} ? 'disabled'">
-                        <a class="page-link" th:href="@{/comida/search (page=${currentPage + 1}, size=${pageSize}, principal=${principal})}">Siguiente</a>
+                        <a class="btn btn-outline-secondary" th:href="@{/comida/search (page=${currentPage + 1}, size=${pageSize}, principal=${principal})}">Siguiente</a>
                     </li>
 
                     <!-- Botón para ir a la última página -->
                     <li class="page-item" th:classappend="${currentPage + 1 == totalPages} ? 'disabled'">
-                        <a class="page-link" th:href="@{/comida/search (page=${totalPages - 1}, size=${pageSize}, principal=${principal})}">&raquo;</a>
+                        <a class="btn btn-outline-secondary" th:href="@{/comida/search (page=${totalPages - 1}, size=${pageSize}, principal=${principal})}">&raquo;</a>
                     </li>
                 </ul>
             </nav>
@@ -116,9 +122,7 @@
 </main>
 
 <footer th:insert="fragments/footer :: footer" class="footer">
-
+    <script th:src="@{/bootstrap/js/bootstrap.min.js}"></script>
 </footer>
-
-<script th:src="@{/bootstrap/js/bootstrap.min.js}"></script>
 </body>
 </html>

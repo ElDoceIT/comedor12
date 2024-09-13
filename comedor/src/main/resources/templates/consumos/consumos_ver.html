@@ -19,41 +19,52 @@
 <header th:insert="fragments/menu :: menu-principal">
 
 </header>
+<div class="container ">
+  <div class="card1 ">
+      <h2 class="text-center card-header">Todos los consumos</h2>
 
-<div class="custom-card card1 ">
-  <h2 class="text-center card-header">Todos los consumos</h2>
+      <table class="table" >
+        <thead class="thead-dark justify-content-around">
+        <tr class="text-center">
+          <th class="col-2">Fecha</th>
+          <th>Nombre</th>
+          <th>Apellido</th>
+          <th>Producto</th>
+          <th>Cantidad</th>
+          <th>Acciones</th>
 
-  <table class="table ">
-    <thead class="thead-dark">
-    <tr >
-      <th>Fecha</th>
-      <th>Nombre</th>
-      <th>Apellido</th>
-      <th>Producto</th>
-      <th>Cantidad</th>
-      <th></th>
+        </tr>
+        </thead>
+      </table>
+        <table class="table-borderless w-100 striped-table">
+          <tbody>
+          <tr th:each="consumo :${consumos}">
+            <td class="col-2" th:text="${consumo.fecha}"></td>
+            <td class="text-center" th:text="${consumo.usuario.nombre}"></td>
+            <td class="text-center" th:text="${consumo.usuario.apellido}"></td>
+            <td class="text-center" th:text="${consumo.producto.descripcion}"></td>
+            <td class="text-center" th:text="${consumo.cantidad}"></td>
+            <td class="text-center">
+              <div class="d-inline-flex align-items-center">
+                <a th:href="@{/consumos/editar/{id} (id=${consumo.idConsumo})}" class="btn btn-outline-secondary botoncito1 round-button mx-0" role="button" title="Editar">
+                  <i class="bi bi-pencil" aria-hidden="true"></i>
+                </a>
+                <a th:href="@{/consumos/delete/{id} (id=${consumo.idConsumo})}" class="btn btn-outline-secondary botoncito1 round-button mx-0" role="button" title="Eliminar">
+                  <i class="bi bi-trash" aria-hidden="true"></i>
+                </a>
+              </div>
+            </td>
+          </tr>
+          </tbody>
+        </table>
 
-    </tr>
-    </thead>
-    <tbody th:each="consumo :${consumos}">
-    <tr class="striped-table1">
-      <td th:text="${consumo.fecha}"></td>
-      <td th:text="${consumo.usuario.nombre}"></td>
-      <td th:text="${consumo.usuario.apellido}"></td>
-      <td th:text="${consumo.producto.descripcion}"></td>
-      <td th:text="${consumo.cantidad}"></td>
-      <td class="align-content-center">
-        <a th:href="@{/consumos/editar/{id} (id=${consumo.idConsumo})}"class="btn btn-outline-secondary botoncito1  round-button " role="button" title="Editar"><i class="bi bi-pencil"  aria-hidden="true"></i></a>
 
-        <a th:href="@{/consumos/delete/{id} (id=${consumo.idConsumo})}" class="btn btn-outline-secondary botoncito1  round-button " role="button" title="Eliminar" ><i class="bi bi-trash"  aria-hidden="true"></i></a>
-      </td>
-    </tr>
-    </tbody>
-  </table>
+  </div>
+  <hr>
+  <div class="text-center mt-3">
+    <a th:href="@{/consumos/export/excel}" class="btn btn-outline-secondary botoncito1 table-light margen3">Exportar a Excel</a>
+  </div>
 </div>
-
-<a th:href="@{/consumos/export/excel}" class="btn btn-light botoncito1 margen3">Exportar a Excel</a>
-
 
 
 <script>

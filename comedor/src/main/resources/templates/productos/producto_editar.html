@@ -12,7 +12,7 @@
     <link th:href="@{/bootstrap/css/sticky-footer-navbar.css}" rel="stylesheet">
     <link rel="stylesheet" th:href="@{/css/style.css}">
 
-    <title>Modificar producto</title>
+    <title>ModificarProducto</title>
 </head>
 <body>
 <header th:insert="fragments/menu :: menu-principal">
@@ -20,11 +20,11 @@
 </header>
 
 <main role="main">
-    <hr>
-    <div class="container col-sm-6">
+
+    <div class="container col-sm-6 mt-3">
 
         <div class="card1 align-items-center">
-            <h4 class="card-header text-center"><strong>Modifica producto</strong></h4>
+            <h1 class="card-header text-center"><strong>Modificar producto</strong></h1>
             <div class="card-body justify-content-center">
                 <form class="justify-content-center" th:action="@{/productos/save}" method="post" th:object="${producto}">
                     <div class="justify-content-center">
@@ -39,7 +39,9 @@
                     </div>
 
                     <hr>
-                    <button type="submit" title="Actualizar Producto" class="botoncito1 btn btn-outline-secondary align-content-center">Guardar</button>
+                    <div class="d-flex justify-content-center">
+                        <button type="submit" title="Actualizar Producto" class="botoncito1 btn btn-outline-secondary align-content-center">Guardar</button>
+                    </div>
                 </form>
             </div>
         </div>

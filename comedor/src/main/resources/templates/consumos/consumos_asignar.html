@@ -10,27 +10,29 @@
   <!-- Custom styles for this template -->
   <link th:href="@{/bootstrap/css/jumbotron.css}" rel="stylesheet">
   <link th:href="@{/bootstrap/css/sticky-footer-navbar.css}" rel="stylesheet">
-
-  <title>AsignarConsumos</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.5.0/font/bootstrap-icons.min.css">
+  <link rel="stylesheet" th:href="@{/css/style.css}">
+  <title>AsginarConsumos</title>
+  <script th:src="@{/js/toogleText.js}"></script>
 </head>
 <body>
 <header th:insert="fragments/menu :: menu-principal">
 
 </header>
 
-<main role="main">
+<main class="margen2" role="main">
   <hr>
   <div class="container">
 
-    <div class="card">
-      <h4 class="card-header"><strong>Asginar consumos</strong></h4>
+    <div class="card1">
+      <h1 class="card-header text-center"><strong>Asginar consumos</strong></h1>
       <div class="card-body">
         <form th:action="@{/consumos/save}" method="post">
 
           <div class="row">
             <div class="col-md-3">
               <div class="form-group">
-                <label for="Producto">Producto</label>
+                <label for="Producto"><h5>Producto</h5></label>
                 <select class="form-control" name="producto" id="producto">
                   <option selected> Seleccione un producto</option>
                   <option th:each="producto :${productos}" th:value="${producto.id_producto}" th:text="${producto.descripcion}"></option>
@@ -40,7 +42,7 @@
 
             <div class="col-md-5">
               <div class="form-group">
-                <label for="usuario">Cliente</label>
+                <label for="usuario"><h5>Cliente</h5></label>
                 <select class="form-control" name="usuario" id="usuario">
                   <option selected> Seleccione un usuario</option>
                   <option th:each="usuario :${usuarios}" th:value="${usuario.id_usuario}" th:text="${usuario.apellido} +' ' + ${usuario.nombre} "></option>
@@ -50,7 +52,7 @@
             </div>
             <div class="col-md-2">
               <div class="form-group">
-                <label for="fecha">Fecha</label>
+                <label for="fecha"><h5>Fecha</h5></label>
                 <input type="date" class="form-control" name="fecha" id="fecha" placeholder="Fecha" required="required">
               </div>
             </div>
@@ -58,15 +60,16 @@
 
               <div class="col-md-2">
                 <div class="form-group">
-                  <label for="cantidad">Cantidad</label>
+                  <label for="cantidad"><h5>Cantidad</h5></label>
                   <input type="text" class="form-control" name="cantidad" id="cantidad" placeholder="unidades" required="required">
                 </div>
               </div>
 
 
           </div>
-
-          <button type="submit" class="btn btn-primary">Guardar</button>
+         <div class="d-flex justify-content-center">
+          <button type="submit" class="btn btn-outline-secondary botoncito1 table-light margen3">Guardar</button>
+           </div>
         </form>
       </div>
     </div>
@@ -78,10 +81,10 @@
 
 
 
-
-
 <footer th:insert="fragments/footer :: footer" class="footer">
+
   <script th:src="@{/bootstrap/js/bootstrap.min.js}"></script>
+
 </footer>
 </body>
 </html>
