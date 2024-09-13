@@ -12,7 +12,7 @@
     <link th:href="@{/bootstrap/css/sticky-footer-navbar.css}" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.5.0/font/bootstrap-icons.min.css">
     <link rel="stylesheet" th:href="@{/css/style.css}">
-    <title>Productos</title>
+    <title>CargaDeMenu</title>
     <script th:src="@{/js/toogleText.js}"></script>
 </head>
 <body>
@@ -20,12 +20,13 @@
 
 </header>
 
-<h1 class="text-center">Carga de Menú</h1>
+
 <div class="container mt-4">
-    <div class="row justify-content-center">
+    <div class="card1 row justify-content-center">
+        <h1 class="text-center card-header"><strong>Carga de Menú</strong>></h1>
         <div class="col-md-9">
             <div class="card shadow">
-                <div class="card-body card1">
+                <div class="card-body ">
                     <form th:action="@{/menu/guardar}" method="post">
                         <div class="mb-3">
                             <label for="fecha" class="form-label"><h4>Fecha:</h4></label>

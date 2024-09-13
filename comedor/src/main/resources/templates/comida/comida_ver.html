@@ -23,22 +23,22 @@
 <main role="main">
 
     <!-- Formulario de Búsqueda -->
-    <div class="d-flex justify-content-center">
-        <form class="form-inline margen4" th:action="@{/comida/search}" method="get">
-            <label class="" for="comida"><h5>Buscar:</h5></label>
-            <input type="text" class="form-control small a margen1" id="comida" th:value="${principal}" name="principal" placeholder="Comida"/>
-            <button type="submit" class="btn btn-outline-secondary botoncito1 b ">
-                <i class="bi bi-search"></i>
-            </button>
-        </form>
-    </div>
+
 
 
     <div class="container">
-        <div class="card1">
+        <div class="card1 mt-3" >
             <h1 class="card-header text-center"><strong>Comidas Cargadas</strong></h1>
 
-
+            <div class="d-flex justify-content-center">
+                <form class="form-inline margen4" th:action="@{/comida/search}" method="get">
+                    <label class="" for="comida"><h5>Buscar:</h5></label>
+                    <input type="text" class="form-control small a margen1" id="comida" th:value="${principal}" name="principal" placeholder="Comida"/>
+                    <button type="submit" class="btn btn-outline-secondary botoncito1 b ">
+                        <i class="bi bi-search"></i>
+                    </button>
+                </form>
+            </div>
 
 
             <table class="table">
