@@ -10,6 +10,7 @@
   <!-- Custom styles for this template -->
   <link th:href="@{/bootstrap/css/jumbotron.css}" rel="stylesheet">
   <link th:href="@{/bootstrap/css/sticky-footer-navbar.css}" rel="stylesheet">
+  <link rel="stylesheet" th:href="@{/css/style.css}">
 
   <title>AsignarConsumos</title>
 </head>
@@ -19,11 +20,11 @@
 </header>
 
 <main role="main">
-  <hr>
+
   <div class="container">
 
-    <div class="card">
-      <h4 class="card-header"><strong>Editar consumos</strong></h4>
+    <div class="card1 mt-3">
+      <h1 class="card-header text-center"><strong>Editar consumos</strong></h1>
       <div class="card-body">
         <form th:action="@{/consumos/save}" method="post"  th:object="${consumo}">
 
@@ -31,7 +32,7 @@
             <div class="col-md-3">
               <div class="form-group">
                 <input type="hidden" th:field="*{idConsumo}">
-                <label for="Producto">Producto</label>
+                <label for="Producto"><h5>Producto</h5></label>
                 <select class="form-control" th:field="*{producto}" name="producto" id="producto">
                   <option th:each="producto :${productos}" th:value="${producto.id_producto}" th:text="${producto.descripcion}"></option>
                 </select>
@@ -40,7 +41,7 @@
 
             <div class="col-md-5">
               <div class="form-group">
-                <label for="usuario">Cliente</label>
+                <label for="usuario"><h5>Cliente</h5></label>
                 <select class="form-control" th:field="*{usuario.id_usuario}"  name="usuario" id="usuario">
                   <option th:each="usuario :${usuarios}" th:value="${usuario.id_usuario}" th:text="${usuario.apellido} +' ' + ${usuario.nombre} "></option>
                 </select>
@@ -49,7 +50,7 @@
             </div>
             <div class="col-md-2">
               <div class="form-group">
-                <label for="fecha">Fecha</label>
+                <label for="fecha"><h5>Fecha</h5></label>
                 <input type="date" class="form-control" th:field="*{fecha}" name="fecha" id="fecha" placeholder="Fecha" required="required">
               </div>
             </div>
@@ -57,15 +58,16 @@
 
             <div class="col-md-2">
               <div class="form-group">
-                <label for="cantidad">Cantidad</label>
+                <label for="cantidad"><h5>Cantidad</h5></label>
                 <input type="text" class="form-control" th:field="*{cantidad}"  name="cantidad" id="cantidad" placeholder="unidades" required="required">
               </div>
             </div>
 
 
           </div>
-
-          <button type="submit" class="btn btn-primary">Guardar</button>
+          <div class= "d-flex justify-content-center">
+          <button type="submit" class="botoncito1 btn btn-outline-secondary align-content-center">Guardar</button>
+          </div>
         </form>
       </div>
     </div>
