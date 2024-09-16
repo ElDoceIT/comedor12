@@ -33,14 +33,12 @@
         </tr>
         </thead>
         <tbody th:each="menu : ${menus}">
-        <tr th:each="comida : ${comidas}" th:value="${comida.id_comida}">
-
             <td th:if="${menu.fechaMenu != null}" th:text="${#temporals.format(menu.fechaMenu, 'EEEE dd  MMMM  yyyy')}"></td>
 
-            <td th:text="${comida.entrada}"></td>
-            <td  th:text="${comida.principal}"></td>
-            <td th:text="${comida.postre}"></td>
-            <td th:switch="${comida.tipo_comida}">
+            <td th:text="${menu.comida.entrada}"></td>
+            <td  th:text="${menu.comida.principal}"></td>
+            <td th:text="${menu.comida.postre}"></td>
+            <td th:switch="${menu.comida.tipo_comida}">
                 <span th:case="1">Principal</span>
                 <span th:case="2">Ligth</span>
                 <span th:case="3">Celiaco</span>

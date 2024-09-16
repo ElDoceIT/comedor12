@@ -14,6 +14,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/menu")
@@ -80,7 +81,16 @@ public class MenuController {
     public String listarMenuesFuturos(Model model) {
         List<Comida> listaComidas = comidaService.buscarTodas();
         model.addAttribute("comidas", listaComidas);
-        model.addAttribute("menus", menuRepository.findAll());
+        LocalDate today = LocalDate.now();
+        /*List<Menu> menus = menuRepository.findAll().stream()
+                .filter(menu -> !menu.getFechaMenu().isBefore(today))
+                .collect(Collectors.toList());*/
+        List<Menu> menus =menuRepository.findAll().stream()
+                .filter(menu -> !menu.getFechaMenu().isBefore(today)) // Filtrar por fecha >= hoy
+                .sorted((menu1, menu2) -> menu1.getFechaMenu().compareTo(menu2.getFechaMenu())) // Ordenar por fecha ascendente
+                .collect(Collectors.toList());
+
+        model.addAttribute("menus",menus);
         return "menu/menu_ver";
     }
 

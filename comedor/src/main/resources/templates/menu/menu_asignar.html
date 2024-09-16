@@ -58,7 +58,7 @@
                         </tr>
                         </thead>
                         <tbody>
-                     
+
                        <tr th:each="menu : ${menus}">
 
                            <td th:if="${menu.fechaMenu != null}" th:text="${#temporals.format(menu.fechaMenu, 'EEEE dd  MMMM  yyyy')}"></td>
