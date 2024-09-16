@@ -10,66 +10,71 @@
     <!-- Custom styles for this template -->
     <link th:href="@{/bootstrap/css/jumbotron.css}" rel="stylesheet">
     <link th:href="@{/bootstrap/css/sticky-footer-navbar.css}" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
 
-    <title>Ingreso comida</title>
+    <title>editarComida</title>
 </head>
 <body>
 <header th:insert="fragments/menu :: menu-principal">
 
 </header>
+<div class="container">
+    <div class="card1 ">
+        <div class="text-center card-header"><h1><strong>Editar comida</strong></h1></div>
+        <form th:action="@{/comida/save}" method="post" th:object="${comidas}">
+            <input type="hidden" th:field="*{id_comida}">
 
-<form th:action="@{/comida/save}" method="post" th:object="${comidas}">
+            <!-- Primera fila: Entrada, Principal, Postre -->
+            <div class="row">
+                <div class="col-md-4 p-3">
+                    <div class="form-group pl-2">
+                        <label for="entrada"><h5>Entrada</h5></label>
+                        <input type="text" class="form-control" th:field="*{entrada}" name="entrada" id="entrada" required="required">
+                    </div>
+                </div>
 
-    <input type="hidden" th:field="*{id_comida}">
+                <div class="col-md-4 p-3">
+                    <div class="form-group">
+                        <label for="principal"><h5>Principal</h5></label>
+                        <input type="text" class="form-control" th:field="*{principal}" name="principal" id="principal" required="required">
+                    </div>
+                </div>
 
-        <div class="col-md-2">
-            <div class="form-group">
-                <label for="entrada">Entrada</label>
-                <input type="text" class="form-control" th:field="*{entrada}"  name="entrada" id="entrada"  required="required">
+                <div class="col-md-4 p-3">
+                    <div class="form-group pr-2" >
+                        <label for="postre"><h5>Postre</h5></label>
+                        <input type="text" class="form-control" th:field="*{postre}" name="postre" id="postre" required="required">
+                    </div>
+                </div>
             </div>
-        </div>
 
-    <div class="col-md-2">
-        <div class="form-group">
-            <label for="principal">Principal</label>
-            <input type="text" class="form-control" th:field="*{principal}"  name="principal" id="principal" required="required">
-        </div>
+            <!-- Segunda fila: Tipo -->
+            <div class="row mt-3 d-flex justify-content-center">
+                <div class="col-md-6 p-3">
+                    <div class="form-group">
+                        <label for="tipo"><h5>Tipo</h5></label>
+                        <select class="form-control" th:field="*{tipo_comida}" name="tipo_comida" id="tipo">
+                            <option value="0">Principal</option>
+                            <option value="1">Vegetariano</option>
+                            <option value="2">Celiaco</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="d-flex justify-content-center mb-3">
+                <button type="submit" title="Actualizar Producto" class="botoncito1 btn btn-outline-secondary align-content-center">Guardar</button>
+            </div>
+
+        </form>
     </div>
 
-    <div class="col-md-2">
-        <div class="form-group">
-            <label for="postre">Postre</label>
-            <input type="text" class="form-control" th:field="*{postre}"  name="postre" id="postre" required="required">
-        </div>
-    </div>
-
-
-        <div class="col-md-3">
-            <div class="form-group">
-
-                <label for="tipo">Tipo</label>
-                <select class="form-control" th:field="*{tipo_comida}" name="tipo_comida" id="tipo">
-                    <option value="0">Principal</option>
-                    <option value="1">Vegetariano</option>
-                    <option value="2">Celiaco</option>
-                </select>
-            </div>
-        </div>
 
 
 
+</div>
 
-
-    <button type="submit" class="btn btn-primary">Guardar</button>
-</form>
-
-
-
-
-
-
+</body>
 <footer th:insert="fragments/footer :: footer" class="footer">
     <script th:src="@{/bootstrap/js/bootstrap.min.js}"></script>
 </footer>
-</body>
 </html>
