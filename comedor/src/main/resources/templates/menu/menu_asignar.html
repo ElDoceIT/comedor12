@@ -29,11 +29,11 @@
                 <div class="card-body ">
                     <form th:action="@{/menu/guardar}" method="post">
                         <div class="mb-3">
-                            <label for="fecha" class="form-label"><h4>Fecha:</h4></label>
+                            <label for="fecha" class="form-label"><h5>Fecha:</h5></label>
                             <input type="date" class="form-control" id="fecha" name="fechaMenu" min="[[${#dates.format(#dates.createNow(), 'yyyy-MM-dd')}]]" required>
                         </div>
                         <div class="mb-3">
-                            <label for="comida" class="form-label"><h4>Comida:</h4></label>
+                            <label for="comida" class="form-label"><h5>Comida:</h5></label>
                             <div class="d-flex">
                                 <select class="form-control flex-grow-1" id="comida" name="comidaId" required>
                                     <option value="">Seleccionar comida</option>
@@ -49,7 +49,7 @@
             <!-- Tabla de menús no procesados -->
             <div class="card mt-4 shadow">
                 <div class="card1 card-body">
-                    <h4>Últimas cargas no procesadas</h4>
+                    <h5>Últimas cargas no procesadas</h5>
                     <table class="table table-striped">
                         <thead>
                         <tr>

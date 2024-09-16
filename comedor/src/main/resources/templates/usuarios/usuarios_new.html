@@ -26,7 +26,7 @@
 
           <div class="col-md-2">
             <div class="form-group">
-              <label for="dni"><h4>DNI</h4></label>
+              <label for="dni"><h5>DNI</h5></label>
               <input type="text" class="form-control"  name="dni" id="dni" placeholder="nro DNI" required="required">
             </div>
           </div>
@@ -34,12 +34,12 @@
         <div class="col-md-3">
           <div class="form-group">
             <!-- Primer campo de contraseña -->
-            <label for="password"><h4>Contraseña:</h4></label>
-            <input type="password" id="password"  name="pass" required />
+            <label for="password"><h5>Contraseña:</h5></label>
+            <input class="form-control" type="password" id="password"  name="pass" required />
 
             <!-- Segundo campo de contraseña para confirmación -->
-            <label for="confirmPassword"><h4>Confirmar Contraseña:</h4></label>
-            <input type="password" id="confirmPassword" required />
+            <label for="confirmPassword"><h5>Confirmar Contraseña:</h5></label>
+            <input class="form-control" type="password" id="confirmPassword" required />
 
             <span id="errorMensaje" style="color:red; display:none;">Las contraseñas no coinciden</span>
             <script>
@@ -61,14 +61,14 @@
           </div>
 
             <div class="form-group">
-            <label for="apellido"><h4>Apellido</h4></label>
+            <label for="apellido"><h5>Apellido</h5></label>
             <input type="text" class="form-control"  name="apellido" id="apellido" placeholder="apellido" required="required">
             </div>
         </div>
 
         <div class="col-md-3">
           <div class="form-group">
-            <label for="nombre"><h4>Nombre</h4></label>
+            <label for="nombre"><h5>Nombre</h5></label>
             <input type="text" class="form-control" name="nombre" id="nombre" placeholder="nombre" required="required">
           </div>
         </div>
@@ -76,7 +76,7 @@
 
         <div class="col-md-2">
           <div class="form-group">
-            <label for="ceco"><h4>CeCo</h4></label>
+            <label for="ceco"><h5>CeCo</h5></label>
             <select class="form-control" name="ceco" id="ceco">
               <option value="" disabled selected>Seleccione CeCo</option>
               <!-- Mostrar todos los grupos en el select -->
@@ -87,7 +87,7 @@
 
           <div class="col-md-2">
             <div class="form-group">
-              <label for="grupo"><h4>Grupo</h4></label>
+              <label for="grupo"><h5>Grupo</h5></label>
               <select class="form-control" name="grupo" id="grupo">
                 <option value="" disabled selected><h4>Seleccione un grupo</h4></option>
                 <!-- Mostrar todos los grupos en el select -->
@@ -98,7 +98,7 @@
 
             <div class="col-md-2">
               <div class="form-group">
-                <label for="empresa"><h4>Empresa</h4></label>
+                <label for="empresa"><h5>Empresa</h5></label>
                 <select class="form-control"  name="empresa" id="empresa">
                   <option value="" disabled selected>Seleccione empresa</option>
                   <!-- Mostrar todos los grupos en el select -->
@@ -109,7 +109,7 @@
 
               <div class="col-md-2">
                 <div class="form-group">
-                  <label for="estado"><h4>Estado</h4></label>
+                  <label for="estado"><h5>Estado</h5></label>
                   <select class="form-control"  name="estado" id="estado">
                     <option value="" disabled selected>Seleccione estado</option>
                     <!-- Mostrar todos los grupos en el select -->
@@ -127,6 +127,7 @@
     </div>
 </div>
 
+</div>
 
 
 
@@ -136,8 +137,8 @@
 
 
 
+</body>
 <footer th:insert="fragments/footer :: footer" class="footer">
   <script th:src="@{/bootstrap/js/bootstrap.min.js}"></script>
 </footer>
-</body>
 </html>
