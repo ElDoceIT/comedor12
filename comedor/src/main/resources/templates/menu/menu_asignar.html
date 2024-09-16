@@ -58,14 +58,10 @@
                         </tr>
                         </thead>
                         <tbody>
-                       <!-- <tr th:each="menu : ${menus}">
-                            <td th:text="${menu.fechaMenu}"></td>
-                            <td th:text="${menu.comida.entrada}+ --- + ${menu.comida.principal}+ ---- + ${menu.comida.postre}"></td>
-                        </tr>-->
+                     
                        <tr th:each="menu : ${menus}">
-                           <!-- Formatear fecha con día de la semana
-                           <td th:text="${#dates.format(menu.fechaMenu, 'EEEE dd \'de\' MMMM \'del\' yyyy', 'es')}"></td>-->
-                           <td th:text="${menu.fechaMenu}"></td>
+
+                           <td th:if="${menu.fechaMenu != null}" th:text="${#temporals.format(menu.fechaMenu, 'EEEE dd  MMMM  yyyy')}"></td>
 
                            <!-- Formatear la comida con una separación visual -->
                            <td>

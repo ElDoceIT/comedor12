@@ -34,8 +34,9 @@
         </thead>
         <tbody th:each="menu : ${menus}">
         <tr th:each="comida : ${comidas}" th:value="${comida.id_comida}">
-            <!-- Formateo de la fecha para mostrar el nombre del día-->
-            <td th:text="${menu.fechaMenu}"></td>
+
+            <td th:if="${menu.fechaMenu != null}" th:text="${#temporals.format(menu.fechaMenu, 'EEEE dd  MMMM  yyyy')}"></td>
+
             <td th:text="${comida.entrada}"></td>
             <td  th:text="${comida.principal}"></td>
             <td th:text="${comida.postre}"></td>
