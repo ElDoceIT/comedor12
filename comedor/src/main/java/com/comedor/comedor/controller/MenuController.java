@@ -76,4 +76,13 @@ public class MenuController {
         return "redirect:/menu/crear";
     }
 
+    @GetMapping("/ver")
+    public String listarMenuesFuturos(Model model) {
+        List<Comida> listaComidas = comidaService.buscarTodas();
+        model.addAttribute("comidas", listaComidas);
+        model.addAttribute("menus", menuRepository.findAll());
+        return "menu/menu_ver";
+    }
+
+
 }

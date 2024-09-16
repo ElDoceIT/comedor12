@@ -78,6 +78,13 @@
                                <div>
                                    <strong>Postre:</strong> <span th:text="${menu.comida.postre}"></span>
                                </div>
+                               <div th:switch="${menu.comida.tipo_comida}">
+                                   <strong>Tipo:</strong> <span ></span>
+                                       <span th:case="1">Principal</span>
+                                       <span th:case="2">Ligth</span>
+                                       <span th:case="3">Celiaco</span>
+                                       <span th:case="4">Fruta</span>
+                               </div>
                            </td>
 
                            <!-- Botón de eliminar -->
