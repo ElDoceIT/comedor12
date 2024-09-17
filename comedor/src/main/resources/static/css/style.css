@@ -66,6 +66,10 @@
           height: 40px;
           box-shadow: none;
       }
+      .c{
+          border-radius: 10px;
+          margin: 10px;
+      }
       .thead1{
           display: flex;
           flex-direction: column;
