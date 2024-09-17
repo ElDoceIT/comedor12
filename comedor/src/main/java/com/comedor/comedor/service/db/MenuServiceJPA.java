@@ -7,7 +7,9 @@ import com.comedor.comedor.service.IMenuService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.DayOfWeek;
 import java.time.LocalDate;
+import java.time.temporal.TemporalAdjusters;
 import java.util.List;
 
 @Service
@@ -51,6 +53,14 @@ public class MenuServiceJPA implements IMenuService {
         menuRepository.deleteById(id);
     }
 
+    @Override
+    public List<Menu> getMenusSemana() {
+        LocalDate hoy = LocalDate.now();
+        LocalDate lunes = hoy.with(TemporalAdjusters.previousOrSame(DayOfWeek.MONDAY));
+        LocalDate viernes = hoy.with(TemporalAdjusters.nextOrSame(DayOfWeek.FRIDAY));
+
+        return menuRepository.findMenusByFechaMenuBetween(lunes, viernes);
+    }
 
 
 }

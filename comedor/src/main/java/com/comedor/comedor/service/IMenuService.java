@@ -17,4 +17,5 @@ public interface IMenuService {
     void marcarMenusComoProcesados();
     void eliminarPorId(Integer id);
     //List<Menu> obtenerMenuesDesdeFecha(LocalDate fecha);
+    List<Menu> getMenusSemana();
 }
