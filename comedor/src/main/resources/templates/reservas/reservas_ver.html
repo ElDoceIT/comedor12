@@ -35,7 +35,7 @@
         </thead>
         <tbody th:each="reserva :${reservas}">
         <tr>
-            <td th:text="${reserva.f_reserva}"></td>
+            <td th:if="${reserva.f_reserva != null}" th:text="${#temporals.format(reserva.f_reserva, 'EEEE dd  MMMM  yyyy')}"></td>
             <td th:text="${reserva.usuario.apellido} +' '+ ${reserva.usuario.nombre}"></td>
             <td th:text="${reserva.menu.comida.entrada}+' ++++ '+ ${reserva.menu.comida.principal}+' ++++ '+ ${reserva.menu.comida.postre}"></td>
             <td>

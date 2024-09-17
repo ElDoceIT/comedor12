@@ -3,6 +3,7 @@ package com.comedor.comedor.model;
 import jakarta.persistence.*;
 import jakarta.persistence.criteria.CriteriaBuilder;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 @Entity
@@ -15,13 +16,13 @@ public class Reserva {
     private Integer idReserva;
 
     @Column(name = "f_reserva")
-    private Date f_reserva;
+    private LocalDate f_reserva;
 
     @Column(name = "medio")
     private int medio;
 
     @Column(name = "entregado")
-    private Date entregado;
+    private LocalDate entregado;
 
     @Column(name = "cant")
     private int cantidad;
@@ -42,11 +43,11 @@ public class Reserva {
         this.idReserva = idReserva;
     }
 
-    public Date getF_reserva() {
+    public LocalDate getF_reserva() {
         return f_reserva;
     }
 
-    public void setF_reserva(Date f_reserva) {
+    public void setF_reserva(LocalDate f_reserva) {
         this.f_reserva = f_reserva;
     }
 
@@ -58,11 +59,11 @@ public class Reserva {
         this.medio = medio;
     }
 
-    public Date getEntregado() {
+    public LocalDate getEntregado() {
         return entregado;
     }
 
-    public void setEntregado(Date entregado) {
+    public void setEntregado(LocalDate entregado) {
         this.entregado = entregado;
     }
 
