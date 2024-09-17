@@ -18,7 +18,13 @@
 
 </header>
 
-
+<div class="container mt-3">
+    <p class="text-right">
+        <!-- Mostrar fecha y hora formateadas -->
+        <strong>Hora: </strong>
+        <span th:text="${#temporals.format(serverTime, 'EEEE dd MMMM yyyy HH:mm')}"></span>
+    </p>
+</div>
 
 <div class="container mt-5">
     <h2 class="text-center">Reservas</h2>

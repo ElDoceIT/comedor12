@@ -8,6 +8,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import java.time.LocalDateTime;
+
 @Controller
 @RequestMapping("/reservas")
 public class ReservaController {
@@ -18,6 +20,8 @@ public class ReservaController {
 
     @GetMapping("/ver")
     public String reservas(Model model) {
+        LocalDateTime now = LocalDateTime.now();
+        model.addAttribute("serverTime", now);
         model.addAttribute("reservas", reservaRepository.findAll());
         return "reservas/reservas_ver";
     }
