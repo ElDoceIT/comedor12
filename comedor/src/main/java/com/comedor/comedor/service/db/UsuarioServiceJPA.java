@@ -8,6 +8,7 @@ import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -36,6 +37,12 @@ public class UsuarioServiceJPA implements IUsuarioService {
 
     public Page<Usuario> buscarTodas(Pageable pageable) {
         return usuarioRepository.findAll(pageable);
+    }
+
+    @Override
+    public Usuario obtenerPorDni(Integer dni) {
+        return usuarioRepository. findByDni(dni)
+                .orElseThrow(() -> new UsernameNotFoundException("Usuario no encontrado"));
     }
 
 

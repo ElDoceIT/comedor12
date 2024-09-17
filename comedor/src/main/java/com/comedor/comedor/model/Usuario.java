@@ -13,7 +13,7 @@ public class Usuario {
     private Integer id_usuario;
 
     @Column(name = "dni")
-    private int dni;
+    private Integer dni;
 
     @Column(name = "nombre")
     private String nombre;
@@ -43,11 +43,11 @@ public class Usuario {
         this.id_usuario = id_usuario;
     }
 
-    public int getDni() {
+    public Integer getDni() {
         return dni;
     }
 
-    public void setDni(int dni) {
+    public void setDni(Integer dni) {
         this.dni = dni;
     }
 
