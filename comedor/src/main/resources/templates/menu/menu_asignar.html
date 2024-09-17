@@ -21,40 +21,42 @@
 </header>
 
 
-<div class="container mt-4">
-    <div class="card1 row justify-content-center">
-        <h1 class="text-center card-header"><strong>Carga de Menú</strong>></h1>
-        <div class="col-md-9">
-            <div class="card shadow">
+<div class="container">
+    <div class="card1 mt-3">
+        <h1 class="text-center card-header"><strong>Carga de Menú</strong></h1>
+
+
                 <div class="card-body ">
                     <form th:action="@{/menu/guardar}" method="post">
                         <div class="mb-3">
                             <label for="fecha" class="form-label"><h5>Fecha:</h5></label>
-                            <input type="date" class="form-control" id="fecha" name="fechaMenu" min="[[${#dates.format(#dates.createNow(), 'yyyy-MM-dd')}]]" required>
+                            <input type="date" class="form-control col-lg-5 " id="fecha" name="fechaMenu" min="[[${#dates.format(#dates.createNow(), 'yyyy-MM-dd')}]]" required>
                         </div>
                         <div class="mb-3">
-                            <label for="comida" class="form-label"><h5>Comida:</h5></label>
+                            <label for="comida" class="form-label  "><h5>Comida:</h5></label>
                             <div class="d-flex">
-                                <select class="form-control flex-grow-1" id="comida" name="comidaId" required>
+                                <select class="form-control flex-grow-1 col-lg-5 a" id="comida" name="comidaId" required>
                                     <option value="">Seleccionar comida</option>
-                                    <option th:each="comida : ${comidas}" th:value="${comida.id_comida}" th:text="${comida.principal}+' --- ' + ${comida.entrada} +' --- ' + ${comida.postre}"></option>
+                                    <option class="a" th:each="comida : ${comidas}" th:value="${comida.id_comida}" th:text="${comida.principal}+' --- ' + ${comida.entrada} +' --- ' + ${comida.postre}"></option>
                                 </select>
+                                <button class="btn btn-outline-secondary float-end b" type="submit">Agregar  <i class="bi bi-plus"></i></button>
                             </div>
                         </div>
-                        <button class="btn btn-outline-secondary float-end" type="submit">Agregar</button>
+
                     </form>
                 </div>
-            </div>
+
 
             <!-- Tabla de menús no procesados -->
-            <div class="card mt-4 shadow">
-                <div class="card1 card-body">
-                    <h5>Últimas cargas no procesadas</h5>
-                    <table class="table table-striped">
+
+                <div>
+                    <h3 class="text-center border-bottom">Últimas cargas no procesadas</h3>
+                    <table class="table table-striped ">
                         <thead>
-                        <tr>
+                        <tr class="thead-dark">
                             <th>Fecha</th>
                             <th>Comida</th>
+                            <th></th>
                         </tr>
                         </thead>
                         <tbody>
@@ -85,11 +87,13 @@
 
                            <!-- Botón de eliminar -->
                            <td>
-                               <form th:action="@{/menu/eliminar/{id}(id=${menu.id_menu})}" method="post">
-                                   <button class="btn btn-danger btn-sm" type="submit" title="Eliminar">
-                                       <i class="bi bi-trash"></i> Eliminar
-                                   </button>
-                               </form>
+                               <div class="d-flex justify-content-center">
+                                  <form th:action="@{/menu/eliminar/{id}(id=${menu.id_menu})}" method="post">
+                                     <button class=" btn btn-outline-secondary botoncito1 round-button" type="submit" title="Eliminar">
+                                       <i class="bi bi-trash"></i>
+                                     </button>
+                                 </form>
+                               </div>
                            </td>
                        </tr>
                         </tbody>
