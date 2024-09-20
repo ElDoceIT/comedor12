@@ -3,10 +3,12 @@ package com.comedor.comedor.controller;
 import com.comedor.comedor.model.Usuario;
 import com.comedor.comedor.repository.UsuarioRepository;
 import com.comedor.comedor.service.IUsuarioService;
+import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -21,7 +23,26 @@ public class UsuarioController {
     private UsuarioRepository usuarioRepository;
 
     @Autowired
+    private PasswordEncoder passwordEncoder;
+
+    @Autowired
     private IUsuarioService usuarioService;
+
+    @PostConstruct
+    public void migratePasswordsOnStartup() {
+        migratePasswords();
+    }
+
+    public void migratePasswords() {
+        List<Usuario> users = usuarioRepository.findAll();
+        for (Usuario user : users) {
+            if (!user.getPass().startsWith("$2a$")) {
+                String encodedPassword = passwordEncoder.encode(user.getPass());
+                user.setPass(encodedPassword);
+                usuarioRepository.save(user);
+            }
+        }
+    }
 
     @GetMapping("/new")
     public String nuevoUsuarios(Model model) {
@@ -93,4 +114,10 @@ public class UsuarioController {
 
             return "usuarios/usuarios_ver";
     }
+
+   /* @GetMapping("/migrate-passwords")
+    public String migratePasswords() {
+        usuarioService.migratePasswords();
+        return "Migración completada";
+    }*/
 }
