@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html xmlns:th="http://thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="shortcut icon" th:href="@{/images/El-Doce-TV-en-vivo-Online-1.png}" type="image/x-icon">
+
+    <link th:href="@{/bootstrap/css/bootstrap.min.css}" rel="stylesheet">
+    <!-- Custom styles for this template -->
+    <link th:href="@{/bootstrap/css/jumbotron.css}" rel="stylesheet">
+    <link th:href="@{/bootstrap/css/sticky-footer-navbar.css}" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.5.0/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+
+    <title>Ingreso comida</title>
+</head>
+<body>
+<header th:insert="fragments/menu :: menu-principal">
+
+</header>
+
+<div class="container mt-5">
+    <h1 class="text-center">Menu Semanal</h1>
+
+    <form th:action="@{/reserva/guardar}" method="post">
+        <table class="table table-bordered mt-4">
+            <thead class="thead-dark">
+            <tr>
+                <th>Día</th>
+                <th>Menús Disponibles</th>
+                <th>Selecciona Menú</th>
+                <th>Medio de Comida</th>
+            </tr>
+            </thead>
+            <tbody>
+            <!-- Iterar por los menús de la semana (lunes a viernes) -->
+            <tr th:each="menu : ${menusSemana}">
+                <td th:text="${#temporals.format(menu.fechaMenu, 'EEEE dd MMMM')}"></td>
+
+                <!-- Mostrar los menús del día -->
+                <td>
+                    <ul>
+                        <li><strong>Entrada:</strong> <span th:text="${menu.comida.entrada}"></span></li>
+                        <li><strong>Principal:</strong> <span th:text="${menu.comida.principal}"></span></li>
+                        <li><strong>Postre:</strong> <span th:text="${menu.comida.postre}"></span></li>
+                        <li th:switch="${menu.comida.tipo}">
+                            <strong>Tipo:</strong>
+                            <span th:case="1">Principal</span>
+                            <span th:case="2">Ligth</span>
+                            <span th:case="3">Celiaco</span>
+                            <span th:case="4">Fruta</span>
+                        </li>
+                    </ul>
+                </td>
+
+                <!-- Radio para seleccionar menú del día -->
+                <td>
+                    <div th:each="menuDia, index : ${menu.menusDelDia}">
+                        <input type="radio"
+                               th:name="menu[${menu.fechaMenu}]"
+                               th:value="${menuDia.id}"
+                               id="menu_${menuDia.id}" required>
+                        <label th:for="menu_${menuDia.id}" th:text="${menuDia.principal}"></label>
+                        <br/>
+                    </div>
+                </td>
+
+                <!-- Radio para seleccionar medio de comida -->
+                <td>
+                    <div>
+                        <input type="radio" th:name="medio[${menu.fechaMenu}]" value="comedor" id="comedor_${menu.fechaMenu}" required>
+                        <label th:for="comedor_${menu.fechaMenu}">Comedor</label>
+                    </div>
+                    <div>
+                        <input type="radio" th:name="medio[${menu.fechaMenu}]" value="retirar" id="retirar_${menu.fechaMenu}">
+                        <label th:for="retirar_${menu.fechaMenu}">Retirar</label>
+                    </div>
+                    <div>
+                        <input type="radio" th:name="medio[${menu.fechaMenu}]" value="vianda" id="vianda_${menu.fechaMenu}">
+                        <label th:for="vianda_${menu.fechaMenu}">Vianda</label>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+
+        <!-- Botón para guardar la reserva -->
+        <div class="text-center mt-4">
+            <button type="submit" class="btn btn-primary">Guardar Reserva</button>
+        </div>
+    </form>
+</div>
+
+
+
+<footer th:insert="fragments/footer :: footer" class="footer">
+    <script th:src="@{/bootstrap/js/bootstrap.min.js}"></script>
+</footer>
+</body>
+</html>

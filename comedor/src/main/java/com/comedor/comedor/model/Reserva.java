@@ -27,13 +27,15 @@ public class Reserva {
     @Column(name = "cant")
     private int cantidad;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "id_usuario")
     private Usuario usuario;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "id_menu")
     private Menu menu;
+
+
 
     public Integer getIdReserva() {
         return idReserva;

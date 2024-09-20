@@ -9,4 +9,5 @@ import java.util.List;
 public interface MenuRepository extends JpaRepository<Menu, Integer> {
     List<Menu> findByPublicar(int publicar);
     //List<Menu> findAllByFechaMenuAfterOrFechaMenuEquals(LocalDate fecha);
+    List<Menu> findMenusByFechaMenuBetween(LocalDate startDate, LocalDate endDate);
 }

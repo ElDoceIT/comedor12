@@ -5,6 +5,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.JdbcUserDetailsManager;
 import org.springframework.security.provisioning.UserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
@@ -33,7 +35,7 @@ public UserDetailsManager usersCustom(DataSource dataSource) {
 // Los recursos estáticos no requieren autenticación
                 .requestMatchers("/bootstrap/**","/images/**","/js/**","/css/**").permitAll()
 // Las vistas públicas no requieren autenticación
-         //       .requestMatchers("/", "/signup", "/search", "/vacantes/view/**").permitAll()
+               .requestMatchers( "/signup", "/login").permitAll()
 
                 // Asignar permisos a URLs por ROLES
                 .requestMatchers("/comida/**").hasAnyAuthority("Usuario","Admin", "Jefe")
@@ -41,12 +43,29 @@ public UserDetailsManager usersCustom(DataSource dataSource) {
                 .requestMatchers("/menu/**").hasAnyAuthority("Admin", "Jefe")
                 .requestMatchers("/productos/**").hasAnyAuthority("Admin", "Jefe")
                 .requestMatchers("/consumos/**").hasAnyAuthority("Admin", "Jefe")
+                .anyRequest().authenticated())
+                .formLogin(form -> form
+                                .loginPage("/login")  // Especifica la URL de la página de login
+                                .usernameParameter("dni")  // Define el parámetro del nombre de usuario (DNI)
+                                .passwordParameter("pass")  // Define el parámetro de la contraseña (pass)
+                                 .defaultSuccessUrl("/", true)  // Redirigir a /home en caso de éxito
+                                .failureUrl("/login?error=true")  // Redirigir en caso de fallo de autenticación
+                                .permitAll()  );
+
+
 // Todas las demás URLs de la Aplicación requieren autenticación
-                .anyRequest().authenticated());
+
 // El formulario de Login no requiere autenticacion
-        http.formLogin(form -> form.permitAll());
+        //http.formLogin(form -> form.permitAll());
+
 
         return http.build();
     }
+
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
+
 
 }

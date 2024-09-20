@@ -13,4 +13,6 @@ public interface IUsuarioService {
     List<Usuario> buscarTodas();
     Page<Usuario>buscarPorFiltros(Usuario usuarioExample, Pageable pageable);
     Page<Usuario> buscarTodas(Pageable pageable);
+    Usuario obtenerPorDni(Integer dni);
+    void migratePasswords();
 }
