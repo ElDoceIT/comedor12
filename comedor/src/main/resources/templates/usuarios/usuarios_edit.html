@@ -22,6 +22,7 @@
     <div class="card-body">
         <form th:action="@{/usuarios/save}" method="post"  th:object="${usuario}">
             <input type="hidden" th:field="*{id_usuario}">
+            <input type="hidden" th:field="*{pass}">
             <div class="col-md-2">
                 <div class="form-group">
                     <label for="dni">DNI</label>
