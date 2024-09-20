@@ -32,6 +32,10 @@
       <li>  <a class="nav-link" th:href="@{/menu/crear}">MenuCrear</a> </li>
       <li>  <a class="nav-link" th:href="@{/menu/ver}">MenuVer</a> </li>
       <li>  <a class="nav-link" th:href="@{/reservas/ver}">ReservaVer</a> </li>
+
+      <li class="nav-item">
+        <a class="nav-link" th:href="@{/usuarios/cambiar-clave}">CambiarClave</a>
+      </li>
     </ul>
     <span class="text-light">Bienvenido</span>&nbsp;<span class="text-light" sec:authentication="name"></span>
     <a class="btn btn-primary" th:href="@{/logout}">Salir</a>

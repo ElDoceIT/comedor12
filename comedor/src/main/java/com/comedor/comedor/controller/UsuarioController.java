@@ -33,6 +33,7 @@ public class UsuarioController {
         migratePasswords();
     }
 
+    //este metodo se ejecuta automaticamente cada vez que se inicia la aplicacion, una vez migrados todos los user, lo doy de baja.
     public void migratePasswords() {
         List<Usuario> users = usuarioRepository.findAll();
         for (Usuario user : users) {
@@ -114,10 +115,53 @@ public class UsuarioController {
 
             return "usuarios/usuarios_ver";
     }
-
+   //una vez migrados todos los usuarios, activo para encriptar claves por la url
    /* @GetMapping("/migrate-passwords")
     public String migratePasswords() {
         usuarioService.migratePasswords();
         return "Migración completada";
     }*/
+
+    @GetMapping("/cambiar-clave")
+    public String mostrarFormularioCambioClave() {
+        return "usuarios/usuarios_cambiar_pass";
+    }
+
+    @PostMapping("/cambiar-clave")
+    public String cambiarClave(@RequestParam("dni") Integer dni,
+                               @RequestParam("currentPassword") String currentPassword,
+                               @RequestParam("newPassword") String newPassword,
+                               @RequestParam("confirmPassword") String confirmPassword,
+                               Model model) {
+
+        // Busca el usuario por su DNI
+        Usuario usuario = usuarioService.obtenerPorDni(dni);
+
+        // Verificar si el usuario existe
+        if (usuario == null) {
+            model.addAttribute("error", "Usuario no encontrado");
+            return "usuarios/usuarios_cambiar_pass";
+        }
+
+        // Verificar si la contraseña actual es correcta
+        if (!passwordEncoder.matches(currentPassword, usuario.getPass())) {
+            model.addAttribute("error", "La contraseña actual es incorrecta");
+            return "usuarios/usuarios_cambiar_pass";
+        }
+
+        // Verificar si la nueva contraseña y la confirmación coinciden
+        if (!newPassword.equals(confirmPassword)) {
+            model.addAttribute("error", "Las contraseñas nuevas no coinciden");
+            return "usuarios/usuarios_cambiar_pass";
+        }
+
+        // Encriptar la nueva contraseña usando BCrypt
+        String encodedPassword = passwordEncoder.encode(newPassword);
+        usuario.setPass(encodedPassword);  // Actualiza la contraseña en el usuario
+        usuarioService.actualizarUsuario(usuario);  // Guarda los cambios en la base de datos
+
+        // Mostrar mensaje de éxito
+        model.addAttribute("success", "La contraseña se cambió exitosamente");
+        return "home";
+    }
 }
