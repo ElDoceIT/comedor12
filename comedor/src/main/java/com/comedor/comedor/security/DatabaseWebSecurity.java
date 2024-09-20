@@ -48,6 +48,8 @@ public UserDetailsManager usersCustom(DataSource dataSource) {
                                 .loginPage("/login")  // Especifica la URL de la página de login
                                 .usernameParameter("dni")  // Define el parámetro del nombre de usuario (DNI)
                                 .passwordParameter("pass")  // Define el parámetro de la contraseña (pass)
+                                 .defaultSuccessUrl("/", true)  // Redirigir a /home en caso de éxito
+                                .failureUrl("/login?error=true")  // Redirigir en caso de fallo de autenticación
                                 .permitAll()  );
 
 
