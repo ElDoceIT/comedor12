@@ -69,4 +69,8 @@ public class UsuarioServiceJPA implements IUsuarioService {
         }
     }
 
+    public void actualizarUsuario(Usuario usuario) {
+        usuarioRepository.save(usuario);
+    }
+
 }

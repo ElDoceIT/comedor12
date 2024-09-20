@@ -15,4 +15,5 @@ public interface IUsuarioService {
     Page<Usuario> buscarTodas(Pageable pageable);
     Usuario obtenerPorDni(Integer dni);
     void migratePasswords();
+    void actualizarUsuario(Usuario usuario);
 }
