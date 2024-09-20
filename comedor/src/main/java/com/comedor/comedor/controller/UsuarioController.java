@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -128,14 +130,18 @@ public class UsuarioController {
     }
 
     @PostMapping("/cambiar-clave")
-    public String cambiarClave(@RequestParam("dni") Integer dni,
+    public String cambiarClave(
                                @RequestParam("currentPassword") String currentPassword,
                                @RequestParam("newPassword") String newPassword,
                                @RequestParam("confirmPassword") String confirmPassword,
                                Model model) {
 
-        // Busca el usuario por su DNI
-        Usuario usuario = usuarioService.obtenerPorDni(dni);
+        // Obtén el usuario autenticado
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String dni = auth.getName(); // Asumiendo que el dni es el username en el contexto de Spring Security
+
+        // Busca al usuario autenticado en la base de datos usando su dni
+        Usuario usuario = usuarioService.obtenerPorDni(Integer.parseInt(dni));
 
         // Verificar si el usuario existe
         if (usuario == null) {
