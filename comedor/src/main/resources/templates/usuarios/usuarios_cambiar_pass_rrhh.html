@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html xmlns:th="http://thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="shortcut icon" th:href="@{/images/El-Doce-TV-en-vivo-Online-1.png}" type="image/x-icon">
+
+    <link th:href="@{/bootstrap/css/bootstrap.min.css}" rel="stylesheet">
+    <!-- Custom styles for this template -->
+    <link th:href="@{/bootstrap/css/jumbotron.css}" rel="stylesheet">
+    <link th:href="@{/bootstrap/css/sticky-footer-navbar.css}" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.5.0/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+
+    <title>Cambiar Password</title>
+</head>
+<body>
+<header th:insert="fragments/menu :: menu-principal">
+
+</header>
+
+<h1>Cambiar Contraseña</h1>
+
+<!-- Mensajes de error o éxito -->
+<div th:if="${error}" style="color:red;">
+    <p th:text="${error}"></p>
+</div>
+<div th:if="${success}" style="color:green;">
+    <p th:text="${success}"></p>
+</div>
+
+<!-- Formulario para cambiar la clave -->
+<form th:action="@{/usuarios/cambiar-clave-rrhh}" method="post">
+
+    <div>
+        <label for="dni">DNI:</label>
+        <input type="number" id="dni" name="dni" required>
+    </div>
+
+    <div>
+        <label for="newPassword">Nueva contraseña:</label>
+        <input type="password" id="newPassword" name="newPassword" required>
+    </div>
+    <div>
+        <label for="confirmPassword">Confirmar nueva contraseña:</label>
+        <input type="password" id="confirmPassword" name="confirmPassword" required>
+    </div>
+    <button type="submit">Cambiar Contraseña</button>
+</form>
+
+
+
+<footer th:insert="fragments/footer :: footer" class="footer">
+    <script th:src="@{/bootstrap/js/bootstrap.min.js}"></script>
+</footer>
+</body>
+</html>
