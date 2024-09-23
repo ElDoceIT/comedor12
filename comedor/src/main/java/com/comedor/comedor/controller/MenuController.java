@@ -94,5 +94,10 @@ public class MenuController {
         return "menu/menu_ver";
     }
 
+    @GetMapping("/semanal")
+    public String  menuSemanal(){
+        return "menu/menu_semanal";
+    }
+
 
 }
