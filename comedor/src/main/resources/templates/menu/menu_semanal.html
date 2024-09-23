@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html xmlns:th="http://thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <link rel="shortcut icon" th:href="@{/images/El-Doce-TV-en-vivo-Online-1.png}" type="image/x-icon">
+
+  <link th:href="@{/bootstrap/css/bootstrap.min.css}" rel="stylesheet">
+  <!-- Custom styles for this template -->
+  <link th:href="@{/bootstrap/css/jumbotron.css}" rel="stylesheet">
+  <link th:href="@{/bootstrap/css/sticky-footer-navbar.css}" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.5.0/font/bootstrap-icons.min.css">
+  <link rel="stylesheet" th:href="@{/css/style.css}">
+
+  <title>Ingreso comida</title>
+</head>
+<body>
+<header th:insert="fragments/menu :: menu-principal">
+
+</header>
+
+<h1>Menú del día - <span id="fecha"></span></h1>
+
+<!-- Selección de Comida -->
+<h2>Seleccione su comida:</h2>
+<form>
+  <div>
+    <input type="radio" id="comida1" name="comida" value="Pollo al horno">
+    <label for="comida1">Pollo al horno</label>
+  </div>
+  <div>
+    <input type="radio" id="comida2" name="comida" value="Pasta con salsa">
+    <label for="comida2">Pasta con salsa</label>
+  </div>
+  <div>
+    <input type="radio" id="comida3" name="comida" value="Ensalada mixta">
+    <label for="comida3">Ensalada mixta</label>
+  </div>
+  <div>
+    <input type="radio" id="comida4" name="comida" value="Pescado frito">
+    <label for="comida4">Pescado frito</label>
+  </div>
+
+  <!-- Selección de Tipo de Consumo -->
+  <h2>¿Dónde comerá?</h2>
+  <div>
+    <input type="radio" id="comedor" name="tipo_comida" value="Comedor">
+    <label for="comedor">Comedor</label>
+  </div>
+  <div>
+    <input type="radio" id="retirar" name="tipo_comida" value="Retira">
+    <label for="retirar">Retira</label>
+  </div>
+  <div>
+    <input type="radio" id="vianda" name="tipo_comida" value="Vianda">
+    <label for="vianda">Vianda</label>
+  </div>
+
+  <!-- Botón de Enviar -->
+  <button type="submit">Enviar</button>
+</form>
+
+<!-- Script para obtener la fecha actual -->
+<script>
+  const fechaHoy = new Date().toLocaleDateString('es-ES', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric'
+  });
+  document.getElementById('fecha').textContent = fechaHoy;
+</script>
+
+<footer th:insert="fragments/footer :: footer" class="footer">
+  <script th:src="@{/bootstrap/js/bootstrap.min.js}"></script>
+</footer>
+</body>
+</html>

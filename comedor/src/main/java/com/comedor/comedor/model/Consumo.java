@@ -3,6 +3,7 @@ package com.comedor.comedor.model;
 import jakarta.persistence.*;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 @Entity
@@ -20,7 +21,7 @@ public class Consumo {
 
     @Column(name ="fecha")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
-    private Date fecha;
+    private LocalDate fecha;
 
     @OneToOne
     @JoinColumn(name = "id_producto")
@@ -46,11 +47,11 @@ public class Consumo {
         this.cantidad = cantidad;
     }
 
-    public Date getFecha() {
+    public LocalDate getFecha() {
         return fecha;
     }
 
-    public void setFecha(Date fecha) {
+    public void setFecha(LocalDate fecha) {
         this.fecha = fecha;
     }
 
