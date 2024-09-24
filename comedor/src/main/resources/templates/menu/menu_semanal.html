@@ -13,53 +13,95 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.5.0/font/bootstrap-icons.min.css">
   <link rel="stylesheet" th:href="@{/css/style.css}">
 
+  <style>
+    /* Estilo personalizado para el recuadro */
+    .recuadro {
+      border: 2px solid #007bff; /* Color del borde (azul Bootstrap) */
+      border-radius: 10px; /* Bordes redondeados */
+      background-color: #f8f9fa; /* Color de fondo claro */
+      padding: 20px; /* Espaciado interno */
+      box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); /* Sombra sutil */
+    }
+
+    /* Estilos personalizados para colores más llamativos */
+    .form-check-label {
+      color: #007bff; /* Azul de Bootstrap */
+      font-weight: bold;
+    }
+
+    /* Botón más llamativo */
+    .btn-primary {
+      background-color: #28a745;
+      border-color: #28a745;
+      font-size: 18px;
+    }
+
+    .btn-primary:hover {
+      background-color: #218838;
+      border-color: #1e7e34;
+    }
+  </style>
+
   <title>Ingreso comida</title>
 </head>
 <body>
 <header th:insert="fragments/menu :: menu-principal">
-
 </header>
 
-<h1>Menú del día - <span id="fecha"></span></h1>
+<div class="container mt-4">
+  <h1 class="text-center text-primary">Menú del día - <span id="fecha"></span></h1>
 
-<!-- Selección de Comida -->
-<h2>Seleccione su comida:</h2>
-<form>
-  <div>
-    <input type="radio" id="comida1" name="comida" value="Pollo al horno">
-    <label for="comida1">Pollo al horno</label>
-  </div>
-  <div>
-    <input type="radio" id="comida2" name="comida" value="Pasta con salsa">
-    <label for="comida2">Pasta con salsa</label>
-  </div>
-  <div>
-    <input type="radio" id="comida3" name="comida" value="Ensalada mixta">
-    <label for="comida3">Ensalada mixta</label>
-  </div>
-  <div>
-    <input type="radio" id="comida4" name="comida" value="Pescado frito">
-    <label for="comida4">Pescado frito</label>
-  </div>
+  <form class="mt-5">
+    <div class="row">
+      <!-- Selección de Comida -->
+      <div class="col-md-6">
+        <div class="recuadro">
+          <h2 class="text-center">Seleccione su comida:</h2>
+          <div class="form-check">
+            <input type="radio" id="comida1" name="comida" value="Pollo al horno" class="form-check-input">
+            <label for="comida1" class="form-check-label">Pollo al horno</label>
+          </div>
+          <div class="form-check">
+            <input type="radio" id="comida2" name="comida" value="Pasta con salsa" class="form-check-input">
+            <label for="comida2" class="form-check-label">Pasta con salsa</label>
+          </div>
+          <div class="form-check">
+            <input type="radio" id="comida3" name="comida" value="Ensalada mixta" class="form-check-input">
+            <label for="comida3" class="form-check-label">Ensalada mixta</label>
+          </div>
+          <div class="form-check">
+            <input type="radio" id="comida4" name="comida" value="Pescado frito" class="form-check-input">
+            <label for="comida4" class="form-check-label">Pescado frito</label>
+          </div>
+        </div>
+      </div>
 
-  <!-- Selección de Tipo de Consumo -->
-  <h2>¿Dónde comerá?</h2>
-  <div>
-    <input type="radio" id="comedor" name="tipo_comida" value="Comedor">
-    <label for="comedor">Comedor</label>
-  </div>
-  <div>
-    <input type="radio" id="retirar" name="tipo_comida" value="Retira">
-    <label for="retirar">Retira</label>
-  </div>
-  <div>
-    <input type="radio" id="vianda" name="tipo_comida" value="Vianda">
-    <label for="vianda">Vianda</label>
-  </div>
+      <!-- Selección de Tipo de Consumo -->
+      <div class="col-md-6">
+        <div class="recuadro">
+          <h2 class="text-center">¿Dónde comerá?</h2>
+          <div class="form-check">
+            <input type="radio" id="comedor" name="tipo_comida" value="Comedor" class="form-check-input">
+            <label for="comedor" class="form-check-label">Comedor</label>
+          </div>
+          <div class="form-check">
+            <input type="radio" id="retirar" name="tipo_comida" value="Retira" class="form-check-input">
+            <label for="retirar" class="form-check-label">Retira</label>
+          </div>
+          <div class="form-check">
+            <input type="radio" id="vianda" name="tipo_comida" value="Vianda" class="form-check-input">
+            <label for="vianda" class="form-check-label">Vianda</label>
+          </div>
+        </div>
+      </div>
+    </div>
 
-  <!-- Botón de Enviar -->
-  <button type="submit">Enviar</button>
-</form>
+    <!-- Botón de Enviar -->
+    <div class="text-center mt-4">
+      <button type="submit" class="btn btn-primary">Enviar</button>
+    </div>
+  </form>
+</div>
 
 <!-- Script para obtener la fecha actual -->
 <script>
@@ -76,3 +118,4 @@
 </footer>
 </body>
 </html>
+v
