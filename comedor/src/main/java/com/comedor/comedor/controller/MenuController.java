@@ -7,6 +7,7 @@ import com.comedor.comedor.repository.MenuRepository;
 import com.comedor.comedor.service.IComidaService;
 import com.comedor.comedor.service.IMenuService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.Banner;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -14,6 +15,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Controller
@@ -95,7 +97,17 @@ public class MenuController {
     }
 
     @GetMapping("/semanal")
-    public String  menuSemanal(){
+    public String  menuSemanal(Model model) {
+        LocalDate hoy = LocalDate.now();
+        LocalDate lunes=hoy.with(java.time.DayOfWeek.MONDAY);
+        LocalDate viernes=hoy.with(java.time.DayOfWeek.FRIDAY);
+
+        List<Menu> menusDeLaSemana= menuService.getMenusSemana(lunes, viernes);
+
+        Map<LocalDate, List<Menu>> menusPorDia = menusDeLaSemana.stream()
+                .collect(Collectors.groupingBy(Menu::getFechaMenu));
+
+        model.addAttribute("menusPorDia",menusPorDia);
         return "menu/menu_semanal";
     }
 

@@ -13,7 +13,7 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.5.0/font/bootstrap-icons.min.css">
   <link rel="stylesheet" th:href="@{/css/style.css}">
 
-  <title>Ingreso comida</title>
+  <title>Menu Semanal</title>
 </head>
 <body>
 <header th:insert="fragments/menu :: menu-principal">
@@ -24,52 +24,46 @@
 
 <!-- Selección de Comida -->
 <h2>Seleccione su comida:</h2>
-<form>
-  <div>
-    <input type="radio" id="comida1" name="comida" value="Pollo al horno">
-    <label for="comida1">Pollo al horno</label>
-  </div>
-  <div>
-    <input type="radio" id="comida2" name="comida" value="Pasta con salsa">
-    <label for="comida2">Pasta con salsa</label>
-  </div>
-  <div>
-    <input type="radio" id="comida3" name="comida" value="Ensalada mixta">
-    <label for="comida3">Ensalada mixta</label>
-  </div>
-  <div>
-    <input type="radio" id="comida4" name="comida" value="Pescado frito">
-    <label for="comida4">Pescado frito</label>
+<form action="#" method="post">
+  <div th:each="dia : ${menusPorDia}">
+    <h3 th:text="${#temporals.format(dia.key, 'EEEE dd MMMM yyyy')}">Día</h3>
+
+    <table class="table table-striped">
+      <thead>
+      <tr>
+        <th>Menú</th>
+        <th>Seleccionar</th>
+      </tr>
+      </thead>
+      <tbody th:each="menu : ${dia.value}">
+      <tr>
+        <td th:text="${menu.comida}"></td>
+        <td>
+          <input type="radio" name="menuSeleccionado__${#temporals.format(dia.key, 'yyyyMMdd')}" th:value="${menu.id_menu}" required>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+
+    <!-- Selección de Tipo de Consumo para cada día -->
+    <h4>¿Dónde comerá el <span th:text="${#temporals.format(dia.key, 'EEEE')}"></span>?</h4>
+    <div>
+      <input type="radio" id="|comedor__${#temporals.format(dia.key, 'yyyyMMdd')}|" name="|tipo_comida__${#temporals.format(dia.key, 'yyyyMMdd')}|" value="Comedor" required>
+      <label th:for="|comedor__${#temporals.format(dia.key, 'yyyyMMdd')}|">Comedor</label>
+    </div>
+    <div>
+      <input type="radio" id="|vianda__${#temporals.format(dia.key, 'yyyyMMdd')}|" name="|tipo_comida__${#temporals.format(dia.key, 'yyyyMMdd')}|" value="Vianda" required>
+      <label th:for="|vianda__${#temporals.format(dia.key, 'yyyyMMdd')}|">Vianda</label>
+    </div>
+    <div>
+      <input type="radio" id="|retirar__${#temporals.format(dia.key, 'yyyyMMdd')}|" name="|tipo_comida__${#temporals.format(dia.key, 'yyyyMMdd')}|" value="Retira" required>
+      <label th:for="|retirar__${#temporals.format(dia.key, 'yyyyMMdd')}|">Retira</label>
+    </div>
   </div>
 
-  <!-- Selección de Tipo de Consumo -->
-  <h2>¿Dónde comerá?</h2>
-  <div>
-    <input type="radio" id="comedor" name="tipo_comida" value="Comedor">
-    <label for="comedor">Comedor</label>
-  </div>
-  <div>
-    <input type="radio" id="retirar" name="tipo_comida" value="Retira">
-    <label for="retirar">Retira</label>
-  </div>
-  <div>
-    <input type="radio" id="vianda" name="tipo_comida" value="Vianda">
-    <label for="vianda">Vianda</label>
-  </div>
-
-  <!-- Botón de Enviar -->
-  <button type="submit">Enviar</button>
+  <!-- Botón para enviar la selección -->
+  <button type="submit" class="btn btn-primary">Confirmar Selección</button>
 </form>
-
-<!-- Script para obtener la fecha actual -->
-<script>
-  const fechaHoy = new Date().toLocaleDateString('es-ES', {
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric'
-  });
-  document.getElementById('fecha').textContent = fechaHoy;
-</script>
 
 <footer th:insert="fragments/footer :: footer" class="footer">
   <script th:src="@{/bootstrap/js/bootstrap.min.js}"></script>
