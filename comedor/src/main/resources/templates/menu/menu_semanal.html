@@ -59,13 +59,77 @@
       <input type="radio" id="|retirar__${#temporals.format(dia.key, 'yyyyMMdd')}|" name="|tipo_comida__${#temporals.format(dia.key, 'yyyyMMdd')}|" value="Retira" required>
       <label th:for="|retirar__${#temporals.format(dia.key, 'yyyyMMdd')}|">Retira</label>
     </div>
+
+    <!-- Botón para enviar la selección -->
+    <div class="d-flex justify-content-center">
+      <button type="submit" class="btn btn-primary">Confirmar Menu</button>
+    </div>
   </div>
 
-  <!-- Botón para enviar la selección -->
-  <div class="d-flex justify-content-center">
-    <button type="submit" class="btn btn-primary">Confirmar Selección</button>
-  </div>
+
 </form>
+
+<!-- Tabla de menús no procesados -->
+<div class="card mt-4 shadow">
+  <div class="card1 card-body">
+    <h5>Últimas cargas no procesadas</h5>
+    <table class="table table-striped">
+      <thead>
+      <tr>
+        <th>Fecha</th>
+        <th>Comida</th>
+        <th>Medio</th>
+      </tr>
+      </thead>
+      <tbody>
+
+      <tr th:each="reserva : ${reservas}">
+
+        <td th:if="${reserva.f_reserva != null}" th:text="${#temporals.format(reserva.f_reserva, 'EEEE dd  MMMM  yyyy')}"></td>
+
+        <!-- Formatear la comida con una separación visual -->
+        <td>
+          <div>
+            <strong>Entrada:</strong> <span th:text="${reserva.menu.comida.entrada}"></span>
+          </div>
+          <div>
+            <strong>Plato Principal:</strong> <span th:text="${reserva.menu.comida.principal}"></span>
+          </div>
+          <div>
+            <strong>Postre:</strong> <span th:text="${reserva.menu.comida.postre}"></span>
+          </div>
+          <div th:switch="${reserva.menu.comida.tipo_comida}">
+            <strong>Tipo:</strong> <span ></span>
+            <span th:case="1">Principal</span>
+            <span th:case="2">Ligth</span>
+            <span th:case="3">Celiaco</span>
+            <span th:case="4">Fruta</span>
+          </div>
+        </td>
+        <td th:text="${reserva.medio}"></td>
+
+        <!-- Botón de eliminar -->
+        <td>
+          <form th:action="@{/menu/eliminar/{id}(id=${menu.id_menu})}" method="post">
+            <button class="btn btn-danger btn-sm" type="submit" title="Eliminar">
+              <i class="bi bi-trash"></i> Eliminar
+            </button>
+          </form>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+<br>
+<!-- Botón para procesar menús -->
+<form th:action="@{/menu/procesar}" method="post">
+  <button class="btn btn-outline-secondary float-end" type="submit">Publicar Menús</button>
+</form>
+</div>
+</div>
+</div>
+
 
 <footer th:insert="fragments/footer :: footer" class="footer">
   <script th:src="@{/bootstrap/js/bootstrap.min.js}"></script>
