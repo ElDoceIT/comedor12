@@ -41,28 +41,27 @@
 
         <table class="table mt-3">
             <thead class="thead-dark">
-            <tr>
-                <th class="col-1">DNI</th>
-                <th class="col-1">Apellido</th>
-                <th class="col-1">Nombre</th>
-                <th class="text-center col-2">CC</th>
-                <th class="col-2">Grupo</th>
-                <th class="col-2">Empresa</th>
+            <tr class="text-center">
+                <th >DNI</th>
+                <th >Apellido</th>
+                <th >Nombre</th>
+                <th >CC</th>
+                <th >Grupo</th>
+                <th >Empresa</th>
                 <th>Estado</th>
+                <th></th>
             </tr>
             </thead>
-        </table>
-        <table class="table-borderless w-100 striped-table ">
-            <tbody>
-            <tr  th:each="usuario :${usuarios}">
-                <td class="col-1" th:text="${usuario.dni}"></td>
-                <td class="col-1" th:text="${usuario.apellido}"></td>
-                <td class="col-1" th:text="${usuario.nombre}"></td>
-                <td class="text-center col-2" th:text="${usuario.cc}"></td>
-                <td class="col-2" th:text="${usuario.grupo}"></td>
-                <td class="col-2" th:text="${usuario.empresa}"></td>
-                <td class="text-center" th:text="${usuario.estado}"></td>
-                <td class="float-right pr-3">
+            <tbody class="table-borderless w-100 striped-table ">
+            <tr class="text-center" th:each="usuario :${usuarios}">
+                <td  th:text="${usuario.dni}"></td>
+                <td  th:text="${usuario.apellido}"></td>
+                <td  th:text="${usuario.nombre}"></td>
+                <td  th:text="${usuario.cc}"></td>
+                <td  th:text="${usuario.grupo}"></td>
+                <td th:text="${usuario.empresa}"></td>
+                <td  th:text="${usuario.estado}"></td>
+                <td class="">
                     <a th:href="@{/usuarios/editar/{id} (id=${usuario.id_usuario})}" class=" btn btn-outline-secondary botoncito1 justify-content-end round-button" role="button" title="Editar"><i class="bi bi-pencil" aria-hidden="true"></i></a>
                 </td>
             </tr>
