@@ -35,9 +35,7 @@
 
         </tr>
         </thead>
-      </table>
-        <table class="table-borderless w-100 striped-table">
-          <tbody>
+        <tbody class="table-borderless w-100 striped-table" >
           <tr th:each="consumo :${consumos}">
             <td class="col-2" th:if="${consumo.fecha != null}" th:text="${#temporals.format(consumo.fecha, 'EEEE dd  MMMM  yyyy')}"></td>
             <td class="text-center" th:text="${consumo.usuario.nombre}"></td>
@@ -55,8 +53,8 @@
               </div>
             </td>
           </tr>
-          </tbody>
-        </table>
+        </tbody>
+      </table>
 
 
   </div>
