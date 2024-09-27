@@ -2,12 +2,17 @@ package com.comedor.comedor.controller;
 
 
 import com.comedor.comedor.dto.ReservaForm;
+import com.comedor.comedor.model.Comida;
 import com.comedor.comedor.model.Menu;
+import com.comedor.comedor.model.Reserva;
 import com.comedor.comedor.model.Usuario;
 import com.comedor.comedor.repository.ReservaRepository;
+import com.comedor.comedor.service.IMenuService;
 import com.comedor.comedor.service.IReservaService;
 import com.comedor.comedor.service.IUsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,8 +21,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.security.Principal;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/reservas")
@@ -31,6 +39,9 @@ public class ReservaController {
 
     @Autowired
     private IUsuarioService usuarioService;
+
+    @Autowired
+    private IMenuService menuService;
 
 
     @GetMapping("/ver")
@@ -65,5 +76,29 @@ public class ReservaController {
 
 
         return "reservas/reserva_seleccionar";
+    }
+
+    @GetMapping("/reservas-semanales")
+    public String obtenerReservasSemanales(Model model, @AuthenticationPrincipal UserDetails userDetails) {
+        // Convertir el username que es en realidad el dni, a Integer
+        Integer dni = Integer.parseInt(userDetails.getUsername());
+        LocalDate hoy = LocalDate.now();
+        LocalDate lunes=hoy.with(java.time.DayOfWeek.MONDAY);
+        LocalDate viernes=hoy.with(java.time.DayOfWeek.FRIDAY);
+
+        List<Menu> menusDeLaSemana= menuService.getMenusSemana(lunes, viernes);
+
+        Map<LocalDate, List<Menu>> menusPorDia = menusDeLaSemana.stream()
+                .collect(Collectors.groupingBy(Menu::getFechaMenu));
+
+        //List<Reserva> reservas = reservaService.obtenerReservasSemanalesPorUsuario(dni);
+        Reserva reservas= new Reserva();
+        Menu menu = new Menu();
+        Comida comida = new Comida();
+        model.addAttribute("reservas", reservas);
+        model.addAttribute("menu", menu);
+        model.addAttribute("comida", comida);
+        model.addAttribute("menusPorDia",menusPorDia);
+        return "/menu/menu_semanal";
     }
 }

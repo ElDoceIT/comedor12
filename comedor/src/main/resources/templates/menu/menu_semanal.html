@@ -72,52 +72,37 @@
 <!-- Tabla de menús no procesados -->
 <div class="card mt-4 shadow">
   <div class="card1 card-body">
-    <h5>Últimas cargas no procesadas</h5>
+    <h5>Mis Reservas de la semana</h5>
     <table class="table table-striped">
       <thead>
       <tr>
-        <th>Fecha</th>
-        <th>Comida</th>
-        <th>Medio</th>
+        <th>Día</th>
+        <th>Entrada</th>
+        <th>Plato Principal</th>
+        <th>Postre</th>
+        <th>Tipo de Comida</th>
+        <th>Lugar de Consumo</th>
       </tr>
       </thead>
       <tbody>
 
       <tr th:each="reserva : ${reservas}">
-
-        <td th:if="${reserva.f_reserva != null}" th:text="${#temporals.format(reserva.f_reserva, 'EEEE dd  MMMM  yyyy')}"></td>
-
-        <!-- Formatear la comida con una separación visual -->
-        <td>
-          <div>
-            <strong>Entrada:</strong> <span th:text="${reserva.menu.comida.entrada}"></span>
-          </div>
-          <div>
-            <strong>Plato Principal:</strong> <span th:text="${reserva.menu.comida.principal}"></span>
-          </div>
-          <div>
-            <strong>Postre:</strong> <span th:text="${reserva.menu.comida.postre}"></span>
-          </div>
-          <div th:switch="${reserva.menu.comida.tipo_comida}">
-            <strong>Tipo:</strong> <span ></span>
-            <span th:case="1">Principal</span>
-            <span th:case="2">Ligth</span>
-            <span th:case="3">Celiaco</span>
-            <span th:case="4">Fruta</span>
-          </div>
+        <td th:text="${#temporals.format(reserva.menu.fechaMenu, 'EEEE dd MMMM yyyy')}">Día</td>
+        <td th:text="${reserva.menu.comida.entrada}">Entrada</td>
+        <td th:text="${reserva.menu.comida.principal}">Plato Principal</td>
+        <td th:text="${reserva.menu.comida.postre}">Postre</td>
+        <td th:switch="${reserva.menu.comida.tipo_comida}">
+          <span th:case="1">Principal</span>
+          <span th:case="2">Vegetariana</span>
+          <span th:case="3">Celiaco</span>
+          <span th:case="4">Fruta</span>
         </td>
-        <td th:text="${reserva.medio}"></td>
-
-        <!-- Botón de eliminar -->
-        <td>
-          <form th:action="@{/menu/eliminar/{id}(id=${menu.id_menu})}" method="post">
-            <button class="btn btn-danger btn-sm" type="submit" title="Eliminar">
-              <i class="bi bi-trash"></i> Eliminar
-            </button>
-          </form>
+        <td th:switch="${reserva.medio}">
+          <span th:case="1">Comedor</span>
+          <span th:case="2">Vianda</span>
+          <span th:case="3">Retira</span>
         </td>
       </tr>
-      </tbody>
     </table>
   </div>
 </div>

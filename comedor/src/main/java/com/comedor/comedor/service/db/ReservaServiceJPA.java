@@ -12,6 +12,10 @@ import jakarta.persistence.EntityManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.DayOfWeek;
+import java.time.LocalDate;
+import java.util.List;
+
 @Service
 public class ReservaServiceJPA implements IReservaService {
 
@@ -41,5 +45,12 @@ public class ReservaServiceJPA implements IReservaService {
         reserva.setMedio(reservaForm.getMedio());  // Esto será un int (1, 2 o 3)
 
         return reservaRepository.save(reserva);
+    }
+
+    @Override
+    public List<Reserva> obtenerReservasSemanalesPorUsuario(Integer dni) {
+        LocalDate inicioSemana = LocalDate.now().with(DayOfWeek.MONDAY);
+        LocalDate finSemana = LocalDate.now().with(DayOfWeek.SUNDAY);
+        return reservaRepository.findReservasSemanalesPorUsuario(dni, inicioSemana, finSemana);
     }
 }
