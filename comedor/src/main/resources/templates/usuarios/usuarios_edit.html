@@ -11,7 +11,7 @@
     <link th:href="@{/bootstrap/css/jumbotron.css}" rel="stylesheet">
     <link th:href="@{/bootstrap/css/sticky-footer-navbar.css}" rel="stylesheet">
 
-    <title>Usuario nuevo</title>
+    <title>editarUsusario</title>
 </head>
 <body>
 <header th:insert="fragments/menu :: menu-principal">
@@ -100,7 +100,119 @@
 
 
 
+----
+</header>
+<div class="container">
+    <div class="card1">
+        <h1 class="card-header text-center"><strong>Agregar usuario</strong></h1>
+        <div class="card-body">
+            <form th:action="@{/usuarios/save}" method="post"  th:object="${usuario}">
 
+                <div class="col-md-2">
+                    <div class="form-group">
+                        <label for="dni"><h5>DNI</h5></label>
+                        <input type="text" class="form-control"  name="dni" id="dni" placeholder="nro DNI" required="required">
+                    </div>
+                </div>
+
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <!-- Primer campo de contraseña -->
+                        <label for="password"><h5>Contraseña:</h5></label>
+                        <input class="form-control" type="password" id="password"  name="pass" required />
+
+                        <!-- Segundo campo de contraseña para confirmación -->
+                        <label for="confirmPassword"><h5>Confirmar Contraseña:</h5></label>
+                        <input class="form-control" type="password" id="confirmPassword" required />
+
+                        <span id="errorMensaje" style="color:red; display:none;">Las contraseñas no coinciden</span>
+                        <script>
+                            function validarPassword() {
+                                // Obtener los valores de los campos de contraseña
+                                var password = document.getElementById("password").value;
+                                var confirmPassword = document.getElementById("confirmPassword").value;
+
+                                // Comparar si las contraseñas coinciden
+                                if (password !== confirmPassword) {
+                                    // Mostrar mensaje de error
+                                    document.getElementById("errorMensaje").style.display = "block";
+                                    return false; // Evitar que el formulario se envíe
+                                }
+                                return true; // Permitir el envío si coinciden
+                            }
+                        </script>
+
+                    </div>
+
+                    <div class="form-group">
+                        <label for="apellido"><h5>Apellido</h5></label>
+                        <input type="text" class="form-control"  name="apellido" id="apellido" placeholder="apellido" required="required">
+                    </div>
+                </div>
+
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label for="nombre"><h5>Nombre</h5></label>
+                        <input type="text" class="form-control" name="nombre" id="nombre" placeholder="nombre" required="required">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="row">
+
+                        <div class="col-md-4">
+                            <label for="ceco"><h5>CeCo</h5></label>
+                            <select class="form-control" name="cc" id="ceco">
+                                <option value="" disabled selected>Seleccione CeCo</option>
+                                <!-- Mostrar todos los CeCo en el select -->
+                                <option th:each="ceco : ${cecos}" th:value="${ceco}" th:text="${ceco}"></option>
+                            </select>
+                        </div>
+
+                        <div class="col-md-2">
+                            <div class="form-group">
+                                <label for="grupo"><h5>Grupo</h5></label>
+                                <select class="form-control" name="grupo" id="grupo">
+                                    <option value="" disabled selected><h4>Seleccione un grupo</h4></option>
+                                    <!-- Mostrar todos los grupos en el select -->
+                                    <option th:each="grupo : ${grupos}" th:value="${grupo}" th:text="${grupo}"></option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="col-md-2">
+                            <div class="form-group">
+                                <label for="empresa"><h5>Empresa</h5></label>
+                                <select class="form-control"  name="empresa" id="empresa">
+                                    <option value="" disabled selected>Seleccione empresa</option>
+                                    <!-- Mostrar todos los grupos en el select -->
+                                    <option th:each="empresa : ${empresas}" th:value="${empresa}" th:text="${empresa}"></option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="col-md-2">
+                            <div class="form-group">
+                                <label for="estado"><h5>Estado</h5></label>
+                                <select class="form-control"  name="estado" id="estado">
+                                    <option value="" disabled selected>Seleccione estado</option>
+                                    <!-- Mostrar todos los grupos en el select -->
+                                    <option th:each="estado : ${estados}" th:value="${estado}" th:text="${estado}"></option>
+                                </select>
+                            </div>
+                        </div>
+
+
+
+                        <div class="d-flex justify-content-center">
+                            <button type="submit" class="botoncito1 btn btn-outline-secondary align-content-center">Guardar</button>
+                        </div>
+            </form>
+        </div>
+    </div>
+
+</div>
+-----
 
 
 

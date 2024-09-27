@@ -48,15 +48,14 @@
                     <th class="text-center col-5">Principal</th>
                     <th class="text-center col-3">Postre</th>
                     <th class="text-center">Tipo</th>
-                    <th class="text-right col-2">Funcion</th>
+                    <th class="text-center">Funcion</th>
                 </tr>
                 </thead>
-            </table>
-            <table class="table-borderless w-100 striped-table">
-                <tbody>
 
-                <table class="table table-borderless w-100 striped-table">
-                    <tbody>
+                <tbody class="table-borderless w-100 striped-table">
+
+
+
                     <tr th:each="comida :${comidas}">
                         <td class="text-left" th:text="${comida.entrada}"></td>
                         <td class="text-center" th:text="${comida.principal}"></td>
@@ -79,8 +78,7 @@
                     </tbody>
                 </table>
 
-            </table>
-                </tbody>
+
 
 
             <!-- Paginación -->

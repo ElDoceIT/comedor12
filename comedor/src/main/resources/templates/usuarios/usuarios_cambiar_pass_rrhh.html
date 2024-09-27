@@ -20,36 +20,43 @@
 
 </header>
 
-<h1>Cambiar Contraseña</h1>
+<div class="container justify-content-center mt-3">
+    <div class="card1 ">
+        <h1 class="card-header text-center "><strong>Cambiar Contraseña</strong></h1>
+        <div class="card-body m-5 ">
 
-<!-- Mensajes de error o éxito -->
-<div th:if="${error}" style="color:red;">
-    <p th:text="${error}"></p>
+            <!-- Mensajes de error o éxito -->
+            <div th:if="${error}" style="color:red;">
+                <p th:text="${error}"></p>
+            </div>
+            <div th:if="${success}" style="color:green;">
+                <p th:text="${success}"></p>
+            </div>
+
+            <!-- Formulario para cambiar la clave -->
+            <form th:action="@{/usuarios/cambiar-clave-rrhh}" method="post">
+
+                <div>
+
+                    <input class=" form-control mt-3 col-15 justify-content-center" type="number" id="dni" name="dni" placeholder="DNI" required>
+                </div>
+
+                <div>
+
+                    <input class=" form-control mt-3 col-15 justify-content-center" type="password" id="newPassword" name="newPassword" placeholder="Nueva contraseña" required>
+                </div>
+                <div>
+
+                    <input class=" form-control mt-3 col-15 justify-content-center" type="password" id="confirmPassword" name="confirmPassword" placeholder="Confirmar nueva contraseña" required>
+                </div>
+                <div class="d-flex justify-content-center">
+                    <button type="submit" class="btn btn-outline-secondary botoncito1 table-light margen3 mt-5">Cambiar contraseña</button>
+                </div>
+            </form>
+
+        </div>
+    </div>
 </div>
-<div th:if="${success}" style="color:green;">
-    <p th:text="${success}"></p>
-</div>
-
-<!-- Formulario para cambiar la clave -->
-<form th:action="@{/usuarios/cambiar-clave-rrhh}" method="post">
-
-    <div>
-        <label for="dni">DNI:</label>
-        <input type="number" id="dni" name="dni" required>
-    </div>
-
-    <div>
-        <label for="newPassword">Nueva contraseña:</label>
-        <input type="password" id="newPassword" name="newPassword" required>
-    </div>
-    <div>
-        <label for="confirmPassword">Confirmar nueva contraseña:</label>
-        <input type="password" id="confirmPassword" name="confirmPassword" required>
-    </div>
-    <button type="submit">Cambiar Contraseña</button>
-</form>
-
-
 
 <footer th:insert="fragments/footer :: footer" class="footer">
     <script th:src="@{/bootstrap/js/bootstrap.min.js}"></script>

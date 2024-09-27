@@ -1,4 +1,16 @@
-<nav th:fragment="menu-principal" class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>ComidaApp</title>
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <script src="../../static/bootstrap/js/bootstrap.min.js"></script>
+</head>
+<body>
+<!-- Tu código del navbar aquí -->
+<nav th:fragment="menu-principal" class="navbar navbar-expand-md navbar-dark fixed-top bg-dark" xmlns:sec="http://www.w3.org/1999/xhtml">
   <a class="navbar-brand" href="#">ComidaApp</a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
@@ -9,38 +21,73 @@
       <li class="nav-item">
         <a class="nav-link active" th:href="@{/menu/semanal}">MenuSemanal</a>
       </li>
-      <li class="nav-item">
-        <a class="nav-link" th:href="@{/comida/new}">ComidaNew</a>
+      <!-- Dropdown for Comida -->
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="comidaDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          Comida
+        </a>
+        <div class="dropdown-menu" aria-labelledby="comidaDropdown">
+          <a class="dropdown-item" th:href="@{/comida/new}">ComidaNew</a>
+          <a class="dropdown-item" th:href="@{/comida/ver}">ComidaVer</a>
+        </div>
+      </li>
+      <!-- Dropdown for Consumo -->
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="consumoDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          Consumo
+        </a>
+        <div class="dropdown-menu" aria-labelledby="consumoDropdown">
+          <a class="dropdown-item" th:href="@{/consumos/ver}">ConsumosVer</a>
+          <a class="dropdown-item" th:href="@{/consumos/asignar}">ConsumosAsignar</a>
+        </div>
+      </li>
+      <!-- Dropdown for Usuarios -->
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="usuariosDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          Usuarios
+        </a>
+        <div class="dropdown-menu" aria-labelledby="usuariosDropdown">
+          <a class="dropdown-item" th:href="@{/usuarios/ver}">UsuariosVer</a>
+          <a class="dropdown-item" th:href="@{/usuarios/new}">UsuariosNew</a>
+        </div>
+      </li>
+      <!-- Dropdown for Menu -->
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="menuDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          Menu
+        </a>
+        <div class="dropdown-menu" aria-labelledby="menuDropdown">
+          <a class="dropdown-item" th:href="@{/menu/crear}">MenuCrear</a>
+          <a class="dropdown-item" th:href="@{/menu/ver}">MenuVer</a>
+        </div>
+      </li>
+      <!-- Dropdown for Clave -->
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="claveDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          Clave
+        </a>
+        <div class="dropdown-menu" aria-labelledby="claveDropdown">
+          <a class="dropdown-item" th:href="@{/usuarios/cambiar-clave}">CambiarClave</a>
+          <a class="dropdown-item" th:href="@{/usuarios/cambiar-clave-rrhh}">ClaveRRHH</a>
+        </div>
       </li>
       <li class="nav-item">
-        <a class="nav-link" th:href="@{/comida/ver}">ComidaVer</a>
+        <a class="nav-link" th:href="@{/productos/ver}">Productos</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" th:href="@{/consumos/ver}">ConsumosVer</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" th:href="@{/consumos/asignar}">ConsumosAsignar</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" th:href="@{/usuarios/ver}">UsuariosVer</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" th:href="@{/usuarios/new}">UsuariosNew</a>
-      </li>
-      <li>  <a class="nav-link" th:href="@{/productos/ver}">Productos</a> </li>
-
-      <li>  <a class="nav-link" th:href="@{/menu/crear}">MenuCrear</a> </li>
-      <li>  <a class="nav-link" th:href="@{/menu/ver}">MenuVer</a> </li>
-      <li>  <a class="nav-link" th:href="@{/reservas/ver}">ReservaVer</a> </li>
-
-      <li class="nav-item">
-        <a class="nav-link" th:href="@{/usuarios/cambiar-clave}">CambiarClave</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" th:href="@{/usuarios/cambiar-clave-rrhh}">ClaveRRHH</a>
+        <a class="nav-link" th:href="@{/reservas/ver}">ReservaVer</a>
       </li>
     </ul>
-    <span class="text-light">Bienvenido</span>&nbsp;<span class="text-light" sec:authentication="name"></span>
+    <span class="text-light">Bienvenido</span> <span class="text-light" sec:authentication="name"></span>
     <a class="btn btn-primary" th:href="@{/logout}">Salir</a>
   </div>
 </nav>
+
+<!-- jQuery first, then Popper.js, then Bootstrap JS <<<<<<<<<<<<<<VER CON LEO>>>>>>>>>>>>> -->
+<script th:src="@{/bootstrap.js/bootstrap.min.js}"></script>
+<script th:src="@{/bootstrap/js/bootstrap.js}"></script>
+
+<script src="/static/js/popper.min.js"></script>
+<script src="/static/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
