@@ -93,11 +93,11 @@ public class ReservaController {
 
         //List<Reserva> reservas = reservaService.obtenerReservasSemanalesPorUsuario(dni);
         Reserva reservas= new Reserva();
-        Menu menu = new Menu();
-        Comida comida = new Comida();
+
+
         model.addAttribute("reservas", reservas);
-        model.addAttribute("menu", menu);
-        model.addAttribute("comida", comida);
+        
+
         model.addAttribute("menusPorDia",menusPorDia);
         return "/menu/menu_semanal";
     }
