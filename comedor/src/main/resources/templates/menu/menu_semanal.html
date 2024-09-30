@@ -82,6 +82,7 @@
         <th>Postre</th>
         <th>Tipo de Comida</th>
         <th>Lugar de Consumo</th>
+        <th>Editar</th>
       </tr>
       </thead>
       <tbody>
@@ -101,6 +102,9 @@
           <span th:case="1">Comedor</span>
           <span th:case="2">Vianda</span>
           <span th:case="3">Retira</span>
+        </td>
+        <td class="float-right">
+          <a th:href="@{/reservas/editar/{id} (id=${reserva.idReserva})}" class=" btn btn-outline-secondary botoncito1 justify-content-end round-button " role="button" title="Editar"><i class="bi bi-pencil" aria-hidden="true"></i></a>
         </td>
       </tr>
     </table>
