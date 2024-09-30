@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.security.Principal;
+import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -86,16 +87,33 @@ public class ReservaController {
         LocalDate lunes=hoy.with(java.time.DayOfWeek.MONDAY);
         LocalDate viernes=hoy.with(java.time.DayOfWeek.FRIDAY);
 
+
+
         List<Menu> menusDeLaSemana= menuService.getMenusSemana(lunes, viernes);
+
+
+        LocalDate iniciosemana=hoy.with(DayOfWeek.SUNDAY);
+        LocalDate findesemana=hoy.with(DayOfWeek.SATURDAY);
+
+        List<Reserva> todasLasReservas = reservaRepository.findAll();
 
         Map<LocalDate, List<Menu>> menusPorDia = menusDeLaSemana.stream()
                 .collect(Collectors.groupingBy(Menu::getFechaMenu));
 
-        //List<Reserva> reservas = reservaService.obtenerReservasSemanalesPorUsuario(dni);
-        Reserva reservas= new Reserva();
+        List<Reserva> reservasFiltradas = todasLasReservas.stream()
+                .filter(reserva -> reserva.getUsuario().getDni().equals(dni)) // Filtrar por usuario
+                .filter(reserva -> reserva.getMenu().getFechaMenu().isAfter(iniciosemana.minusDays(1))
+
+                        //no me hace falta el fin, tomo como reserva de domingo a futuro.
+                        // && reserva.getMenu().getFechaMenu().isBefore(findesemana.plusDays(1))
+                        ) // Filtrar por fecha
+                .collect(Collectors.toList());
 
 
-        model.addAttribute("reservas", reservas);
+       // Reserva reservas= new Reserva();
+
+
+        model.addAttribute("reservas", reservasFiltradas);
         
 
         model.addAttribute("menusPorDia",menusPorDia);

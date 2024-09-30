@@ -87,7 +87,7 @@
       <tbody>
 
       <tr th:each="reserva : ${reservas}">
-        <td th:text="${reserva.menu != null && reserva.menu.fechaMenu != null ? #temporals.format(reserva.menu.fechaMenu, 'EEEE dd MMMM yyyy') : 'Sin fecha'}"></td>
+      <td th:text="${reserva.menu != null && reserva.menu.fechaMenu != null ? #temporals.format(reserva.menu.fechaMenu, 'EEEE dd MMMM yyyy') : 'Sin fecha'}"></td>
         <td th:text="${reserva.menu != null && reserva.menu.comida != null && reserva.menu.comida.entrada != null ? reserva.menu.comida.entrada : 'Sin entrada'}"></td>
         <td th:text="${reserva.menu != null && reserva.menu.comida != null && reserva.menu.comida.principal != null ? reserva.menu.comida.principal  : 'Sin Comida'}">Plato Principal</td>
         <td th:text="${reserva.menu != null && reserva.menu.comida != null && reserva.menu.comida.postre != null ? reserva.menu.comida.postre : 'Sin Postre'}">Postre</td>
