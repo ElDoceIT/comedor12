@@ -102,11 +102,11 @@ public class ReservaController {
 
         List<Reserva> reservasFiltradas = todasLasReservas.stream()
                 .filter(reserva -> reserva.getUsuario().getDni().equals(dni)) // Filtrar por usuario
-                .filter(reserva -> reserva.getMenu().getFechaMenu().isAfter(iniciosemana.minusDays(1))
+                //.filter(reserva -> reserva.getMenu().getFechaMenu().isAfter(iniciosemana.minusDays(1))
 
                         //no me hace falta el fin, tomo como reserva de domingo a futuro.
                         // && reserva.getMenu().getFechaMenu().isBefore(findesemana.plusDays(1))
-                        ) // Filtrar por fecha
+                  //      ) // Filtrar por fecha
                 .collect(Collectors.toList());
 
 
