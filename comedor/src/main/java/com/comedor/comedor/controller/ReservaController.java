@@ -119,4 +119,25 @@ public class ReservaController {
         model.addAttribute("menusPorDia",menusPorDia);
         return "/menu/menu_semanal";
     }
+
+    // aca chequeo mis propias reservas de la semana.
+    @GetMapping("/misreservas")
+    public String MisReservas(Model model, @AuthenticationPrincipal UserDetails userDetails) {
+        Integer dni = Integer.parseInt(userDetails.getUsername());
+        LocalDate hoy = LocalDate.now();
+        LocalDate iniciosemana=hoy.with(DayOfWeek.SUNDAY);
+        LocalDate findesemana=hoy.with(DayOfWeek.SATURDAY);
+        List<Reserva> todasLasReservas = reservaRepository.findAll();
+
+        List<Reserva> reservasFiltradas = todasLasReservas.stream()
+                .filter(reserva -> reserva.getUsuario().getDni().equals(dni)) // Filtrar por usuario
+                //.filter(reserva -> reserva.getMenu().getFechaMenu().isAfter(iniciosemana.minusDays(1))
+
+                //no me hace falta el fin, tomo como reserva de domingo a futuro.
+                // && reserva.getMenu().getFechaMenu().isBefore(findesemana.plusDays(1))
+                //      ) // Filtrar por fecha
+                .collect(Collectors.toList());
+        model.addAttribute("reservas", reservasFiltradas);
+        return "/reservas/reservas_ver";
+    }
 }

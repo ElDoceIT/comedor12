@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html xmlns:th="http://thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <link rel="shortcut icon" th:href="@{/images/El-Doce-TV-en-vivo-Online-1.png}" type="image/x-icon">
+
+  <link th:href="@{/bootstrap/css/bootstrap.min.css}" rel="stylesheet">
+  <!-- Custom styles for this template -->
+  <link th:href="@{/bootstrap/css/jumbotron.css}" rel="stylesheet">
+  <link th:href="@{/bootstrap/css/sticky-footer-navbar.css}" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.5.0/font/bootstrap-icons.min.css">
+  <link rel="stylesheet" th:href="@{/css/style.css}">
+
+  <title>Ingreso comida</title>
+</head>
+<body>
+<header th:insert="fragments/menu :: menu-principal">
+
+</header>
+
+<main role="main">
+
+  <div class="container col-sm-6 mt-3">
+
+    <div class="card1 align-items-center">
+      <h1 class="card-header text-center"><strong>Modificar Reserva</strong></h1>
+      <div class="card-body justify-content-center">
+        <form class="justify-content-center" th:action="@{/reservas/save}" method="post" th:object="${reserva}">
+          <div class="justify-content-center">
+            <div class="justify-content-center">
+
+
+              <input type="hidden" th:field="*{id_producto}">
+              <input type="text" class="form-control  justify-content-center" th:field="*{descripcion}" id="producto" name="descripcion" placeholder="Modificar producto" required="required">
+
+            </div>
+
+          </div>
+
+          <hr>
+          <div class="d-flex justify-content-center">
+            <button type="submit" title="Actualizar Producto" class="botoncito1 btn btn-outline-secondary align-content-center mr-2">Guardar</button>
+            <button type="button" th:onclick="|window.location.href='@{/productos/ver}'|" class="botoncito1 btn btn-outline-secondary align-content-center ml-2">Cancelar</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div> <!-- /container -->
+
+</main>
+
+
+
+
+
+
+<footer th:insert="fragments/footer :: footer" class="footer">
+  <script th:src="@{/bootstrap/js/bootstrap.min.js}"></script>
+</footer>
+</body>
+</html>

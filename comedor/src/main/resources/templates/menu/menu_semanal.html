@@ -45,7 +45,13 @@
         <td th:text="${menu.comida.entrada}"></td>
         <td th:text="${menu.comida.principal}"></td>
         <td th:text="${menu.comida.postre}"></td>
-        <td th:text="${menu.comida.tipo_comida}"></td>
+        <td th:switch="${menu.comida.tipo_comida}">
+          <span th:case="1">Principal</span>
+          <span th:case="2">Vegetariana</span>
+          <span th:case="3">Celiaco</span>
+          <span th:case="4">Fruta</span>
+        </td>
+        </td>
 
         <!-- Agregar el botón de selección de menú -->
         <td>
@@ -80,7 +86,7 @@
 
 </form>
 
-<!-- Tabla de menús no procesados -->
+<!-- Tabla de menús procesados -->
 <div class="card mt-4 shadow">
   <div class="card1 card-body">
     <h5>Mis Reservas de la semana</h5>
@@ -122,10 +128,7 @@
   </div>
 </div>
 <br>
-<!-- Botón para procesar menús -->
-<form th:action="@{/menu/procesar}" method="post">
-  <button class="btn btn-outline-secondary float-end" type="submit">Publicar Menús</button>
-</form>
+
 </div>
 </div>
 </div>
