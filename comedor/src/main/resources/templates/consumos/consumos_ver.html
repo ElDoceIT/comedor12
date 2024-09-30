@@ -19,11 +19,12 @@
 <header th:insert="fragments/menu :: menu-principal">
 
 </header>
-<div class="container ">
-  <div class="card1 ">
-      <h2 class="text-center card-header">Todos los consumos</h2>
+<div class="container">
+  <div class="card1">
+    <h2 class="text-center card-header">Todos los consumos</h2>
 
-      <table class="table" >
+    <div class="table-responsive">
+      <table class="table">
         <thead class="thead-dark justify-content-around">
         <tr class="text-center">
           <th class="col-2">Fecha</th>
@@ -32,32 +33,31 @@
           <th>Producto</th>
           <th>Cantidad</th>
           <th>Acciones</th>
-
         </tr>
         </thead>
-        <tbody class="table-borderless w-100 striped-table" >
-          <tr th:each="consumo :${consumos}">
-            <td class="col-2" th:if="${consumo.fecha != null}" th:text="${#temporals.format(consumo.fecha, 'EEEE dd  MMMM  yyyy')}"></td>
-            <td class="text-center" th:text="${consumo.usuario.nombre}"></td>
-            <td class="text-center" th:text="${consumo.usuario.apellido}"></td>
-            <td class="text-center" th:text="${consumo.producto.descripcion}"></td>
-            <td class="text-center" th:text="${consumo.cantidad}"></td>
-            <td class="text-center">
-              <div class="d-inline-flex align-items-center">
-                <a th:href="@{/consumos/editar/{id} (id=${consumo.idConsumo})}" class="btn btn-outline-secondary botoncito1 round-button mx-0" role="button" title="Editar">
-                  <i class="bi bi-pencil" aria-hidden="true"></i>
-                </a>
-                <a th:href="@{/consumos/delete/{id} (id=${consumo.idConsumo})}" class="btn btn-outline-secondary botoncito1 round-button mx-0" role="button" title="Eliminar">
-                  <i class="bi bi-trash" aria-hidden="true"></i>
-                </a>
-              </div>
-            </td>
-          </tr>
+        <tbody class="table-borderless w-100 striped-table">
+        <tr th:each="consumo :${consumos}">
+          <td class="col-2" th:if="${consumo.fecha != null}" th:text="${#temporals.format(consumo.fecha, 'EEEE dd  MMMM  yyyy')}"></td>
+          <td class="text-center" th:text="${consumo.usuario.nombre}"></td>
+          <td class="text-center" th:text="${consumo.usuario.apellido}"></td>
+          <td class="text-center" th:text="${consumo.producto.descripcion}"></td>
+          <td class="text-center" th:text="${consumo.cantidad}"></td>
+          <td class="text-center">
+            <div class="d-inline-flex align-items-center">
+              <a th:href="@{/consumos/editar/{id} (id=${consumo.idConsumo})}" class="btn btn-outline-secondary botoncito1 round-button mx-0 p-1 mr-1" role="button" title="Editar">
+                <i class="bi bi-pencil" aria-hidden="true"></i>
+              </a>
+              <a th:href="@{/consumos/delete/{id} (id=${consumo.idConsumo})}" class="btn btn-outline-secondary botoncito1 round-button mx-0 ml-2 p-1" role="button" title="Eliminar">
+                <i class="bi bi-trash" aria-hidden="true"></i>
+              </a>
+            </div>
+          </td>
+        </tr>
         </tbody>
       </table>
-
-
+    </div>
   </div>
+
   <hr>
   <div class="text-center mt-3">
     <a th:href="@{/consumos/export/excel}" class="btn btn-outline-secondary botoncito1 table-light margen3">Exportar a Excel</a>
