@@ -54,11 +54,7 @@ public class MenuServiceJPA implements IMenuService {
     }
 
     @Override
-    public List<Menu> getMenusSemana() {
-        LocalDate hoy = LocalDate.now();
-        LocalDate lunes = hoy.with(TemporalAdjusters.previousOrSame(DayOfWeek.MONDAY));
-        LocalDate viernes = hoy.with(TemporalAdjusters.nextOrSame(DayOfWeek.FRIDAY));
-
+    public List<Menu> getMenusSemana(LocalDate lunes, LocalDate viernes) {
         return menuRepository.findMenusByFechaMenuBetween(lunes, viernes);
     }
 
