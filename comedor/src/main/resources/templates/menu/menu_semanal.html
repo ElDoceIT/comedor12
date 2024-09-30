@@ -28,7 +28,7 @@
   <div th:each="dia : ${menusPorDia}">
     <h3 th:text="${#temporals.format(dia.key, 'EEEE dd MMMM yyyy')}">Día</h3>
 
-    <table class="table table-striped">
+    <!--<table class="table table-striped">
       <thead>
       <tr>
         <th>Menú</th>
@@ -37,7 +37,32 @@
       </thead>
       <tbody th:each="menu : ${dia.value}">
       <tr>
-        <td th:text="${menu.comida}"></td>
+        <td th:text="${menu.comida.entrada}"></td>
+        <td>
+          <input type="radio" name="menuSeleccionado__${#temporals.format(dia.key, 'yyyyMMdd')}" th:value="${menu.id_menu}" required>
+        </td>
+      </tr>
+      </tbody>
+    </table>-->
+    <table class="table table-striped">
+      <thead>
+      <tr>
+        <th>Entrada</th>
+        <th>Plato Principal</th>
+        <th>Postre</th>
+        <th>Tipo de Comida</th>
+        <th>Seleccionar</th>
+      </tr>
+      </thead>
+      <tbody th:each="menu : ${dia.value}">
+      <tr>
+        <!-- Mostrar los diferentes campos de comida en columnas -->
+        <td th:text="${menu.comida.entrada}"></td>
+        <td th:text="${menu.comida.principal}"></td>
+        <td th:text="${menu.comida.postre}"></td>
+        <td th:text="${menu.comida.tipo_comida}"></td>
+
+        <!-- Agregar el botón de selección de menú -->
         <td>
           <input type="radio" name="menuSeleccionado__${#temporals.format(dia.key, 'yyyyMMdd')}" th:value="${menu.id_menu}" required>
         </td>
@@ -45,7 +70,7 @@
       </tbody>
     </table>
 
-    <!-- Selección de Tipo de Consumo para cada día -->
+    <!-- Selección de Tipo de Consumo para cada día
     <h4>¿Dónde comerá el <span th:text="${#temporals.format(dia.key, 'EEEE')}"></span>?</h4>
     <div>
       <input type="radio" id="|comedor__${#temporals.format(dia.key, 'yyyyMMdd')}|" name="|tipo_comida__${#temporals.format(dia.key, 'yyyyMMdd')}|" value="Comedor" required>
@@ -58,7 +83,23 @@
     <div>
       <input type="radio" id="|retirar__${#temporals.format(dia.key, 'yyyyMMdd')}|" name="|tipo_comida__${#temporals.format(dia.key, 'yyyyMMdd')}|" value="Retira" required>
       <label th:for="|retirar__${#temporals.format(dia.key, 'yyyyMMdd')}|">Retira</label>
+    </div>-->
+    <!-- Selección de Tipo de Consumo para cada día -->
+    <div class="tipo-consumo-container">
+      <h4>¿Dónde comerá el <span th:text="${#temporals.format(dia.key, 'EEEE')}"></span>?</h4>
+
+      <div class="tipo-consumo-opciones">
+        <input type="radio" id="|comedor__${#temporals.format(dia.key, 'yyyyMMdd')}|" name="|tipo_comida__${#temporals.format(dia.key, 'yyyyMMdd')}|" value="Comedor" required>
+        <label th:for="|comedor__${#temporals.format(dia.key, 'yyyyMMdd')}|">Comedor</label>
+
+        <input type="radio" id="|vianda__${#temporals.format(dia.key, 'yyyyMMdd')}|" name="|tipo_comida__${#temporals.format(dia.key, 'yyyyMMdd')}|" value="Vianda" required>
+        <label th:for="|vianda__${#temporals.format(dia.key, 'yyyyMMdd')}|">Vianda</label>
+
+        <input type="radio" id="|retirar__${#temporals.format(dia.key, 'yyyyMMdd')}|" name="|tipo_comida__${#temporals.format(dia.key, 'yyyyMMdd')}|" value="Retira" required>
+        <label th:for="|retirar__${#temporals.format(dia.key, 'yyyyMMdd')}|">Retira</label>
+      </div>
     </div>
+
 
     <!-- Botón para enviar la selección -->
     <div class="d-flex justify-content-center">
