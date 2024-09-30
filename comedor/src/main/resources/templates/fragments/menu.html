@@ -40,7 +40,8 @@
         <a class="nav-link" th:href="@{/usuarios/cambiar-clave-rrhh}">ClaveRRHH</a>
       </li>
     </ul>
-    <span class="text-light">Bienvenido</span>&nbsp;<span class="text-light" sec:authentication="name"></span>
+    <!--<span class="text-light">Bienvenido</span>&nbsp;<span class="text-light" sec:authentication="name"></span>-->
+    <span class="text-light">Bienvenido</span>&nbsp;<span class="text-light" th:text="${nombreCompleto}"></span>
     <a class="btn btn-primary" th:href="@{/logout}">Salir</a>
   </div>
 </nav>
