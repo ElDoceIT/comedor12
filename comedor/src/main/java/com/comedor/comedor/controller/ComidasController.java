@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.jackson.JsonComponentModule;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -30,7 +31,7 @@ public class ComidasController {
 
     @GetMapping("/ver")
     public String VerComidas(Model model){
-        model.addAttribute("comidas", comidaRepository.findAll());
+        model.addAttribute("comidas", comidaRepository.findAll((Sort.by(Sort.Direction.DESC,"id"))));
         return "comida/comida_ver";
     }
 
