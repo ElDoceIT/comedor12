@@ -164,7 +164,7 @@ public class ReservaController {
                         || fechaMenu.isBefore(fechaActual.toLocalDate())) {
                     // Prohibir la eliminación y mostrar un mensaje de error
                     System.out.println("no se puede eliminar despues de las 9");
-                
+
                     redirectAttributes.addFlashAttribute("error", "No se puede eliminar o modificar la reserva después de las 9.");
                     return "redirect:/reservas/reservas-semanales";
 
