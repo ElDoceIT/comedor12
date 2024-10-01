@@ -16,6 +16,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.security.Principal;
 import java.time.DayOfWeek;
@@ -145,7 +146,7 @@ public class ReservaController {
         return "redirect:/reservas/reservas-semanales";
     }*/
     @PostMapping("/eliminar/{id}")
-    public String eliminarReserva(@PathVariable("id") Integer idReserva, Model model) {
+    public String eliminarReserva(@PathVariable("id") Integer idReserva, RedirectAttributes redirectAttributes, Model model) {
         // Obtiene la reserva
         Reserva reserva = reservaService.buscarPorId(idReserva);
 
@@ -159,14 +160,20 @@ public class ReservaController {
                 LocalDateTime fechaActual = LocalDateTime.now(); // Fecha y hora actual
 
                 // Si el menú corresponde al mismo día y la hora actual es posterior a las 9 AM
-                if (fechaMenu.equals(fechaActual.toLocalDate()) && fechaActual.toLocalTime().isAfter(horaLimite)) {
+                if ((fechaMenu.equals(fechaActual.toLocalDate()) && fechaActual.toLocalTime().isAfter(horaLimite))
+                        || fechaMenu.isBefore(fechaActual.toLocalDate())) {
                     // Prohibir la eliminación y mostrar un mensaje de error
-                    model.addAttribute("error", "No se puede eliminar la reserva después de las 9 AM del mismo día.");
-                    return "redirect:/reservas/reservas-semanales"; // Redirige a la página de reservas semanales
+                    System.out.println("no se puede eliminar despues de las 9");
+                
+                    redirectAttributes.addFlashAttribute("error", "No se puede eliminar o modificar la reserva después de las 9.");
+                    return "redirect:/reservas/reservas-semanales";
+
+                    // Redirige a la página de reservas semanales
                 } else {
-                    // Permite la eliminación
+                    // Permite la eliminación si la fecha del menú es posterior a la actual o si es hoy antes de las 9 AM
                     reservaService.eliminarPorId(idReserva);
                     return "redirect:/reservas/reservas-semanales";
+                    //return "reservas/reserva_seleccionar";
                 }
             } else {
                 // Manejar caso donde el menú no exista
