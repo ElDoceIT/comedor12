@@ -32,7 +32,7 @@
           <!-- Formulario de Búsqueda -->
         <form class="form-inline margen1 d-flex flex-column flex-sm-row" th:action="@{/productos/search}" method="get" th:object="${search}">
           <label for="producto" class="mr-sm-2 "><h5>Buscar:</h5></label>
-          <input type="text" class="form-control mb-2 mb-sm-0 flex-grow-1 a" id="producto" th:value="${descripcion}" name="descripcion" placeholder="Buscar producto" required="required">
+          <input type="text" class="form-control mb-2 mb-sm-0 flex-grow-1 a" id="producto" th:value="${descripcion}" name="descripcion" placeholder="Producto" required="required">
           <button type="submit" class="btn btn-outline-secondary botoncito1 b"><i class="bi bi-search"></i></button>
         </form>
 
@@ -60,7 +60,7 @@
           <tr th:each="producto :${productos}">
             <td class="float-left" th:text="${producto.descripcion}">CocaCola</td>
             <td class="float-right">
-              <a th:href="@{/productos/editar/{id} (id=${producto.id_producto})}" class=" btn btn-outline-secondary botoncito1 justify-content-end round-button " role="button" title="Editar"><i class="bi bi-pencil" aria-hidden="true"></i></a>
+              <a th:href="@{/productos/editar/{id} (id=${producto.id_producto})}" class=" btn btn-outline-secondary botoncito1 justify-content-end round-button p-1" role="button" title="Editar"><i class="bi bi-pencil" aria-hidden="true"></i></a>
             </td>
           </tr>
 
@@ -71,11 +71,11 @@
         <nav th:if="${productos.totalPages > 1}" aria-label="Page navigation example">
           <ul class="pagination">
                 <li th:if="${productos.hasPrevious()}">
-                    <a th:href="@{/productos/ver(keyword=${keyword}, page=${productos.number - 1})}" class="btn btn-outline-secondary botoncito1 table-light margen3">Anterior</a>
+                    <a th:href="@{/productos/ver(keyword=${keyword}, page=${productos.number - 1})}" class="btn btn-outline-secondary botoncito1 table-light margen3 ">Anterior</a>
                 </li>
 
                 <li th:if="${productos.hasNext()}">
-                    <a th:href="@{/productos/ver(keyword=${keyword}, page=${productos.number + 1})}" class="btn btn-outline-secondary botoncito1 table-light margen3">Siguiente</a>
+                    <a th:href="@{/productos/ver(keyword=${keyword}, page=${productos.number + 1})}" class="btn btn-outline-secondary botoncito1 table-light margen3 ">Siguiente</a>
                 </li>
           </ul>
         </nav>
