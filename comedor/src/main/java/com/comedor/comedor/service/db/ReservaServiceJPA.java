@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ReservaServiceJPA implements IReservaService {
@@ -52,5 +53,19 @@ public class ReservaServiceJPA implements IReservaService {
         LocalDate inicioSemana = LocalDate.now().with(DayOfWeek.MONDAY);
         LocalDate finSemana = LocalDate.now().with(DayOfWeek.SUNDAY);
         return reservaRepository.findReservasSemanalesPorUsuario(dni, inicioSemana, finSemana);
+    }
+
+    @Override
+    public void eliminarPorId(Integer idReserva) {
+        reservaRepository.deleteById(idReserva);
+    }
+
+    @Override
+    public Reserva buscarPorId(Integer idReserva) {
+        Optional<Reserva> resep= reservaRepository.findById(idReserva);
+        if(resep.isPresent()){
+            return resep.get();
+        }
+        return null;
     }
 }

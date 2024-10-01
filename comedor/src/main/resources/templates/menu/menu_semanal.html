@@ -120,7 +120,14 @@
           <span th:case="3">Retira</span>
         </td>
         <td class="float-right">
-          <a th:href="@{/reservas/editar/{id} (id=${reserva.idReserva})}" class=" btn btn-outline-secondary botoncito1 justify-content-end round-button " role="button" title="Editar"><i class="bi bi-pencil" aria-hidden="true"></i></a>
+          <form th:action="@{/reservas/eliminar/{id}(id=${reserva.idReserva})}" method="post" style="display:inline;">
+            <button type="submit" class="btn btn-outline-secondary botoncito1 round-button mx-0 ml-2 p-1" title="Eliminar">
+              <i class="bi bi-trash" aria-hidden="true"></i>
+            </button>
+          </form>
+          <div th:if="${error}" class="alert alert-danger" role="alert">
+            <span th:text="${error}"></span>
+          </div>
         </td>
       </tr>
     </table>

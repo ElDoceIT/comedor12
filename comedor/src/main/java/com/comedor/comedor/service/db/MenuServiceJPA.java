@@ -1,6 +1,7 @@
 package com.comedor.comedor.service.db;
 
 
+import com.comedor.comedor.model.Comida;
 import com.comedor.comedor.model.Menu;
 import com.comedor.comedor.repository.MenuRepository;
 import com.comedor.comedor.service.IMenuService;
@@ -11,6 +12,7 @@ import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.temporal.TemporalAdjusters;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class MenuServiceJPA implements IMenuService {
@@ -31,6 +33,10 @@ public class MenuServiceJPA implements IMenuService {
 
     @Override
     public Menu buscarPorId(Integer id_menu) {
+        Optional<Menu> menup= menuRepository.findById(id_menu);
+        if(menup.isPresent()){
+            return menup.get();
+        }
         return null;
     }
 

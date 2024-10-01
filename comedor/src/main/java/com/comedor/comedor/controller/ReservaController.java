@@ -15,15 +15,13 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -139,5 +137,46 @@ public class ReservaController {
                 .collect(Collectors.toList());
         model.addAttribute("reservas", reservasFiltradas);
         return "/reservas/reservas_ver";
+    }
+
+    /*@PostMapping("/eliminar/{id}")
+    public String eliminarReserva(@PathVariable("id") Integer idReserva) {
+        reservaService.eliminarPorId(idReserva);
+        return "redirect:/reservas/reservas-semanales";
+    }*/
+    @PostMapping("/eliminar/{id}")
+    public String eliminarReserva(@PathVariable("id") Integer idReserva, Model model) {
+        // Obtiene la reserva
+        Reserva reserva = reservaService.buscarPorId(idReserva);
+
+        if (reserva != null) {
+            // Obtiene el menú relacionado con la reserva
+            Menu menu = menuService.buscarPorId(reserva.getMenu().getId_menu());
+
+            if (menu != null) {
+                LocalDate fechaMenu = menu.getFechaMenu(); // Asumiendo que 'fechaMenu' es de tipo LocalDate
+                LocalTime horaLimite = LocalTime.of(9, 0); // 9:00 AM
+                LocalDateTime fechaActual = LocalDateTime.now(); // Fecha y hora actual
+
+                // Si el menú corresponde al mismo día y la hora actual es posterior a las 9 AM
+                if (fechaMenu.equals(fechaActual.toLocalDate()) && fechaActual.toLocalTime().isAfter(horaLimite)) {
+                    // Prohibir la eliminación y mostrar un mensaje de error
+                    model.addAttribute("error", "No se puede eliminar la reserva después de las 9 AM del mismo día.");
+                    return "redirect:/reservas/reservas-semanales"; // Redirige a la página de reservas semanales
+                } else {
+                    // Permite la eliminación
+                    reservaService.eliminarPorId(idReserva);
+                    return "redirect:/reservas/reservas-semanales";
+                }
+            } else {
+                // Manejar caso donde el menú no exista
+                model.addAttribute("error", "El menú asociado a la reserva no existe.");
+                return "redirect:/reservas/reservas-semanales";
+            }
+        } else {
+            // Manejar caso donde la reserva no exista
+            model.addAttribute("error", "La reserva no existe.");
+            return "redirect:/reservas/reservas-semanales";
+        }
     }
 }
