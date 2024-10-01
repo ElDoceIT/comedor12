@@ -11,6 +11,7 @@ import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -50,7 +51,8 @@ public class ConsumoController {
 
     @GetMapping("/ver")
     public String consumosVer(Model model) {
-        model.addAttribute("consumos", consumoRepository.findAll());
+        //model.addAttribute("consumos", consumoRepository.findAll(Sort.by(Sort.Direction.DESC, "fecha")));
+        model.addAttribute("consumos", consumoRepository.findAllByOrderByFechaDesc());
         return "consumos/consumos_ver";
 
     }
