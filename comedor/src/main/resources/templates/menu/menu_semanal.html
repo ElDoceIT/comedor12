@@ -26,8 +26,7 @@
 <h2>Seleccione su comida:</h2>
 <form action="#" method="post">
   <div th:each="dia : ${menusPorDia}">
-    <h3 th:text="${#temporals.format(dia.key, 'EEEE dd MMMM yyyy')}">Día</h3>
-
+    <h3 id="hora-actual" th:text="${#temporals.format(serverTime, 'EEEE dd MMMM yyyy HH:mm:ss')}">Día</h3>
 
     <table class="table table-striped">
       <thead>
@@ -134,8 +133,8 @@
 </div>
 
 
-<footer th:insert="fragments/footer :: footer" class="footer">
-  <script th:src="@{/bootstrap/js/bootstrap.min.js}"></script>
-</footer>
+<footer th:insert="fragments/footer :: footer" class="footer"></footer>
+<script th:src="@{/bootstrap/js/bootstrap.min.js}"></script>
+<script th:src="@{/js/horaActual.js}"></script>
 </body>
 </html>
