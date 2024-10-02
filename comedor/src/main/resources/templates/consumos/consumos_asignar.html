@@ -32,11 +32,14 @@
           <div class="row">
             <div class="col-md-3">
               <div class="form-group">
-                <label for="Producto"><h6>Producto</h6></label>
+               <!-- <label for="Producto"><h6>Producto</h6></label>
                 <select class="form-control" name="producto" id="producto">
                   <option selected>producto</option>
                   <option th:each="producto :${productos}" th:value="${producto.id_producto}" th:text="${producto.descripcion}"></option>
-                </select>
+                </select>-->
+                <label for="producto"><h6>Producto</h6></label>
+                <input type="text" class="form-control" id="producto" placeholder="Escriba para buscar...">
+                <div id="sugerencias-producto" class="list-group"></div>
               </div>
             </div>
 
@@ -84,6 +87,7 @@
 <footer th:insert="fragments/footer :: footer" class="footer">
 </footer>
 <script th:src="@{/bootstrap/js/bootstrap.min.js}"></script>
+<script th:src="@{/js/buscarProducto.js}"></script>
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
 </body>
 </html>

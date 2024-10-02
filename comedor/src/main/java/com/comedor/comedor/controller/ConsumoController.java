@@ -2,6 +2,7 @@ package com.comedor.comedor.controller;
 
 import com.comedor.comedor.model.Consumo;
 
+import com.comedor.comedor.model.Producto;
 import com.comedor.comedor.repository.ConsumoRepository;
 import com.comedor.comedor.repository.ProductoRepository;
 import com.comedor.comedor.repository.UsuarioRepository;
@@ -64,6 +65,12 @@ public class ConsumoController {
         model.addAttribute("usuarios", usuarioRepository.findAll());
         return "consumos/consumos_asignar";
 
+    }
+
+    @GetMapping("/productos/buscar")
+    @ResponseBody
+    public List<Producto> buscarProductos(@RequestParam("query") String query) {
+        return productoRepository.findByDescripcionContainingIgnoreCase(query);
     }
 
     @PostMapping("/save")
