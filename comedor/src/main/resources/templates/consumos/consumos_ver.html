@@ -47,7 +47,14 @@
               <a th:href="@{/consumos/editar/{id} (id=${consumo.idConsumo})}" class="btn btn-outline-secondary botoncito1 round-button mx-0 p-1 mr-1" role="button" title="Editar">
                 <i class="bi bi-pencil" aria-hidden="true"></i>
               </a>
-              <a th:href="@{/consumos/delete/{id} (id=${consumo.idConsumo})}" class="btn btn-outline-secondary botoncito1 round-button mx-0 ml-2 p-1" role="button" title="Eliminar">
+             <!-- <a th:href="@{/consumos/delete/{id} (id=${consumo.idConsumo})}" class="btn btn-outline-secondary botoncito1 round-button mx-0 ml-2 p-1" role="button" title="Eliminar">
+                <i class="bi bi-trash" aria-hidden="true"></i>
+              </a> -->
+              <a th:href="@{/consumos/delete/{id} (id=${consumo.idConsumo})}"
+                 class="btn btn-outline-secondary botoncito1 round-button mx-0 ml-2 p-1"
+                 role="button"
+                 title="Eliminar"
+                 onclick="return confirm('¿Estás seguro de que deseas eliminar este consumo?');">
                 <i class="bi bi-trash" aria-hidden="true"></i>
               </a>
             </div>
@@ -63,22 +70,6 @@
     <a th:href="@{/consumos/export/excel}" class="btn btn-outline-secondary botoncito1 table-light margen3">Exportar a Excel</a>
   </div>
 </div>
-
-
-<script>
-  // Agregar event listener a todos los botones de eliminar
-  document.querySelectorAll('.btn-eliminar').forEach(function(button) {
-    button.addEventListener('click', function(event) {
-      // Mostrar el cuadro de confirmación
-      const confirmed = confirm("¿Estás seguro de que deseas eliminar este registro?");
-
-      // Si no está confirmado, redirige a # (no hace nada)
-      if (!confirmed) {
-        event.preventDefault();
-      }
-    });
-  });
-</script>
 
 <footer th:insert="fragments/footer :: footer" class="footer">
 
