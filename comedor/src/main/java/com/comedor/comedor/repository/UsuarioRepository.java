@@ -13,6 +13,8 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Integer> {
 
     Optional<Usuario> findByDni(Integer dni);
 
+    List<Usuario> findByNombreContainingIgnoreCaseOrApellidoContainingIgnoreCase(String nombre, String apellido);
+
     @Query("SELECT u FROM Usuario u WHERE "
             + "(?1 IS NULL OR u.dni = ?1) "
             + "AND (?2 IS NULL OR LOWER(u.apellido) LIKE LOWER(CONCAT('%', ?2, '%')))")

@@ -37,6 +37,7 @@
                   <option selected>producto</option>
                   <option th:each="producto :${productos}" th:value="${producto.id_producto}" th:text="${producto.descripcion}"></option>
                 </select>-->
+                <input type="hidden" name="producto" id="productoId">
                 <label for="producto"><h6>Producto</h6></label>
                 <input type="text" class="form-control" id="producto" placeholder="Escriba para buscar...">
                 <div id="sugerencias-producto" class="list-group"></div>
@@ -45,14 +46,18 @@
 
             <div class="col-md-5">
               <div class="form-group">
-                <label for="usuario"><h6>Cliente</h6></label>
+                <!--<label for="usuario"><h6>Cliente</h6></label>
                 <select class="form-control" name="usuario" id="usuario">
                   <option selected>usuario</option>
                   <option th:each="usuario :${usuarios}" th:value="${usuario.id_usuario}" th:text="${usuario.apellido} +' ' + ${usuario.nombre} "></option>
-                </select>
-              </div>
-
-            </div>
+                </select>      -->
+                  <label for="usuarioNom"><h6>Cliente</h6></label>
+                  <input type="text" class="form-control" id="usuarioNom" placeholder="Buscar cliente">
+                  <div id="sugerencias-usuario" class="list-group"></div>
+                  
+                  <!-- Campo oculto para el id del usuario -->
+            </div><input type="hidden" name="usuario" id="usuarioId">
+                  </div>
             <div class="col-md-2">
               <div class="form-group">
                 <label for="fecha"><h6>Fecha</h6></label>
@@ -88,6 +93,7 @@
 </footer>
 <script th:src="@{/bootstrap/js/bootstrap.min.js}"></script>
 <script th:src="@{/js/buscarProducto.js}"></script>
+<script th:src="@{/js/buscarNombreApellido.js}"></script>
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
 </body>
 </html>
