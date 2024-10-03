@@ -23,6 +23,21 @@
   <div class="card1">
     <h2 class="text-center card-header">Todos los consumos</h2>
 
+    <!-- Formulario de Búsqueda por Fecha y Usuario -->
+    <form class="form-inline mb-4" th:action="@{/consumos/search}" method="get">
+      <label for="fechaInicio" class="mr-sm-2">Desde:</label>
+      <input type="date" class="form-control mb-2 mr-sm-2" id="fechaInicio" name="fechaInicio" th:value="${fechaInicio}">
+
+      <label for="fechaFin" class="mr-sm-2">Hasta:</label>
+      <input type="date" class="form-control mb-2 mr-sm-2" id="fechaFin" name="fechaFin" th:value="${fechaFin}">
+
+      <label for="usuario" class="mr-sm-2">Usuario (Nombre o Apellido):</label>
+      <input type="text" class="form-control mb-2 mr-sm-2" id="usuario" name="usuario" placeholder="Nombre o Apellido" th:value="${usuario}">
+
+      <button type="submit" class="btn btn-outline-secondary mb-2">Filtrar</button>
+    </form>
+
+    <!-- Tabla de resultados -->
     <div class="table-responsive">
       <table class="table">
         <thead class="thead-dark justify-content-around">
@@ -47,14 +62,7 @@
               <a th:href="@{/consumos/editar/{id} (id=${consumo.idConsumo})}" class="btn btn-outline-secondary botoncito1 round-button mx-0 p-1 mr-1" role="button" title="Editar">
                 <i class="bi bi-pencil" aria-hidden="true"></i>
               </a>
-             <!-- <a th:href="@{/consumos/delete/{id} (id=${consumo.idConsumo})}" class="btn btn-outline-secondary botoncito1 round-button mx-0 ml-2 p-1" role="button" title="Eliminar">
-                <i class="bi bi-trash" aria-hidden="true"></i>
-              </a> -->
-              <a th:href="@{/consumos/delete/{id} (id=${consumo.idConsumo})}"
-                 class="btn btn-outline-secondary botoncito1 round-button mx-0 ml-2 p-1"
-                 role="button"
-                 title="Eliminar"
-                 onclick="return confirm('¿Estás seguro de que deseas eliminar este consumo?');">
+              <a th:href="@{/consumos/delete/{id} (id=${consumo.idConsumo})}" class="btn btn-outline-secondary botoncito1 round-button mx-0 ml-2 p-1" role="button" title="Eliminar" onclick="return confirm('¿Estás seguro de que deseas eliminar este consumo?');">
                 <i class="bi bi-trash" aria-hidden="true"></i>
               </a>
             </div>
@@ -63,13 +71,15 @@
         </tbody>
       </table>
     </div>
-  </div>
 
-  <hr>
-  <div class="text-center mt-3">
-    <a th:href="@{/consumos/export/excel}" class="btn btn-outline-secondary botoncito1 table-light margen3">Exportar a Excel</a>
+    <hr>
+    <div class="text-center mt-3">
+      <a th:href="@{/consumos/export/excel}" class="btn btn-outline-secondary botoncito1 table-light margen3">Exportar a Excel</a>
+    </div>
   </div>
 </div>
+
+
 
 <footer th:insert="fragments/footer :: footer" class="footer">
 

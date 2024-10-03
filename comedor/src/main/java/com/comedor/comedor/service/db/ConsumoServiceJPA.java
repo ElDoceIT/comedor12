@@ -6,6 +6,7 @@ import com.comedor.comedor.service.IConsumoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -23,5 +24,10 @@ public class ConsumoServiceJPA implements IConsumoService {
     public void guardar(Consumo consumo) {
         consumoRepository.save(consumo);
 
+    }
+
+    @Override
+    public List<Consumo> buscarConsumos(LocalDate fechaInicio, LocalDate fechaFin, String usuario) {
+        return consumoRepository.buscarConsumosFiltrados(fechaInicio, fechaFin, usuario);
     }
 }

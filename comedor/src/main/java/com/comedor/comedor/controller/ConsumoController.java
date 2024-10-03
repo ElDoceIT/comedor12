@@ -7,6 +7,7 @@ import com.comedor.comedor.model.Usuario;
 import com.comedor.comedor.repository.ConsumoRepository;
 import com.comedor.comedor.repository.ProductoRepository;
 import com.comedor.comedor.repository.UsuarioRepository;
+import com.comedor.comedor.service.IConsumoService;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
@@ -14,6 +15,7 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.data.domain.Sort;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -26,6 +28,7 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
@@ -35,6 +38,9 @@ public class ConsumoController {
 
     @Autowired
     private ConsumoRepository consumoRepository;
+
+    @Autowired
+    private IConsumoService consumoService;
 
 
     @Autowired
@@ -50,7 +56,7 @@ public class ConsumoController {
         binder.registerCustomEditor(Date.class, new CustomDateEditor(dateFormat, true));
     }
 
-
+    //ver todos los consumos de todos los usuarios.
     @GetMapping("/ver")
     public String consumosVer(Model model) {
         //model.addAttribute("consumos", consumoRepository.findAll(Sort.by(Sort.Direction.DESC, "fecha")));
@@ -59,7 +65,7 @@ public class ConsumoController {
 
     }
 
-
+    //vista para asignar productos a los usuarios, ademas de la cantidad y fecha.
     @GetMapping("/asignar")
     public String consumosAsignar(Model model) {
         model.addAttribute("productos", productoRepository.findAll());
@@ -67,19 +73,40 @@ public class ConsumoController {
         return "consumos/consumos_asignar";
 
     }
-
+    //en consumos_asignar, filtrar por producto
     @GetMapping("/productos/buscar")
     @ResponseBody
     public List<Producto> buscarProductos(@RequestParam("query") String query) {
         return productoRepository.findByDescripcionContainingIgnoreCase(query);
     }
-
+    //en comsumos_asignar, filtrar por usuarios
     @GetMapping("/usuarios/buscar")
     @ResponseBody
     public List<Usuario> buscarUsuarios(@RequestParam String query) {
         return usuarioRepository.findByNombreContainingIgnoreCaseOrApellidoContainingIgnoreCase(query, query);
     }
 
+    @GetMapping("/search")
+    public String buscarConsumos(
+            @RequestParam(name = "fechaInicio", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fechaInicio,
+            @RequestParam(name = "fechaFin", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fechaFin,
+            @RequestParam(name = "usuario", required = false) String usuario,
+            Model model) {
+
+        // Lógica para filtrar los consumos según los parámetros recibidos
+        List<Consumo> consumos = consumoService.buscarConsumos(fechaInicio, fechaFin, usuario);
+
+        // Añadir los filtros actuales para poder mostrarlos en la vista
+        model.addAttribute("consumos", consumos);
+        model.addAttribute("fechaInicio", fechaInicio);
+        model.addAttribute("fechaFin", fechaFin);
+        model.addAttribute("usuario", usuario);
+
+        return "consumos/consumos_ver";  // Asegúrate de que esta es la vista que estás utilizando
+    }
+
+
+    //guarda consumos_asignar
     @PostMapping("/save")
     public String guardarConsumo(Consumo consumo) {
         consumoRepository.save(consumo);
