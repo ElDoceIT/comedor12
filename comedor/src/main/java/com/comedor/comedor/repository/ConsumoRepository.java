@@ -14,7 +14,8 @@ public interface ConsumoRepository extends JpaRepository<Consumo, Integer> {
     @Query("SELECT c FROM Consumo c WHERE " +
             "(:fechaInicio IS NULL OR c.fecha >= :fechaInicio) AND " +
             "(:fechaFin IS NULL OR c.fecha <= :fechaFin) AND " +
-            "(:usuario IS NULL OR (c.usuario.nombre LIKE %:usuario% OR c.usuario.apellido LIKE %:usuario%))")
+            "(:usuario IS NULL OR (CONCAT(c.usuario.nombre, ' ', c.usuario.apellido) LIKE %:usuario% OR " +
+            "c.usuario.nombre LIKE %:usuario% OR c.usuario.apellido LIKE %:usuario%))")
     List<Consumo> buscarConsumosFiltrados(@Param("fechaInicio") LocalDate fechaInicio,
                                           @Param("fechaFin") LocalDate fechaFin,
                                           @Param("usuario") String usuario);
