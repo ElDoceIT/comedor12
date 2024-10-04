@@ -19,8 +19,8 @@
 
 </header>
 
-<div class="container mt-3">
-    <h4 class="text-right">
+<div class="container mb-3">
+    <h4 class="text-right pr-3">
         <!-- Mostrar fecha y hora formateadas -->
         <strong>Fecha y Hora: </strong>
        <!-- <span th:text="${#temporals.format(serverTime, 'EEEE dd MMMM yyyy HH:mm')}"></span> -->
@@ -30,6 +30,7 @@
     <div class="container">
         <div class="card1 mt-3 pb-3">
             <h1 class="card-header text-center"><strong>Mis Reservas de la semana</strong></h1>
+            <div class="table-responsive">
             <table class="table mt-3">
                 <thead class="thead-dark">
                 <tr class="text-center">
@@ -39,7 +40,7 @@
                     <th>Postre</th>
                     <th>Tipo de Comida</th>
                     <th>Lugar de Consumo</th>
-                    <th>Editar</th>
+                    <th>Eliminar</th>
                 </tr>
                 </thead>
                 <tbody  class="table-borderless w-100 striped-table ">
@@ -60,13 +61,15 @@
                         <span th:case="2">Vianda</span>
                         <span th:case="3">Retira</span>
                     </td>
-                    <td class="float-right">
+                    <td class="align-middle">
+                        <div class="d-flex justify-content-center">
                         <form th:action="@{/reservas/eliminar/{id}(id=${reserva.idReserva})}" method="post" style="display:inline;"
                               onsubmit="return confirm('¿Estás seguro de que deseas eliminar esta reserva?');">
-                            <button type="submit" class="btn btn-outline-secondary botoncito1 round-button mx-0 ml-2 p-1" title="Eliminar">
+                            <button type="submit" class="btn-no-border" title="Eliminar">
                                 <i class="bi bi-trash" aria-hidden="true"></i>
                             </button>
                         </form>
+                        </div>
                         <div th:if="${error}" class="alert alert-danger" role="alert">
                             <span th:text="${error}"></span>
                         </div>
@@ -74,6 +77,7 @@
                 </tr>
                 </tbody>
             </table>
+            </div>
         </div>
     </div>
 

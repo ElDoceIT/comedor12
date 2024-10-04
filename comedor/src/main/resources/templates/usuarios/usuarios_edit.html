@@ -3,226 +3,115 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <link rel="shortcut icon" th:href="@{/images/El-Doce-TV-en-vivo-Online-1.png}" type="image/x-icon">
-
     <link th:href="@{/bootstrap/css/bootstrap.min.css}" rel="stylesheet">
-    <!-- Custom styles for this template -->
     <link th:href="@{/bootstrap/css/jumbotron.css}" rel="stylesheet">
     <link th:href="@{/bootstrap/css/sticky-footer-navbar.css}" rel="stylesheet">
-
-    <title>editarUsusario</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <title>editarUsuario</title>
 </head>
 <body>
-<header th:insert="fragments/menu :: menu-principal">
-
-</header>
-<div class="card">
-    <h4 class="card-header"><strong>Editar usuario</strong></h4>
-    <div class="card-body">
-        <form th:action="@{/usuarios/save}" method="post"  th:object="${usuario}">
-            <input type="hidden" th:field="*{id_usuario}">
-            <input type="hidden" th:field="*{pass}">
-            <div class="col-md-2">
-                <div class="form-group">
-                    <label for="dni">DNI</label>
-                    <input type="text" class="form-control" th:field="*{dni}"  name="dni" id="dni" placeholder="nro DNI" required="required">
-                </div>
-            </div>
-
-            <div class="col-md-2">
-                <div class="form-group">
-                    <label for="apellido">Apellido</label>
-                    <input type="text" class="form-control" th:field="*{apellido}"  name="apellido" id="apellido" placeholder="apellido" required="required">
-                </div>
-            </div>
-
-            <div class="col-md-2">
-                <div class="form-group">
-                    <label for="nombre">Nombre</label>
-                    <input type="text" class="form-control" th:field="*{nombre}"  name="nombre" id="nombre" placeholder="nombre" required="required">
-                </div>
-            </div>
-
-            <div class="col-md-2">
-                <div class="form-group">
-                    <label for="ceco">CeCo</label>
-                    <select class="form-control" th:field="*{cc}" name="ceco" id="ceco">
-                        <option value="" disabled selected>Seleccione CeCo</option>
-                        <!-- Mostrar todos los grupos en el select -->
-                        <option th:each="ceco : ${cecos}" th:value="${ceco}" th:text="${ceco}"></option>
-                    </select>
-                </div>
-            </div>
-
-
-
-            <div class="col-md-5">
-                <div class="form-group">
-                    <label for="grupo">Grupo</label>
-                    <select class="form-control" th:field="*{grupo}" name="grupo" id="grupo">
-                        <option value="" disabled selected>Seleccione un grupo</option>
-                        <!-- Mostrar todos los grupos en el select -->
-                        <option th:each="grupo : ${grupos}" th:value="${grupo}" th:text="${grupo}"></option>
-                    </select>
-                </div>
-            </div>
-
-            <div class="col-md-5">
-                <div class="form-group">
-                    <label for="empresa">Empresa</label>
-                    <select class="form-control" th:field="*{empresa}" name="empresa" id="empresa">
-                        <option value="" disabled selected>Seleccione empresa</option>
-                        <!-- Mostrar todos los grupos en el select -->
-                        <option th:each="empresa : ${empresas}" th:value="${empresa}" th:text="${empresa}"></option>
-                    </select>
-                </div>
-            </div>
-
-            <div class="col-md-5">
-                <div class="form-group">
-                    <label for="estado">Estado</label>
-                    <select class="form-control" th:field="*{estado}" name="estado" id="estado">
-                        <option value="" disabled selected>Seleccione estado</option>
-                        <!-- Mostrar todos los grupos en el select -->
-                        <option th:each="estado : ${estados}" th:value="${estado}" th:text="${estado}"></option>
-                    </select>
-                </div>
-            </div>
-
-
-
-
-            <button type="submit" class="btn btn-primary">Guardar</button>
-        </form>
-    </div>
-</div>
-
-
-
-----
-</header>
+<header th:insert="fragments/menu :: menu-principal"></header>
 <div class="container">
     <div class="card1">
-        <h1 class="card-header text-center"><strong>Agregar usuario</strong></h1>
+        <h4 class="card-header text-center"><strong>Editar usuario</strong></h4>
         <div class="card-body">
-            <form th:action="@{/usuarios/save}" method="post"  th:object="${usuario}">
-
-                <div class="col-md-2">
-                    <div class="form-group">
-                        <label for="dni"><h5>DNI</h5></label>
-                        <input type="text" class="form-control"  name="dni" id="dni" placeholder="nro DNI" required="required">
+            <form th:action="@{/usuarios/save}" method="post" th:object="${usuario}">
+                <input type="hidden" th:field="*{id_usuario}">
+                <input type="hidden" th:field="*{pass}">
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label for="nombre"><h6>Nombre</h6></label>
+                            <input type="text" class="form-control" th:field="*{nombre}" name="nombre" id="nombre" placeholder="nombre" required="required">
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label for="apellido"><h6>Apellido</h6></label>
+                            <input type="text" class="form-control" th:field="*{apellido}" name="apellido" id="apellido" placeholder="apellido" required="required">
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label for="dni"><h6>DNI</h6></label>
+                            <input type="text" class="form-control" th:field="*{dni}" name="dni" id="dni" placeholder="nro DNI" required="required">
+                        </div>
                     </div>
                 </div>
-
-                <div class="col-md-3">
-                    <div class="form-group">
-                        <!-- Primer campo de contraseña -->
-                        <label for="password"><h5>Contraseña:</h5></label>
-                        <input class="form-control" type="password" id="password"  name="pass" required />
-
-                        <!-- Segundo campo de contraseña para confirmación -->
-                        <label for="confirmPassword"><h5>Confirmar Contraseña:</h5></label>
-                        <input class="form-control" type="password" id="confirmPassword" required />
-
-                        <span id="errorMensaje" style="color:red; display:none;">Las contraseñas no coinciden</span>
-                        <script>
-                            function validarPassword() {
-                                // Obtener los valores de los campos de contraseña
-                                var password = document.getElementById("password").value;
-                                var confirmPassword = document.getElementById("confirmPassword").value;
-
-                                // Comparar si las contraseñas coinciden
-                                if (password !== confirmPassword) {
-                                    // Mostrar mensaje de error
-                                    document.getElementById("errorMensaje").style.display = "block";
-                                    return false; // Evitar que el formulario se envíe
-                                }
-                                return true; // Permitir el envío si coinciden
-                            }
-                        </script>
-
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label for="password"><h6>Contraseña</h6></label>
+                            <input type="password" class="form-control" id="password" name="pass" required>
+                        </div>
                     </div>
-
-                    <div class="form-group">
-                        <label for="apellido"><h5>Apellido</h5></label>
-                        <input type="text" class="form-control"  name="apellido" id="apellido" placeholder="apellido" required="required">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label for="confirmPassword"><h6>Confirmar Contraseña</h6></label>
+                            <input type="password" class="form-control" id="confirmPassword" required>
+                            <span id="errorMensaje" style="color:red; display:none;">Las contraseñas no coinciden</span>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label for="grupo"><h6>Grupo</h6></label>
+                            <select class="form-control" th:field="*{grupo}" name="grupo" id="grupo">
+                                <option value="" disabled selected>Seleccione un grupo</option>
+                                <option th:each="grupo : ${grupos}" th:value="${grupo}" th:text="${grupo}"></option>
+                            </select>
+                        </div>
                     </div>
                 </div>
-
-                <div class="col-md-3">
-                    <div class="form-group">
-                        <label for="nombre"><h5>Nombre</h5></label>
-                        <input type="text" class="form-control" name="nombre" id="nombre" placeholder="nombre" required="required">
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <div class="row">
-
-                        <div class="col-md-4">
-                            <label for="ceco"><h5>CeCo</h5></label>
-                            <select class="form-control" name="cc" id="ceco">
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label for="ceco"><h6>CeCo</h6></label>
+                            <select class="form-control" th:field="*{cc}" name="ceco" id="ceco">
                                 <option value="" disabled selected>Seleccione CeCo</option>
-                                <!-- Mostrar todos los CeCo en el select -->
                                 <option th:each="ceco : ${cecos}" th:value="${ceco}" th:text="${ceco}"></option>
                             </select>
                         </div>
-
-                        <div class="col-md-2">
-                            <div class="form-group">
-                                <label for="grupo"><h5>Grupo</h5></label>
-                                <select class="form-control" name="grupo" id="grupo">
-                                    <option value="" disabled selected><h4>Seleccione un grupo</h4></option>
-                                    <!-- Mostrar todos los grupos en el select -->
-                                    <option th:each="grupo : ${grupos}" th:value="${grupo}" th:text="${grupo}"></option>
-                                </select>
-                            </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label for="empresa"><h6>Empresa</h6></label>
+                            <select class="form-control" th:field="*{empresa}" name="empresa" id="empresa">
+                                <option value="" disabled selected>Seleccione empresa</option>
+                                <option th:each="empresa : ${empresas}" th:value="${empresa}" th:text="${empresa}"></option>
+                            </select>
                         </div>
-
-                        <div class="col-md-2">
-                            <div class="form-group">
-                                <label for="empresa"><h5>Empresa</h5></label>
-                                <select class="form-control"  name="empresa" id="empresa">
-                                    <option value="" disabled selected>Seleccione empresa</option>
-                                    <!-- Mostrar todos los grupos en el select -->
-                                    <option th:each="empresa : ${empresas}" th:value="${empresa}" th:text="${empresa}"></option>
-                                </select>
-                            </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label for="estado"><h6>Estado</h6></label>
+                            <select class="form-control" th:field="*{estado}" name="estado" id="estado">
+                                <option value="" disabled selected>Seleccione estado</option>
+                                <option th:each="estado : ${estados}" th:value="${estado}" th:text="${estado}"></option>
+                            </select>
                         </div>
-
-                        <div class="col-md-2">
-                            <div class="form-group">
-                                <label for="estado"><h5>Estado</h5></label>
-                                <select class="form-control"  name="estado" id="estado">
-                                    <option value="" disabled selected>Seleccione estado</option>
-                                    <!-- Mostrar todos los grupos en el select -->
-                                    <option th:each="estado : ${estados}" th:value="${estado}" th:text="${estado}"></option>
-                                </select>
-                            </div>
-                        </div>
-
-
-
-                        <div class="d-flex justify-content-center">
-                            <button type="submit" class="botoncito1 btn btn-outline-secondary align-content-center">Guardar</button>
-                        </div>
+                    </div>
+                </div>
+                <div class="d-flex justify-content-center">
+                    <button type="submit" class="btn btn-outline-secondary botoncito1 table-light margen3 mt-3">Guardar</button>
+                </div>
             </form>
         </div>
     </div>
-
 </div>
------
-
-
-
-
-
-
-<footer th:insert="fragments/footer :: footer" class="footer">
-
-</footer>
+<footer th:insert="fragments/footer :: footer" class="footer"></footer>
 <script th:src="@{/bootstrap/js/bootstrap.min.js}"></script>
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+<script>
+    function validarPassword() {
+        var password = document.getElementById("password").value;
+        var confirmPassword = document.getElementById("confirmPassword").value;
+        if (password !== confirmPassword) {
+            document.getElementById("errorMensaje").style.display = "block";
+            return false;
+        }
+        return true;
+    }
+</script>
 </body>
 </html>

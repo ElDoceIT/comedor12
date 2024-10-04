@@ -24,49 +24,62 @@
         <h1 class="card-header text-center"><strong>Ver usuarios</strong></h1>
 
             <!-- Formulario de Búsqueda -->
-        <div class="d-flex justify-content-center">
-            <form class="form-inline" th:action="@{/usuarios/search}" method="get" th:object="${search}">
-                <label for="dni"><h5>Filtrar por:</h5></label>
-                <input type="number" class="form-control small a margen1 c " id="dni" th:value="${dni}" name="dni" placeholder="DNI" />
+        <div class="container">
+            <form class="form-inline w-100" th:action="@{/usuarios/search}" method="get" th:object="${search}">
+                <div class="row w-100">
 
-                <label for="apellido"><h5></h5></label>
-                <input type="text" class="form-control small a margen1" id="apellido" th:value="${apellido}" name="apellido" placeholder="APELLIDO" />
+                    <div class="col-12 mb-2 text-left mt-3">
+                        <label for="dni"><h5>Filtrar por:</h5></label>
+                    </div>
 
-                <button type="submit" class="btn btn-outline-secondary botoncito1 b">Buscar</button>
+
+                    <div class="col-12 col-sm-4 mb-2">
+                        <input type="number" class="form-control w-100" id="dni" th:value="${dni}" name="dni" placeholder="DNI" />
+                    </div>
+
+                    <div class="col-12 col-sm-4 mb-2">
+                        <input type="text" class="form-control w-100" id="apellido" th:value="${apellido}" name="apellido" placeholder="APELLIDO" />
+                    </div>
+
+                    <div class="col-12 col-sm-4 mb-2 d-flex align-items-end">
+                        <button type="submit" class="btn btn-outline-secondary w-100">Buscar</button>
+                    </div>
+                </div>
             </form>
         </div>
 
 
+        <div class="table-responsive">
 
-
-        <table class="table mt-3">
-            <thead class="thead-dark">
-            <tr class="text-center">
-                <th >DNI</th>
-                <th >Apellido</th>
-                <th >Nombre</th>
-                <th >CC</th>
-                <th >Grupo</th>
-                <th >Empresa</th>
-                <th>Estado</th>
-                <th></th>
-            </tr>
-            </thead>
-            <tbody class="table-borderless w-100 striped-table ">
-            <tr class="text-center" th:each="usuario :${usuarios}">
-                <td  th:text="${usuario.dni}"></td>
-                <td  th:text="${usuario.apellido}"></td>
-                <td  th:text="${usuario.nombre}"></td>
-                <td  th:text="${usuario.cc}"></td>
-                <td  th:text="${usuario.grupo}"></td>
-                <td th:text="${usuario.empresa}"></td>
-                <td  th:text="${usuario.estado}"></td>
-                <td class="">
-                    <a th:href="@{/usuarios/editar/{id} (id=${usuario.id_usuario})}" class=" btn btn-outline-secondary botoncito1 justify-content-end round-button p-1" role="button" title="Editar"><i class="bi bi-pencil" aria-hidden="true"></i></a>
-                </td>
-            </tr>
-            </tbody>
-        </table>
+            <table class="table mt-3">
+                <thead class="thead-dark">
+                <tr class="text-center">
+                    <th class="text-left" >Nombre</th>
+                    <th >Apellido</th>
+                    <th >DNI</th>
+                     <th >CC</th>
+                    <th >Grupo</th>
+                    <th >Empresa</th>
+                    <th>Estado</th>
+                    <th></th>
+                </tr>
+                </thead>
+                <tbody class="table-borderless w-100 striped-table">
+                <tr class="text-center" th:each="usuario :${usuarios}">
+                    <td class="text-left"  th:text="${usuario.nombre}"></td>
+                    <td  th:text="${usuario.apellido}"></td>
+                    <td  th:text="${usuario.dni}"></td>
+                    <td  th:text="${usuario.cc}"></td>
+                    <td  th:text="${usuario.grupo}"></td>
+                    <td th:text="${usuario.empresa}"></td>
+                    <td  th:text="${usuario.estado}"></td>
+                    <td class="">
+                        <a th:href="@{/usuarios/editar/{id} (id=${usuario.id_usuario})}" class=" color1" role="button" title="Editar"><i class="bi bi-pencil" aria-hidden="true"></i></a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
     </div>
 
 

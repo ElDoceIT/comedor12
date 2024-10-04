@@ -51,7 +51,8 @@
 
                 <div>
                     <h3 class="text-center border-bottom">Últimas cargas no procesadas</h3>
-                    <table class="table table-striped ">
+                    <div class="table-responsive">
+                    <table class="table ">
                         <thead>
                         <tr class="thead-dark">
                             <th>Fecha</th>
@@ -59,7 +60,7 @@
                             <th></th>
                         </tr>
                         </thead>
-                        <tbody>
+                        <tbody class="table-borderless w-100 striped-table">
 
                        <tr th:each="menu : ${menus}">
 
@@ -85,25 +86,26 @@
                                </div>
                            </td>
 
-                           <!-- Botón de eliminar -->
-                           <td>
+                           <td class="align-middle">
                                <div class="d-flex justify-content-center">
-                                  <form th:action="@{/menu/eliminar/{id}(id=${menu.id_menu})}" method="post">
-                                     <button class=" btn btn-outline-secondary botoncito1 round-button" type="submit" title="Eliminar">
-                                       <i class="bi bi-trash"></i>
-                                     </button>
-                                 </form>
+                                   <form th:action="@{/menu/eliminar/{id}(id=${menu.id_menu})}" method="post">
+                                       <button class="btn-no-border" type="submit" title="Eliminar">
+                                           <i class="bi bi-trash"></i>
+                                       </button>
+                                   </form>
                                </div>
                            </td>
+
                        </tr>
                         </tbody>
                     </table>
+                    </div>
                 </div>
             </div>
             <br>
             <!-- Botón para procesar menús -->
             <form th:action="@{/menu/procesar}" method="post">
-                <button class="btn btn-outline-secondary float-end" type="submit">Publicar Menús</button>
+                <button class="btn btn-outline-secondary botoncito1 table-light margen3 mt-3 float-end" type="submit">Publicar Menús</button>
             </form>
         </div>
     </div>

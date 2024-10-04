@@ -23,6 +23,7 @@
 <div class="container mt-3">
     <div class="card1">
         <h1 class="card-header text-center"><strong>Menús desde la Fecha Actual</strong></h1>
+        <div class="table-responsive">
         <table class="table">
             <thead class="thead-dark">
             <tr>
@@ -33,9 +34,9 @@
                 <th class="text-right col-2">Tipo de Comida</th>
             </tr>
             </thead>
-        </table>
-        <table class="table table-borderless w-100 striped-table">
-            <tbody >
+
+
+            <tbody class="table table-borderless w-100 striped-table">
             <tr th:each="menu : ${menus}">
                 <td th:if="${menu.fechaMenu != null}" th:text="${#temporals.format(menu.fechaMenu, 'EEEE dd  MMMM  yyyy')}"></td>
 
@@ -51,6 +52,7 @@
             </tr>
             </tbody>
         </table>
+     </div>
     </div>
 </div>
 <footer th:insert="fragments/footer :: footer" class="footer"> </footer>

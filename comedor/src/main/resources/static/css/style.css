@@ -123,3 +123,24 @@
       .pepe{
       background-color: #1c7430;
       }
+      .color1{
+      color: black;S
+      }
+.btn-no-border {
+    border: none;
+    background: none;
+    padding: 0;
+    cursor: pointer;
+}
+
+.btn-no-border:focus {
+    outline: none;
+    box-shadow: none;
+}
+.card01 {
+    padding: 15px;
+}
+
+.mt-3 {
+    margin-top: 1rem;
+}
