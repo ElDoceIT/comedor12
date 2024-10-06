@@ -1,6 +1,8 @@
 package com.comedor.comedor.repository;
 
 import com.comedor.comedor.model.Consumo;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -10,6 +12,7 @@ import java.util.List;
 
 public interface ConsumoRepository extends JpaRepository<Consumo, Integer> {
     List<Consumo> findAllByOrderByFechaDesc();
+    Page<Consumo> findAllByOrderByFechaDesc(Pageable pageable);
 
     @Query("SELECT c FROM Consumo c WHERE " +
             "(:fechaInicio IS NULL OR c.fecha >= :fechaInicio) AND " +

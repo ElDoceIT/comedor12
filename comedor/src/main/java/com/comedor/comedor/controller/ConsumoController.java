@@ -14,6 +14,9 @@ import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpHeaders;
@@ -55,14 +58,25 @@ public class ConsumoController {
         dateFormat.setLenient(false);
         binder.registerCustomEditor(Date.class, new CustomDateEditor(dateFormat, true));
     }
-
     //ver todos los consumos de todos los usuarios.
-    @GetMapping("/ver")
+/*@GetMapping("/ver")
     public String consumosVer(Model model) {
         //model.addAttribute("consumos", consumoRepository.findAll(Sort.by(Sort.Direction.DESC, "fecha")));
         model.addAttribute("consumos", consumoRepository.findAllByOrderByFechaDesc());
         return "consumos/consumos_ver";
 
+    }*/
+    @GetMapping("/ver")
+    public String consumosVer(@RequestParam(defaultValue = "0") int page, Model model) {
+        int pageSize = 3;  // Cambia el tamaño de página según tus necesidades
+        Pageable pageable = PageRequest.of(page, pageSize, Sort.by("fecha").descending());
+        Page<Consumo> consumosPage = consumoRepository.findAllByOrderByFechaDesc(pageable);
+
+        model.addAttribute("consumos", consumosPage.getContent());
+        model.addAttribute("currentPage", page);
+        model.addAttribute("totalPages", consumosPage.getTotalPages());
+
+        return "consumos/consumos_ver";
     }
 
     //vista para asignar productos a los usuarios, ademas de la cantidad y fecha.
@@ -127,7 +141,7 @@ public class ConsumoController {
         consumoRepository.deleteById(IdConsumo);
         return "redirect:/consumos/ver";
     }
-    
+
     @GetMapping("/export/excel")
     public ResponseEntity<byte[]> exportToExcel(@RequestParam(required = false) String usuario,
                                                 @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fechaInicio,

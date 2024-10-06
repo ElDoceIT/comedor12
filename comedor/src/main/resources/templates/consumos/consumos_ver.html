@@ -69,6 +69,31 @@
         </tr>
         </tbody>
       </table>
+      <!-- Paginación -->
+      <div>
+        <nav th:if="${totalPages > 1}" aria-label="Page navigation example">
+          <ul class="pagination justify-content-center">
+            <!-- Botón 'Anterior' -->
+            <li th:classappend="${currentPage > 0} ? '' : 'disabled'" class="page-item">
+              <a th:href="${currentPage > 0} ? @{/consumos/ver(page=${currentPage - 1})} : 'javascript:void(0)'"
+                 class="btn btn-outline-secondary botoncito1 table-light margen3">Anterior</a>
+            </li>
+
+            <!-- Números de página -->
+            <li th:each="i : ${#numbers.sequence(0, totalPages - 1)}" th:classappend="${currentPage == i} ? 'active' : ''" class="page-item">
+              <a th:href="@{/consumos/ver(page=${i})}"
+                 class="btn btn-outline-secondary botoncito1 table-light margen3" th:text="${i + 1}">1</a>
+            </li>
+
+            <!-- Botón 'Siguiente' -->
+            <li th:classappend="${currentPage < totalPages - 1} ? '' : 'disabled'" class="page-item">
+              <a th:href="${currentPage < totalPages - 1} ? @{/consumos/ver(page=${currentPage + 1})} : 'javascript:void(0)'"
+                 class="btn btn-outline-secondary botoncito1 table-light margen3">Siguiente</a>
+            </li>
+          </ul>
+        </nav>
+      </div>
+
     </div>
 
     <hr>
