@@ -30,4 +30,5 @@ public class ConsumoServiceJPA implements IConsumoService {
     public List<Consumo> buscarConsumos(LocalDate fechaInicio, LocalDate fechaFin, String usuario) {
         return consumoRepository.buscarConsumosFiltrados(fechaInicio, fechaFin, usuario);
     }
+
 }

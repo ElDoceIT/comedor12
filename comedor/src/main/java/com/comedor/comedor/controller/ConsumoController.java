@@ -127,24 +127,27 @@ public class ConsumoController {
         consumoRepository.deleteById(IdConsumo);
         return "redirect:/consumos/ver";
     }
-
+    
     @GetMapping("/export/excel")
-    public ResponseEntity<byte[]> exportToExcel() throws IOException {
-        // Obtener todos los consumos desde la base de datos
-        List<Consumo> consumos =consumoRepository.findAll();
+    public ResponseEntity<byte[]> exportToExcel(@RequestParam(required = false) String usuario,
+                                                @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fechaInicio,
+                                                @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fechaFin) throws IOException {
+        // Lógica para obtener los consumos filtrados
+        List<Consumo> consumos = consumoService.buscarConsumos(fechaInicio, fechaFin,usuario);
 
         // Generar el archivo Excel
         ByteArrayInputStream in = exportToExcel(consumos);
 
         // Preparar la respuesta para descargar el archivo Excel
         HttpHeaders headers = new HttpHeaders();
-        headers.add("Content-Disposition", "attachment; filename=consumos.xlsx");
+        headers.add("Content-Disposition", "attachment; filename=consumos_filtrados.xlsx");
 
         return ResponseEntity.ok()
                 .headers(headers)
                 .contentType(MediaType.parseMediaType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"))
                 .body(in.readAllBytes());
     }
+
 
     private ByteArrayInputStream exportToExcel(List<Consumo> consumos) throws IOException {
         try (Workbook workbook = new XSSFWorkbook()) {

@@ -19,4 +19,7 @@ public interface ConsumoRepository extends JpaRepository<Consumo, Integer> {
     List<Consumo> buscarConsumosFiltrados(@Param("fechaInicio") LocalDate fechaInicio,
                                           @Param("fechaFin") LocalDate fechaFin,
                                           @Param("usuario") String usuario);
+
 }
+
+
