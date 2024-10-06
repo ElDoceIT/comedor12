@@ -77,7 +77,7 @@
         </table>
       </div>
         <!-- Paginación -->
-        <div>
+       <!-- <div>
         <nav th:if="${productos.totalPages > 1}" aria-label="Page navigation example">
           <ul class="pagination">
                 <li th:if="${productos.hasPrevious()}">
@@ -89,7 +89,29 @@
                 </li>
           </ul>
         </nav>
-        </div>
+        </div>-->
+      <div>
+        <nav th:if="${productos.totalPages > 1}" aria-label="Page navigation example">
+          <ul class="pagination justify-content-center">
+            <!-- Botón 'Anterior' -->
+            <li th:classappend="${productos.hasPrevious()} ? '' : 'disabled'">
+              <a th:href="@{/productos/ver(keyword=${keyword}, page=${productos.number - 1})}"
+                 class="btn btn-outline-secondary botoncito1 table-light margen3">Anterior</a>
+            </li>
+
+            <!-- Números de página -->
+            <li th:each="i : ${#numbers.sequence(0, productos.totalPages - 1)}" th:classappend="${productos.number == i} ? 'active'">
+              <a th:href="@{/productos/ver(keyword=${keyword}, page=${i})}" class="btn btn-outline-secondary botoncito1 table-light margen3" th:text="${i + 1}">1</a>
+            </li>
+
+            <!-- Botón 'Siguiente' -->
+            <li th:classappend="${productos.hasNext()} ? '' : 'disabled'">
+              <a th:href="@{/productos/ver(keyword=${keyword}, page=${productos.number + 1})}"
+                 class="btn btn-outline-secondary botoncito1 table-light margen3">Siguiente</a>
+            </li>
+          </ul>
+        </nav>
+      </div>
 
 
       </div>
