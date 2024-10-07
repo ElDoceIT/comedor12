@@ -8,6 +8,10 @@ import com.comedor.comedor.service.IComidaService;
 import com.comedor.comedor.service.IMenuService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.Banner;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -94,6 +98,21 @@ public class MenuController {
 
         model.addAttribute("menus",menus);
         return "menu/menu_ver";
+    }
+
+    @GetMapping("/vertodo")
+    public String listarMenuesFuturos(Model model,
+                                      @RequestParam(defaultValue = "0") int page,
+                                      @RequestParam(defaultValue = "15") int size) {
+        //Pageable pageable = PageRequest.of(page, size);
+        Pageable pageable = PageRequest.of(page, size, Sort.by("fechaMenu").descending());
+        Page<Menu> menus = menuRepository.findAll(pageable);
+
+        model.addAttribute("menus", menus);
+        model.addAttribute("currentPage", page);
+        model.addAttribute("totalPages", menus.getTotalPages());
+
+        return "menu/menu_ver_todo";
     }
 
     @GetMapping("/semanal")
