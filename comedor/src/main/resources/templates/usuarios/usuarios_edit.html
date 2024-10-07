@@ -43,13 +43,13 @@
                     <div class="col-md-4">
                         <div class="form-group">
                             <label for="password"><h6>Contraseña</h6></label>
-                            <input type="password" class="form-control" id="password" name="pass" required>
+                            <input type="password" class="form-control" id="password" name="pass" >
                         </div>
                     </div>
                     <div class="col-md-4">
                         <div class="form-group">
                             <label for="confirmPassword"><h6>Confirmar Contraseña</h6></label>
-                            <input type="password" class="form-control" id="confirmPassword" required>
+                            <input type="password" class="form-control" id="confirmPassword" >
                             <span id="errorMensaje" style="color:red; display:none;">Las contraseñas no coinciden</span>
                         </div>
                     </div>
@@ -87,7 +87,8 @@
                             <label for="estado"><h6>Estado</h6></label>
                             <select class="form-control" th:field="*{estado}" name="estado" id="estado">
                                 <option value="" disabled selected>Seleccione estado</option>
-                                <option th:each="estado : ${estados}" th:value="${estado}" th:text="${estado}"></option>
+                                <option th:value="1" th:text="'Activo'"></option>
+                                <option th:value="0" th:text="'Inactivo'"></option>
                             </select>
                         </div>
                     </div>
