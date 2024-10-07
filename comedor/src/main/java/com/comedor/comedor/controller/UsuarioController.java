@@ -6,6 +6,7 @@ import com.comedor.comedor.service.IUsuarioService;
 import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.security.core.Authentication;
@@ -63,11 +64,32 @@ public class UsuarioController {
         return "usuarios/usuarios_new";
     }
 
-    @GetMapping("/ver")
+   /* @GetMapping("/ver")
     public String consumosVer(Model model) {
         model.addAttribute("usuarios", usuarioRepository.findAll());
         return "usuarios/usuarios_ver";
-    }
+    }*/
+   @GetMapping("/ver")
+   public String consumosVer(
+           @RequestParam(defaultValue = "0") int page,
+           @RequestParam(defaultValue = "5") int size,
+           @RequestParam(required = false) Integer dni,
+           @RequestParam(required = false) String apellido,
+           @RequestParam(required = false) String empresa,
+           Model model) {
+
+       Pageable pageable = PageRequest.of(page, size);
+       Page<Usuario> usuarios = usuarioService.buscarUsuariosConFiltros(dni, apellido, empresa, pageable);
+
+       model.addAttribute("usuarios", usuarios);
+       model.addAttribute("currentPage", page);
+       model.addAttribute("totalPages", usuarios.getTotalPages());
+       model.addAttribute("dni", dni);
+       model.addAttribute("apellido", apellido);
+       model.addAttribute("empresa", empresa);
+
+       return "usuarios/usuarios_ver";
+   }
 
     @PostMapping("/save")
     public String guardarUsuario(Usuario usuario) {

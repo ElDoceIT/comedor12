@@ -19,72 +19,78 @@
 <header th:insert="fragments/menu :: menu-principal">
 
 </header>
-<div class="container">
-    <div class="card1 mt-3 pb-3">
-        <h1 class="card-header text-center"><strong>Ver usuarios</strong></h1>
-
-            <!-- Formulario de Búsqueda -->
-        <div class="container">
-            <form class="form-inline w-100" th:action="@{/usuarios/search}" method="get" th:object="${search}">
-                <div class="row w-100">
-
-                    <div class="col-12 mb-2 text-left mt-3">
-                        <label for="dni"><h5>Filtrar por:</h5></label>
-                    </div>
-
-
-                    <div class="col-12 col-sm-4 mb-2">
-                        <input type="number" class="form-control w-100" id="dni" th:value="${dni}" name="dni" placeholder="DNI" />
-                    </div>
-
-                    <div class="col-12 col-sm-4 mb-2">
-                        <input type="text" class="form-control w-100" id="apellido" th:value="${apellido}" name="apellido" placeholder="APELLIDO" />
-                    </div>
-
-                    <div class="col-12 col-sm-4 mb-2 d-flex align-items-end">
-                        <button type="submit" class="btn btn-outline-secondary w-100">Buscar</button>
-                    </div>
-                </div>
-            </form>
+<form class="form-inline w-100" th:action="@{/usuarios/ver}" method="get">
+    <!-- Filtros de Búsqueda -->
+    <div class="row w-100">
+        <div class="col-2 mb-2 text-left mt-2">
+            <label for="dni"><h5>Filtrar por:</h5></label>
         </div>
 
+        <div class="col-3 mb-2">
+            <input type="number" class="form-control" id="dni" th:value="${dni}" name="dni" placeholder="DNI" />
+        </div>
 
-        <div class="table-responsive">
+        <div class="col-3 mb-2">
+            <input type="text" class="form-control" id="apellido" th:value="${apellido}" name="apellido" placeholder="Apellido" />
+        </div>
 
-            <table class="table mt-3">
-                <thead class="thead-dark">
-                <tr class="text-center">
-                    <th class="text-left" >Nombre</th>
-                    <th >Apellido</th>
-                    <th >DNI</th>
-                     <th >CC</th>
-                    <th >Grupo</th>
-                    <th >Empresa</th>
-                    <th>Estado</th>
-                    <th></th>
-                </tr>
-                </thead>
-                <tbody class="table-borderless w-100 striped-table">
-                <tr class="text-center" th:each="usuario :${usuarios}">
-                    <td class="text-left"  th:text="${usuario.nombre}"></td>
-                    <td  th:text="${usuario.apellido}"></td>
-                    <td  th:text="${usuario.dni}"></td>
-                    <td  th:text="${usuario.cc}"></td>
-                    <td  th:text="${usuario.grupo}"></td>
-                    <td th:text="${usuario.empresa}"></td>
-                    <td  th:text="${usuario.estado}"></td>
-                    <td class="">
-                        <a th:href="@{/usuarios/editar/{id} (id=${usuario.id_usuario})}" class=" color1" role="button" title="Editar"><i class="bi bi-pencil" aria-hidden="true"></i></a>
-                    </td>
-                </tr>
-                </tbody>
-            </table>
+        <div class="col-3 mb-2">
+            <input type="text" class="form-control" id="empresa" th:value="${empresa}" name="empresa" placeholder="Empresa" />
+        </div>
+
+        <div class="col-1 mb-2 d-flex align-items-end">
+            <button type="submit" class="btn btn-outline-secondary btn-sm w-100">Buscar</button>
         </div>
     </div>
 
+</form>
 
+<!-- Tabla de usuarios -->
+<div class="table-responsive">
+    <table class="table mt-3">
+        <thead class="thead-dark">
+        <tr class="text-center">
+            <th class="text-left">Nombre</th>
+            <th>Apellido</th>
+            <th>DNI</th>
+            <th>Empresa</th>
+            <th>Estado</th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="usuario : ${usuarios.content}">
+            <td th:text="${usuario.nombre}"></td>
+            <td th:text="${usuario.apellido}"></td>
+            <td th:text="${usuario.dni}"></td>
+            <td th:text="${usuario.empresa}"></td>
+            <td th:classappend="${usuario.estado == 1} ? 'text-success' : 'text-danger'"
+                th:text="${usuario.estado == 1 ? 'Activo' : 'Inactivo'}">
+            </td>
 
+            <td class="">
+                <a th:href="@{/usuarios/editar/{id} (id=${usuario.id_usuario})}" class=" color1" role="button" title="Editar"><i class="bi bi-pencil" aria-hidden="true"></i></a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
 </div>
+
+<!-- Paginación -->
+<nav>
+    <ul class="pagination">
+        <li th:classappend="${currentPage == 0} ? 'disabled' : ''" class="page-item">
+            <a th:href="@{/usuarios/ver(page=${currentPage - 1}, dni=${dni}, apellido=${apellido}, empresa=${empresa})}" class="page-link">Anterior</a>
+        </li>
+        <li th:each="i : ${#numbers.sequence(0, totalPages - 1)}"
+            th:classappend="${i == currentPage} ? 'active' : ''" class="page-item">
+            <a th:href="@{/usuarios/ver(page=${i}, dni=${dni}, apellido=${apellido}, empresa=${empresa})}" class="page-link" th:text="${i + 1}">1</a>
+        </li>
+        <li th:classappend="${currentPage == totalPages - 1} ? 'disabled' : ''" class="page-item">
+            <a th:href="@{/usuarios/ver(page=${currentPage + 1}, dni=${dni}, apellido=${apellido}, empresa=${empresa})}" class="page-link">Siguiente</a>
+        </li>
+    </ul>
+</nav>
 
 <footer th:insert="fragments/footer :: footer" class="footer"></footer>
 <script th:src="@{/bootstrap/js/bootstrap.min.js}"></script>

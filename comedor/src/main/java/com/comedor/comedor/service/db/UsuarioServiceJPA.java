@@ -72,5 +72,9 @@ public class UsuarioServiceJPA implements IUsuarioService {
     public void actualizarUsuario(Usuario usuario) {
         usuarioRepository.save(usuario);
     }
+    @Override
+    public Page<Usuario> buscarUsuariosConFiltros(Integer dni, String apellido, String empresa, Pageable pageable) {
+        return usuarioRepository.findByFiltros(dni, apellido, empresa, pageable);
+    }
 
 }

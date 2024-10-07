@@ -33,7 +33,7 @@ public class Usuario {
     @Column(name = "pass")
     private String pass;
 
-    private String estado;
+    private Integer estado;
 
     public Integer getId_usuario() {
         return id_usuario;
@@ -99,11 +99,11 @@ public class Usuario {
         this.pass = pass;
     }
 
-    public String getEstado() {
+    public Integer getEstado() {
         return estado;
     }
 
-    public void setEstado(String estado) {
+    public void setEstado(Integer estado) {
         this.estado = estado;
     }
 
