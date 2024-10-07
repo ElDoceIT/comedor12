@@ -111,5 +111,11 @@ public class MenuController {
         return "menu/menu_semanal";
     }
 
+    @GetMapping("/buscarComidas")
+    @ResponseBody
+    public List<Comida> buscarComidas(@RequestParam("query") String query) {
+        return comidaService.buscarPorNombre(query);
+    }
+
 
 }

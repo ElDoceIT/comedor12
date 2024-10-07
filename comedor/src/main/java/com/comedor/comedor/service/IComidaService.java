@@ -12,4 +12,5 @@ public interface IComidaService {
     Comida buscarPorId(Integer id_comida);
     Page<Comida> buscarPorPrincipal(String principal, Pageable pageable);
     Page<Comida> buscarTodos (Pageable pageable);
+    List<Comida> buscarPorNombre(String principal);
 }

@@ -33,14 +33,23 @@
                             <input type="date" class="form-control col-lg-5 " id="fecha" name="fechaMenu" min="[[${#dates.format(#dates.createNow(), 'yyyy-MM-dd')}]]" required>
                         </div>
                         <div class="mb-3">
-                            <label for="comida" class="form-label  "><h5>Comida:</h5></label>
+                           <!-- <label for="comida" class="form-label  "><h5>Comida:</h5></label>
                             <div class="d-flex">
                                 <select class="form-control flex-grow-1 col-lg-5 a" id="comida" name="comidaId" required>
                                     <option value="">Seleccionar comida</option>
                                     <option class="a" th:each="comida : ${comidas}" th:value="${comida.id_comida}" th:text="${comida.principal}+' --- ' + ${comida.entrada} +' --- ' + ${comida.postre}"></option>
                                 </select>
                                 <button class="btn btn-outline-secondary float-end b" type="submit">Agregar  <i class="bi bi-plus"></i></button>
+                            </div>-->
+                            <div class="mb-3">
+                                <label for="comida" class="form-label"><h5>Comida:</h5></label>
+                                <div class="d-flex">
+                                    <input type="text" class="form-control flex-grow-1 col-lg-5 a" id="comida" placeholder="Escriba la comida" required>
+                                    <input type="hidden" id="comidaId" name="comidaId">  <!-- Campo oculto para almacenar comidaID -->
+                                    <div id="comida-sugerencias" class="list-group"></div>  <!-- Aquí se muestran las sugerencias -->
+                                </div>
                             </div>
+                            <button class="btn btn-outline-secondary float-end b" type="submit">Agregar  <i class="bi bi-plus"></i></button>
                         </div>
 
                     </form>
@@ -116,6 +125,7 @@
 
 </footer>
 <script th:src="@{/bootstrap/js/bootstrap.min.js}"></script>
+<script th:src="@{/js/buscarComida.js}"></script>
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
 </body>
 </html>

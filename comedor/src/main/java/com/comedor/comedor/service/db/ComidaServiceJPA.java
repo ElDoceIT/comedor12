@@ -46,4 +46,9 @@ public class ComidaServiceJPA implements IComidaService {
     public Page<Comida> buscarTodos(Pageable pageable) {
         return comidaRepository.findAll(pageable);
     }
+
+    @Override
+    public List<Comida> buscarPorNombre(String principal) {
+        return comidaRepository.findByPrincipalContainingIgnoreCase(principal);
+    }
 }
