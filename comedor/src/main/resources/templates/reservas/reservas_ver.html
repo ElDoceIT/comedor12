@@ -29,24 +29,24 @@
 
     <div class="container">
         <div class="card1 mt-3 pb-3">
-            <h1 class="card-header text-center"><strong>Mis Reservas de la semana</strong></h1>
+            <h1 class="card-header text-center"><strong>Mis Reservas</strong></h1>
             <div class="table-responsive">
             <table class="table mt-3">
                 <thead class="thead-dark">
                 <tr class="text-center">
-                    <th>Día</th>
+                    <th class="text-left">Día</th>
                     <th>Entrada</th>
                     <th>Plato Principal</th>
                     <th>Postre</th>
                     <th>Tipo de Comida</th>
                     <th>Lugar de Consumo</th>
-                    <th>Eliminar</th>
+                    <th class="text-right">Eliminar</th>
                 </tr>
                 </thead>
                 <tbody  class="table-borderless w-100 striped-table ">
 
                 <tr class="text-center" th:each="reserva : ${reservas}">
-                    <td th:text="${reserva.menu != null && reserva.menu.fechaMenu != null ? #temporals.format(reserva.menu.fechaMenu, 'EEEE dd MMMM yyyy') : 'Sin fecha'}"></td>
+                    <td class="text-left" th:text="${reserva.menu != null && reserva.menu.fechaMenu != null ? #temporals.format(reserva.menu.fechaMenu, 'EEEE dd MMMM yyyy') : 'Sin fecha'}"></td>
                     <td th:text="${reserva.menu != null && reserva.menu.comida != null && reserva.menu.comida.entrada != null ? reserva.menu.comida.entrada : 'Sin entrada'}"></td>
                     <td th:text="${reserva.menu != null && reserva.menu.comida != null && reserva.menu.comida.principal != null ? reserva.menu.comida.principal  : 'Sin Comida'}">Plato Principal</td>
                     <td th:text="${reserva.menu != null && reserva.menu.comida != null && reserva.menu.comida.postre != null ? reserva.menu.comida.postre : 'Sin Postre'}">Postre</td>

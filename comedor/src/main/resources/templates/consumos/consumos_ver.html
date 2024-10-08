@@ -21,7 +21,7 @@
 </header>
 <div class="container">
   <div class="card1">
-    <h2 class="text-center card-header">Todos los consumos</h2>
+    <h1 class="text-center card-header"><strong>Todos los consumos</strong></h1>
 
     <form class="form-inline mb-4 mt-3 align-items-center justify-content-center" th:action="@{/consumos/search}" method="get">
       <label for="fechaInicio" class="mr-sm-2"><h6>Desde:</h6></label>
@@ -41,7 +41,7 @@
       <table class="table">
         <thead class="thead-dark justify-content-around">
         <tr class="text-center">
-          <th class="col-2">Fecha</th>
+          <th class="col-2 text-left">Fecha</th>
           <th>Nombre</th>
           <th>Apellido</th>
           <th>Producto</th>
@@ -99,9 +99,9 @@
     <hr>
 
     <div class="text-center mt-3">
-      <a th:href="@{/consumos/ver}" class="btn btn-outline-secondary botoncito1 table-light margen3">VerTodos</a>
+      <a th:href="@{/consumos/ver}" class="btn btn-outline-secondary botoncito1 table-light margen3 mb-4">Ver Todos</a>
       <a th:href="@{/consumos/export/excel(usuario=${usuario}, fechaInicio=${fechaInicio}, fechaFin=${fechaFin})}"
-         class="btn btn-outline-secondary botoncito1 table-light margen3">
+         class="btn btn-outline-secondary botoncito1 table-light margen3 mb-4">
         Exportar a Excel
       </a>
 
