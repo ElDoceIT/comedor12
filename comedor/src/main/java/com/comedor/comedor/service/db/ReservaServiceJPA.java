@@ -35,7 +35,7 @@ public class ReservaServiceJPA implements IReservaService {
         return null;
     }
 
-    @Override
+   /* @Override
     public Reserva guardarReserva(ReservaForm reservaForm, Usuario usuario) {
         Reserva reserva = new Reserva();
         reserva.setF_reserva(reservaForm.getF_reserva());
@@ -46,7 +46,7 @@ public class ReservaServiceJPA implements IReservaService {
         reserva.setMedio(reservaForm.getMedio());  // Esto será un int (1, 2 o 3)
 
         return reservaRepository.save(reserva);
-    }
+    }*/
 
     @Override
     public List<Reserva> obtenerReservasSemanalesPorUsuario(Integer dni) {
@@ -67,5 +67,11 @@ public class ReservaServiceJPA implements IReservaService {
             return resep.get();
         }
         return null;
+    }
+
+    //guardo las reservas
+    @Override
+    public void guardar(Reserva reserva) {
+        reservaRepository.save(reserva);
     }
 }

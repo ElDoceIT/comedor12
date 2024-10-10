@@ -20,15 +20,19 @@
 
 </header>
 
-<h1>Menú del día - <span id="fecha"></span></h1>
+<h1>Menú Semanal <span id="fecha"></span></h1>
+<span><h3> Hoy es:  </h3> <h3 id="hora-actual" th:text="${#temporals.format(serverTime, 'EEEE dd MMMM yyyy HH:mm:ss')}">Día</h3> </span>
+
+<br><br>
 
 <!-- Selección de Comida -->
-<h2>Seleccione su comida:</h2>
-<form action="#" method="post">
+<h2>Seleccione su comida: </h2>
+<form th:action="@{/reservas/reservar}" method="post">
   <div th:each="dia : ${menusPorDia}">
-    <h3 id="hora-actual" th:text="${#temporals.format(serverTime, 'EEEE dd MMMM yyyy HH:mm:ss')}">Día</h3>
+
 
     <table class="table table-striped">
+      <caption th:text="'Menú del día: ' + ${#temporals.format(dia.key, 'EEEE dd MMMM yyyy')}"></caption>
       <thead>
       <tr>
         <th>Entrada</th>
@@ -40,7 +44,6 @@
       </thead>
       <tbody th:each="menu : ${dia.value}">
       <tr>
-        <!-- Mostrar los diferentes campos de comida en columnas -->
         <td th:text="${menu.comida.entrada}"></td>
         <td th:text="${menu.comida.principal}"></td>
         <td th:text="${menu.comida.postre}"></td>
@@ -50,27 +53,45 @@
           <span th:case="3">Celiaco</span>
           <span th:case="4">Fruta</span>
         </td>
-        </td>
 
-        <!-- Agregar el botón de selección de menú -->
+        <!-- Selección del menú -->
         <td>
-          <input type="radio" name="menuSeleccionado__${#temporals.format(dia.key, 'yyyyMMdd')}" th:value="${menu.id_menu}" required>
+          <input type="radio" name="menuSeleccionado" th:value="${menu.id_menu}" required>
         </td>
       </tr>
       </tbody>
     </table>
 
+<!--
+   <div class="tipo-consumo-container">
+      <h4>¿Dónde comerá el <span th:text="${#temporals.format(dia.key, 'EEEE')}"></span>?</h4>
+
+      <div class="tipo-consumo-opciones">
+        <input type="radio" id="|comedor__${#temporals.format(dia.key, 'yyyyMMdd')}|" name="|tipo_comida__${#temporals.format(dia.key, 'yyyyMMdd')}|" value="1" required>
+        <label th:for="|comedor__${#temporals.format(dia.key, 'yyyyMMdd')}|">Comedor</label>
+
+        <input type="radio" id="|vianda__${#temporals.format(dia.key, 'yyyyMMdd')}|" name="|tipo_comida__${#temporals.format(dia.key, 'yyyyMMdd')}|" value="2" required>
+        <label th:for="|vianda__${#temporals.format(dia.key, 'yyyyMMdd')}|">Vianda</label>
+
+        <input type="radio" id="|retirar__${#temporals.format(dia.key, 'yyyyMMdd')}|" name="|tipo_comida__${#temporals.format(dia.key, 'yyyyMMdd')}|" value="3" required>
+        <label th:for="|retirar__${#temporals.format(dia.key, 'yyyyMMdd')}|">Retira</label>
+      </div>
+    </div>-->
+
+
+
+    <!-- Lugar de consumo -->
     <div class="tipo-consumo-container">
       <h4>¿Dónde comerá el <span th:text="${#temporals.format(dia.key, 'EEEE')}"></span>?</h4>
 
       <div class="tipo-consumo-opciones">
-        <input type="radio" id="|comedor__${#temporals.format(dia.key, 'yyyyMMdd')}|" name="|tipo_comida__${#temporals.format(dia.key, 'yyyyMMdd')}|" value="Comedor" required>
+        <input type="radio" id="|comedor__${#temporals.format(dia.key, 'yyyyMMdd')}|" name="tipoComida" value="1" required>
         <label th:for="|comedor__${#temporals.format(dia.key, 'yyyyMMdd')}|">Comedor</label>
 
-        <input type="radio" id="|vianda__${#temporals.format(dia.key, 'yyyyMMdd')}|" name="|tipo_comida__${#temporals.format(dia.key, 'yyyyMMdd')}|" value="Vianda" required>
+        <input type="radio" id="|vianda__${#temporals.format(dia.key, 'yyyyMMdd')}|" name="tipoComida" value="2" required>
         <label th:for="|vianda__${#temporals.format(dia.key, 'yyyyMMdd')}|">Vianda</label>
 
-        <input type="radio" id="|retirar__${#temporals.format(dia.key, 'yyyyMMdd')}|" name="|tipo_comida__${#temporals.format(dia.key, 'yyyyMMdd')}|" value="Retira" required>
+        <input type="radio" id="|retirar__${#temporals.format(dia.key, 'yyyyMMdd')}|" name="tipoComida" value="3" required>
         <label th:for="|retirar__${#temporals.format(dia.key, 'yyyyMMdd')}|">Retira</label>
       </div>
     </div>

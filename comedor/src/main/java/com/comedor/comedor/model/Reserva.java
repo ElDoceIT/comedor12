@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import jakarta.persistence.criteria.CriteriaBuilder;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Entity
@@ -16,7 +17,7 @@ public class Reserva {
     private Integer idReserva;
 
     @Column(name = "f_reserva")
-    private LocalDate f_reserva;
+    private LocalDateTime f_reserva;
 
     @Column(name = "medio")
     private int medio;
@@ -45,11 +46,11 @@ public class Reserva {
         this.idReserva = idReserva;
     }
 
-    public LocalDate getF_reserva() {
+    public LocalDateTime getF_reserva() {
         return f_reserva;
     }
 
-    public void setF_reserva(LocalDate f_reserva) {
+    public void setF_reserva(LocalDateTime f_reserva) {
         this.f_reserva = f_reserva;
     }
 

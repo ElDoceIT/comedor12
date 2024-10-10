@@ -43,7 +43,7 @@ public class ReservaController {
     @Autowired
     private IMenuService menuService;
 
-
+//muestra todas las reservas del usuario.
     @GetMapping("/ver")
     public String reservas(Model model) {
         LocalDateTime now = LocalDateTime.now();
@@ -52,25 +52,49 @@ public class ReservaController {
         return "reservas/reservas_ver";
     }
 
-    @PostMapping("/guardar")
-    public String guardarReserva(@ModelAttribute ReservaForm reservaForm, Principal principal) {
-        String nombreUsuario = principal.getName(); // Devuelve un String
-        Integer dni = null;
 
-        try {
-            dni = Integer.parseInt(nombreUsuario); // Intenta convertir a Integer
-        } catch (NumberFormatException e) {
-            // Manejar el caso cuando no se pueda convertir a un Integer
-            System.out.println("El nombre de usuario no es un número válido: " + e.getMessage());
-            // Puedes devolver un error, lanzar una excepción personalizada o manejar el caso de manera adecuada
-        }
 
-        Usuario usuario = usuarioService.obtenerPorDni(dni);
-        // obtener el usuario logueado mediante el principal o servicio de usuario
-        reservaService.guardarReserva(reservaForm, usuario);
+    //aca hago las reservas del menu diario.
+   @PostMapping("/reservar")
+   public String reservar(
+           @RequestParam("menuSeleccionado") Integer idMenu,
+           @RequestParam("tipoComida") Integer medio,
+           Principal principal, // Esto obtiene al usuario logueado
+           Model model
+   ) {
+       // Obtener la hora actual y validar que es antes de las 9 AM
+       LocalDateTime now = LocalDateTime.now();
+       LocalTime nineAM = LocalTime.of(9, 0);
 
-        return "redirect:/reservas/ver";
-    }
+       // Obtener el menú seleccionado (su fecha debe ser validada)
+       Menu menu = menuService.buscarPorId(idMenu); // Asume que tienes un servicio para buscar el menú
+       LocalDate fechaMenu = menu.getFechaMenu(); // Asume que el menú tiene un campo fecha
+
+       if (now.isAfter(fechaMenu.atTime(nineAM))) {
+           // Si la hora actual es después de las 9AM del día correspondiente, rechazar la reserva
+           model.addAttribute("error", "No se puede reservar este menú, ya ha pasado el límite de las 9AM.");
+           return "error"; // Vista que muestra el error
+       }
+
+       // Obtener el usuario logueado
+       Integer username = Integer.valueOf(principal.getName());
+       Usuario usuario = usuarioService.obtenerPorDni(username); // Asume que tienes un servicio de usuario
+
+       // Crear y guardar la reserva
+       Reserva reserva = new Reserva();
+       reserva.setMenu(menu);           // Establece la relación con el menú
+       reserva.setUsuario(usuario);     // Relaciona la reserva con el usuario logueado
+       reserva.setF_reserva(now);    // Establece la fecha y hora actuales
+       reserva.setMedio(medio);         // Establece dónde comerá (Comedor, Vianda, Retira)
+
+       reservaService.guardar(reserva);    // Guarda la reserva en la base de datos
+
+       return "redirect:/reservas/reservas-semanales";  // Redirige a la página de las reservas
+   }
+
+
+
+//muestra todas las reservas del usuario.
     @GetMapping("/reservar")
     public String reservar() {
 
@@ -145,6 +169,8 @@ public class ReservaController {
         reservaService.eliminarPorId(idReserva);
         return "redirect:/reservas/reservas-semanales";
     }*/
+
+
     @PostMapping("/eliminar/{id}")
     public String eliminarReserva(@PathVariable("id") Integer idReserva, RedirectAttributes redirectAttributes, Model model) {
         // Obtiene la reserva
