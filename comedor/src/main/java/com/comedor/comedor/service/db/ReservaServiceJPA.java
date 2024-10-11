@@ -79,4 +79,9 @@ public class ReservaServiceJPA implements IReservaService {
         return reservaRepository.existsByUsuarioAndMenu_FechaMenu(usuario, fechaMenu);
     }
 
+    @Override
+    public List<Reserva> obtenerReservasPorUsuario(Usuario usuario) {
+        return reservaRepository.findByUsuario(usuario);
+    }
+
 }

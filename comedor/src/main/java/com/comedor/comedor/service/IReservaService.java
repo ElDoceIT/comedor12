@@ -18,6 +18,7 @@ public interface IReservaService {
     Reserva buscarPorId(Integer idReserva);
     void guardar(Reserva reserva);
     boolean existeReservaParaUsuarioYFecha(Usuario usuario, LocalDate fechaMenu);
+    List<Reserva> obtenerReservasPorUsuario(Usuario usuario);
 
 
 }

@@ -20,93 +20,30 @@
 
 </header>
 
-<!-- <h1>Menú Semanal <span id="fecha"></span></h1>
-<span><h3> Hoy es:  </h3> <h3 id="hora-actual" th:text="${#temporals.format(serverTime, 'EEEE dd MMMM yyyy HH:mm:ss')}">Día</h3> </span>
 
-<br><br>
--->
-<!-- Selección de Comida -->
-<!--<h2>Seleccione su comida: </h2>
-<form th:action="@{/reservas/reservar}" method="post">
-  <div th:each="dia : ${menusPorDia}">
-
-
-    <table class="table table-striped">
-      <caption th:text="'Menú del día: ' + ${#temporals.format(dia.key, 'EEEE dd MMMM yyyy')}"></caption>
-      <thead>
-      <tr>
-        <th>Entrada</th>
-        <th>Plato Principal</th>
-        <th>Postre</th>
-        <th>Tipo de Comida</th>
-        <th>Seleccionar</th>
-      </tr>
-      </thead>
-      <tbody th:each="menu : ${dia.value}">
-      <tr>
-        <td th:text="${menu.comida.entrada}"></td>
-        <td th:text="${menu.comida.principal}"></td>
-        <td th:text="${menu.comida.postre}"></td>
-        <td th:switch="${menu.comida.tipo_comida}">
-          <span th:case="1">Principal</span>
-          <span th:case="2">Vegetariana</span>
-          <span th:case="3">Celiaco</span>
-          <span th:case="4">Fruta</span>
-        </td>
--->
-        <!-- Selección del menú -->
-   <!--     <td>
-          <input type="radio" name="menuSeleccionado" th:value="${menu.id_menu}" required>
-        </td>
-      </tr>
-      </tbody>
-    </table>
--->
-    <!-- Lugar de consumo -->
-   <!-- <div class="tipo-consumo-container">
-      <h4>¿Dónde comerá el <span th:text="${#temporals.format(dia.key, 'EEEE')}"></span>?</h4>
-
-      <div class="tipo-consumo-opciones">
-        <input type="radio" id="|comedor__${#temporals.format(dia.key, 'yyyyMMdd')}|" name="tipoComida" value="1" required>
-        <label th:for="|comedor__${#temporals.format(dia.key, 'yyyyMMdd')}|">Comedor</label>
-
-        <input type="radio" id="|vianda__${#temporals.format(dia.key, 'yyyyMMdd')}|" name="tipoComida" value="2" required>
-        <label th:for="|vianda__${#temporals.format(dia.key, 'yyyyMMdd')}|">Vianda</label>
-
-        <input type="radio" id="|retirar__${#temporals.format(dia.key, 'yyyyMMdd')}|" name="tipoComida" value="3" required>
-        <label th:for="|retirar__${#temporals.format(dia.key, 'yyyyMMdd')}|">Retira</label>
-      </div>
-    </div>
-
--->
-    <!-- Botón para enviar la selección -->
-   <!-- <div class="d-flex justify-content-center">
-      <button type="submit" class="btn btn-primary">Confirmar Menu</button>
-    </div>
-  </div>
-
-
-</form>
--->
 <h1>Menú Semanal <span id="fecha"></span></h1>
 <span><h3> Hoy es:  </h3> <h3 id="hora-actual" th:text="${#temporals.format(serverTime, 'EEEE dd MMMM yyyy HH:mm:ss')}">Día</h3> </span>
 
 <br><br>
-
+<!-- Mensaje de error -->
+<div th:if="${errorReservaDuplicada}" class="alert alert-danger" role="alert">
+  <span th:text="${errorReservaDuplicada}"></span>
+</div>
+<div th:if="${error}" class="alert alert-danger" role="alert">
+  <span th:text="${error}"></span>
+</div>
 <!-- Selección de Comida -->
 <h2>Seleccione su comida: </h2>
 <form th:action="@{/reservas/reservar}" method="post">
   <div th:each="dia : ${menusPorDia}">
-
-    <!-- Verificar si no hay una reserva para ese día
-    <div th:if="${#lists.isEmpty(reservasFiltradas.?[menu.fechaMenu == dia.key])}"> -->
-
-
-
-    <table class="table table-striped">
+     <div class="day-menu">
         <caption th:text="'Menú del día: ' + ${#temporals.format(dia.key, 'EEEE dd MMMM yyyy')}"></caption>
+
+    <!-- Verificar si no hay una reserva para ese día -->
+
+      <table class="table table-striped">
         <thead>
-        <tr>
+        <!--<tr th:if="${#lists.isEmpty(reservasUsuario.?[menu.fechaMenu == dia.key])}">-->
           <th>Entrada</th>
           <th>Plato Principal</th>
           <th>Postre</th>
@@ -149,19 +86,21 @@
           <label th:for="|retirar__${#temporals.format(dia.key, 'yyyyMMdd')}|">Retira</label>
         </div>
       </div>
+       <!-- Botón para enviar la selección -->
+       <div class="d-flex justify-content-center">
+         <button type="submit" class="btn btn-primary">Confirmar Menu</button>
+       </div>
+       <br><br>
 
-    </div> <!-- Cierra el th:if que oculta el menú si hay reserva -->
 
-  </div> <!-- Cierra el th:each de dia -->
 
-  <!-- Botón para enviar la selección -->
-  <div class="d-flex justify-content-center">
-    <button type="submit" class="btn btn-primary">Confirmar Menu</button>
-  </div>
 
+     </div> <!-- Cierra el th:each de dia -->
 </form>
 
 <!-- Tabla de menús procesados -->
+
+<br><br><br><br><br>
 <div class="card mt-4 shadow">
   <div class="card1 card-body">
     <h5>Mis Reservas de la semana</h5>

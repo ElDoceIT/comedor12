@@ -104,13 +104,13 @@ public class ReservaController {
         LocalTime nineAM = LocalTime.of(9, 0);
 
         // Obtener el menú seleccionado
-        Menu menu = menuService.buscarPorId(idMenu); // Obtener el menú seleccionado por ID
-        LocalDate fechaMenu = menu.getFechaMenu(); // Obtener la fecha del menú seleccionado
+        Menu menu = menuService.buscarPorId(idMenu);
+        LocalDate fechaMenu = menu.getFechaMenu();
 
         // Verificar que la hora actual no sea después de las 9AM del día del menú
         if (now.isAfter(fechaMenu.atTime(nineAM))) {
             model.addAttribute("error", "No se puede reservar este menú, ya ha pasado el límite de las 9AM.");
-            return "error";
+            return "reservas/reserva_menu_semanal"; // Mantener la misma página
         }
 
         // Obtener el usuario logueado
@@ -121,22 +121,26 @@ public class ReservaController {
         boolean yaReservado = reservaService.existeReservaParaUsuarioYFecha(usuario, fechaMenu);
 
         if (yaReservado) {
-            // Si el usuario ya tiene una reserva para este día, no permitir otra reserva
-            model.addAttribute("error", "Ya has reservado un menú para este día.");
-            return "error";
+            // Si el usuario ya tiene una reserva para este día, mostrar el mensaje de error
+            model.addAttribute("errorReservaDuplicada", "Ya has reservado un menú para este día.");
+            return "reservas/reserva_menu_semanal"; // Mantener la misma página
         }
 
         // Crear y guardar la nueva reserva
         Reserva reserva = new Reserva();
-        reserva.setMenu(menu);           // Relacionar con el menú
-        reserva.setUsuario(usuario);     // Relacionar con el usuario
-        reserva.setF_reserva(now);       // Establecer la fecha de la reserva
-        reserva.setMedio(medio);         // Establecer el medio (Comedor, Vianda, Retira)
+        reserva.setMenu(menu);
+        reserva.setUsuario(usuario);
+        reserva.setF_reserva(now);
+        reserva.setMedio(medio);
 
-        reservaService.guardar(reserva); // Guardar la reserva en la base de datos
+        reservaService.guardar(reserva);
 
-        return "redirect:/reservas/reservas-semanales"; // Redirigir a la página de reservas
+        List<Reserva> reservasUsuario = reservaService.obtenerReservasPorUsuario(usuario);
+        model.addAttribute("reservasUsuario", reservasUsuario);
+
+        return "redirect:/reservas/reservas-semanales"; // Redirigir a la página de reservas si la reserva es exitosa
     }
+
 
 
     //muestra todas las reservas del usuario.
