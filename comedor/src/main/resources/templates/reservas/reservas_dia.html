@@ -25,7 +25,7 @@
 <h3>Tipos de Comida</h3>
 <ul>
   <li th:each="entry : ${sumaPorTipoComida}">
-    <span th:text="${entry.key} + ': ' + ${entry.value}"></span>
+    <span th:text="${tipoComidaDescripcion[entry.key]} + ': ' + ${entry.value}"></span>
   </li>
 </ul>
 
@@ -33,7 +33,7 @@
 <h3>Lugares de Consumo</h3>
 <ul>
   <li th:each="entry : ${sumaPorLugarConsumo}">
-    <span th:text="${entry.key} + ': ' + ${entry.value}"></span>
+    <span th:text="${medioDescripcion[entry.key]} + ': ' + ${entry.value}"></span>
   </li>
 </ul>
 
@@ -44,6 +44,8 @@
     <th>Apellido</th>
     <th>Nombre</th>
     <th>Menú Principal</th>
+    <th>Tipo Comida</th>
+    <th>Medio</th>
     <th>Asistencia</th>
   </tr>
   </thead>
@@ -52,6 +54,8 @@
     <td th:text="${reserva.usuario.apellido}"></td>
     <td th:text="${reserva.usuario.nombre}"></td>
     <td th:text="${reserva.menu.comida.principal}"></td>
+    <td th:text="${tipoComidaDescripcion[reserva.menu.comida.tipo_comida]}"></td>
+    <td th:text="${medioDescripcion[reserva.medio]}"></td>
     <td>
       <input type="checkbox" th:checked="${reserva.entregado != null}"
              th:onclick="'actualizarAsistencia(' + ${reserva.idReserva} + ', this.checked)'">

@@ -270,6 +270,20 @@ public String obtenerReservasSemanales(Model model, @AuthenticationPrincipal Use
     public String obtenerReservasDelDia(Model model) {
         LocalDate hoy = LocalDate.now();
 
+        // Mapas para las descripciones de tipo de comida y medio
+        Map<Integer, String> tipoComidaDescripcion = Map.of(
+                1, "Principal",
+                2, "Light",
+                3, "Celiaco",
+                4, "Fruta"
+        );
+
+        Map<Integer, String> medioDescripcion = Map.of(
+                1, "Comedor",
+                2, "Retira",
+                3, "Vianda"
+        );
+
         // Obtener todas las reservas cuya fecha de menú sea el día actual
         List<Reserva> reservasDelDia = reservaRepository.findAll().stream()
                 .filter(reserva -> reserva.getMenu().getFechaMenu().equals(hoy))
@@ -288,13 +302,16 @@ public String obtenerReservasSemanales(Model model, @AuthenticationPrincipal Use
                 .thenComparing(r -> r.getUsuario().getNombre())
                 .thenComparing(r -> r.getMenu().getComida().getPrincipal()));
 
-        // Agregar los resultados al modelo
+        // Agregar los resultados y descripciones al modelo
         model.addAttribute("reservas", reservasDelDia);
         model.addAttribute("sumaPorTipoComida", sumaPorTipoComida);
         model.addAttribute("sumaPorLugarConsumo", sumaPorLugarConsumo);
+        model.addAttribute("tipoComidaDescripcion", tipoComidaDescripcion);
+        model.addAttribute("medioDescripcion", medioDescripcion);
 
         return "reservas/reservas_dia";  // Nombre de la vista
     }
+
 
     @PostMapping("/reservas/actualizar-entrega/{idReserva}")
     @ResponseBody
