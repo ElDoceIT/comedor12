@@ -74,4 +74,9 @@ public class ReservaServiceJPA implements IReservaService {
     public void guardar(Reserva reserva) {
         reservaRepository.save(reserva);
     }
+
+    public boolean existeReservaParaUsuarioYFecha(Usuario usuario, LocalDate fechaMenu) {
+        return reservaRepository.existsByUsuarioAndMenu_FechaMenu(usuario, fechaMenu);
+    }
+
 }

@@ -13,4 +13,7 @@ import java.util.List;
 public interface ReservaRepository extends JpaRepository<Reserva, Integer> {
     @Query("SELECT r FROM Reserva r WHERE r.usuario.dni = :dni AND r.menu.fechaMenu BETWEEN :inicioSemana AND :finSemana")
     List<Reserva> findReservasSemanalesPorUsuario(@Param("dni") Integer dni, @Param("inicioSemana") LocalDate inicioSemana, @Param("finSemana") LocalDate finSemana);
+
+    //boolean existsByUsuarioIdAndMenuFecha(Integer idUsuario, LocalDate fechaMenu);
+    boolean existsByUsuarioAndMenu_FechaMenu(Usuario usuario, LocalDate fechaMenu);
 }

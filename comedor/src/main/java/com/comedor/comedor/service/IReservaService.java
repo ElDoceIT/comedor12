@@ -7,6 +7,7 @@ import com.comedor.comedor.model.Consumo;
 import com.comedor.comedor.model.Reserva;
 import com.comedor.comedor.model.Usuario;
 
+import java.time.LocalDate;
 import java.util.List;
 
 public interface IReservaService {
@@ -16,7 +17,7 @@ public interface IReservaService {
     void eliminarPorId(Integer idReserva);
     Reserva buscarPorId(Integer idReserva);
     void guardar(Reserva reserva);
-
+    boolean existeReservaParaUsuarioYFecha(Usuario usuario, LocalDate fechaMenu);
 
 
 }
