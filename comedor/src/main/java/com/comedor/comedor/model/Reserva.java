@@ -23,7 +23,7 @@ public class Reserva {
     private int medio;
 
     @Column(name = "entregado")
-    private LocalDate entregado;
+    private LocalDateTime entregado;
 
     @Column(name = "cant")
     private int cantidad;
@@ -62,11 +62,11 @@ public class Reserva {
         this.medio = medio;
     }
 
-    public LocalDate getEntregado() {
+    public LocalDateTime getEntregado() {
         return entregado;
     }
 
-    public void setEntregado(LocalDate entregado) {
+    public void setEntregado(LocalDateTime entregado) {
         this.entregado = entregado;
     }
 

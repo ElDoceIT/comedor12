@@ -11,6 +11,7 @@ import com.comedor.comedor.service.IMenuService;
 import com.comedor.comedor.service.IReservaService;
 import com.comedor.comedor.service.IUsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
@@ -264,4 +265,52 @@ public String obtenerReservasSemanales(Model model, @AuthenticationPrincipal Use
             return "redirect:/reservas/ver";
         }
     }
+
+    @GetMapping("/reservas-dia-actual")
+    public String obtenerReservasDelDia(Model model) {
+        LocalDate hoy = LocalDate.now();
+
+        // Obtener todas las reservas cuya fecha de menú sea el día actual
+        List<Reserva> reservasDelDia = reservaRepository.findAll().stream()
+                .filter(reserva -> reserva.getMenu().getFechaMenu().equals(hoy))
+                .collect(Collectors.toList());
+
+        // Calcular la suma de cada tipo de comida
+        Map<Integer, Long> sumaPorTipoComida = reservasDelDia.stream()
+                .collect(Collectors.groupingBy(reserva -> reserva.getMenu().getComida().getTipo_comida(), Collectors.counting()));
+
+        // Calcular la suma por lugar de consumo
+        Map<Integer, Long> sumaPorLugarConsumo = reservasDelDia.stream()
+                .collect(Collectors.groupingBy(Reserva::getMedio, Collectors.counting()));
+
+        // Ordenar las reservas por apellido, nombre y menú principal
+        reservasDelDia.sort(Comparator.comparing((Reserva r) -> r.getUsuario().getApellido())
+                .thenComparing(r -> r.getUsuario().getNombre())
+                .thenComparing(r -> r.getMenu().getComida().getPrincipal()));
+
+        // Agregar los resultados al modelo
+        model.addAttribute("reservas", reservasDelDia);
+        model.addAttribute("sumaPorTipoComida", sumaPorTipoComida);
+        model.addAttribute("sumaPorLugarConsumo", sumaPorLugarConsumo);
+
+        return "reservas/reservas_dia";  // Nombre de la vista
+    }
+
+    @PostMapping("/reservas/actualizar-entrega/{idReserva}")
+    @ResponseBody
+    public ResponseEntity<Void> actualizarEntrega(@PathVariable("idReserva") Integer idReserva, @RequestBody Map<String, Boolean> datos) {
+        Reserva reserva = reservaService.buscarPorId(idReserva);
+
+        if (reserva != null) {
+            if (datos.get("entregado")) {
+                reserva.setEntregado(LocalDateTime.now());
+            } else {
+                reserva.setEntregado(null);  // Si desmarcan la casilla, se borra la entrega
+            }
+            reservaService.guardar(reserva);
+            return ResponseEntity.ok().build();
+        }
+        return ResponseEntity.notFound().build();
+    }
+
 }

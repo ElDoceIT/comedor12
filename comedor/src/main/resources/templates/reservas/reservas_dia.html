@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html xmlns:th="http://thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <link rel="shortcut icon" th:href="@{/images/El-Doce-TV-en-vivo-Online-1.png}" type="image/x-icon">
+
+  <link th:href="@{/bootstrap/css/bootstrap.min.css}" rel="stylesheet">
+  <!-- Custom styles for this template -->
+  <link th:href="@{/bootstrap/css/jumbotron.css}" rel="stylesheet">
+  <link th:href="@{/bootstrap/css/sticky-footer-navbar.css}" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.5.0/font/bootstrap-icons.min.css">
+  <link rel="stylesheet" th:href="@{/css/style.css}">
+  <title>Listado Reservas</title>
+</head>
+<body>
+<header th:insert="fragments/menu :: menu-principal">
+
+</header>
+
+<h2>Reservas del Día Actual</h2>
+
+<!-- Mostrar sumas por tipo de comida -->
+<h3>Tipos de Comida</h3>
+<ul>
+  <li th:each="entry : ${sumaPorTipoComida}">
+    <span th:text="${entry.key} + ': ' + ${entry.value}"></span>
+  </li>
+</ul>
+
+<!-- Mostrar sumas por lugar de consumo -->
+<h3>Lugares de Consumo</h3>
+<ul>
+  <li th:each="entry : ${sumaPorLugarConsumo}">
+    <span th:text="${entry.key} + ': ' + ${entry.value}"></span>
+  </li>
+</ul>
+
+<!-- Tabla de reservas -->
+<table class="table table-striped">
+  <thead>
+  <tr>
+    <th>Apellido</th>
+    <th>Nombre</th>
+    <th>Menú Principal</th>
+    <th>Asistencia</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr th:each="reserva : ${reservas}">
+    <td th:text="${reserva.usuario.apellido}"></td>
+    <td th:text="${reserva.usuario.nombre}"></td>
+    <td th:text="${reserva.menu.comida.principal}"></td>
+    <td>
+      <input type="checkbox" th:checked="${reserva.entregado != null}"
+             th:onclick="'actualizarAsistencia(' + ${reserva.idReserva} + ', this.checked)'">
+    </td>
+  </tr>
+  </tbody>
+</table>
+
+<script>
+  function actualizarAsistencia(idReserva, entregado) {
+    fetch('/reservas/actualizar-entrega/' + idReserva, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ entregado: entregado })
+    }).then(response => {
+      if (response.ok) {
+        location.reload();  // Recargar la página para ver los cambios
+      }
+    });
+  }
+</script>
+<footer th:insert="fragments/footer :: footer" class="footer"></footer>
+<script th:src="@{/bootstrap/js/bootstrap.min.js}"></script>
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+<script th:src="@{/js/horaActual.js}"></script>
+</body>
+</html>
