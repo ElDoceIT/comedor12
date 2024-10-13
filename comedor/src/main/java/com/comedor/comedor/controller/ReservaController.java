@@ -113,52 +113,55 @@ public String reservas(Model model) {
 
 
 
-@GetMapping("/reservas-semanales")
-public String obtenerReservasSemanales(Model model, @AuthenticationPrincipal UserDetails userDetails) {
-    // Convertir el username (dni) a Integer
-    Integer dni = Integer.parseInt(userDetails.getUsername());
-    LocalDate hoy = LocalDate.now();
-    LocalTime horaActual = LocalTime.now();
+    @GetMapping("/reservas-semanales")
+    public String obtenerReservasSemanales(Model model, @AuthenticationPrincipal UserDetails userDetails) {
+        // Convertir el username (dni) a Integer
+        Integer dni = Integer.parseInt(userDetails.getUsername());
+        LocalDate hoy = LocalDate.now();
+        LocalTime horaActual = LocalTime.now();
 
-    // Calcular el lunes y viernes de la semana actual
-    LocalDate lunes = hoy.with(java.time.DayOfWeek.MONDAY);
-    LocalDate viernes = hoy.with(java.time.DayOfWeek.FRIDAY);
+        // Calcular el lunes y viernes de la semana actual
+        LocalDate lunes = hoy.with(java.time.DayOfWeek.MONDAY);
+        LocalDate viernes = hoy.with(java.time.DayOfWeek.FRIDAY);
 
-    // Si es viernes después de las 9 AM, empezar a mostrar los menús de la próxima semana
-    if (hoy.getDayOfWeek() == DayOfWeek.FRIDAY && horaActual.isAfter(LocalTime.of(9, 0))) {
-        lunes = lunes.plusWeeks(1);   // Mover a la próxima semana
-        viernes = viernes.plusWeeks(1);
+        // Si es viernes después de las 9 AM, sábado o domingo, empezar a mostrar los menús de la próxima semana
+        if ((hoy.getDayOfWeek() == DayOfWeek.FRIDAY && horaActual.isAfter(LocalTime.of(9, 0))) ||
+                hoy.getDayOfWeek() == DayOfWeek.SATURDAY ||
+                hoy.getDayOfWeek() == DayOfWeek.SUNDAY) {
+
+            lunes = lunes.plusWeeks(1);   // Mover a la próxima semana
+            viernes = viernes.plusWeeks(1);
+        }
+
+        // Obtener los menús de la semana (o de la siguiente semana si es viernes después de las 9 AM, sábado o domingo)
+        List<Menu> menusDeLaSemana = menuService.getMenusSemana(lunes, viernes);
+
+        // Agrupar los menús por día
+        Map<LocalDate, List<Menu>> menusPorDia = menusDeLaSemana.stream()
+                // Filtrar los menús del día actual si es después de las 9 AM
+                .filter(menu -> {
+                    if (menu.getFechaMenu().isEqual(hoy) && horaActual.isAfter(LocalTime.of(9, 0))) {
+                        return false; // Si es el día actual y son más de las 9 AM, no lo mostramos
+                    }
+                    return true;
+                })
+                .collect(Collectors.groupingBy(Menu::getFechaMenu));
+
+        // Obtener las reservas del usuario
+        List<Reserva> todasLasReservas = reservaRepository.findAll();
+        List<Reserva> reservasFiltradas = todasLasReservas.stream()
+                .filter(reserva -> reserva.getUsuario().getDni().equals(dni))
+                .collect(Collectors.toList());
+
+        // Agregar los menús y reservas al modelo
+        model.addAttribute("reservas", reservasFiltradas);
+        model.addAttribute("menusPorDia", menusPorDia);
+
+        return "/reservas/reserva_menu_semanal";
     }
 
-    // Obtener los menús de la semana (o de la siguiente semana si es viernes después de las 9 AM)
-    List<Menu> menusDeLaSemana = menuService.getMenusSemana(lunes, viernes);
 
-    // Agrupar los menús por día
-    Map<LocalDate, List<Menu>> menusPorDia = menusDeLaSemana.stream()
-            // Filtrar los menús del día actual si es después de las 9 AM
-            .filter(menu -> {
-                if (menu.getFechaMenu().isEqual(hoy) && horaActual.isAfter(LocalTime.of(9, 0))) {
-                    return false; // Si es el día actual y son más de las 9 AM, no lo mostramos
-                }
-                return true;
-            })
-            .collect(Collectors.groupingBy(Menu::getFechaMenu));
-
-    // Obtener las reservas del usuario
-    List<Reserva> todasLasReservas = reservaRepository.findAll();
-    List<Reserva> reservasFiltradas = todasLasReservas.stream()
-            .filter(reserva -> reserva.getUsuario().getDni().equals(dni))
-            .collect(Collectors.toList());
-
-    // Agregar los menús y reservas al modelo
-    model.addAttribute("reservas", reservasFiltradas);
-    model.addAttribute("menusPorDia", menusPorDia);
-
-    return "/reservas/reserva_menu_semanal";
-}
-
-
-    // aca chequeo mis propias reservas de la semana.
+    // aca chequeo mis propias reservas.
     @GetMapping("/misreservas")
     public String MisReservas(Model model, @AuthenticationPrincipal UserDetails userDetails) {
         Integer dni = Integer.parseInt(userDetails.getUsername());
@@ -178,6 +181,8 @@ public String obtenerReservasSemanales(Model model, @AuthenticationPrincipal Use
         model.addAttribute("reservas", reservasFiltradas);
         return "/reservas/reservas_ver";
     }
+
+
         //desde la vista de menu semanal
     @PostMapping("/eliminar/{id}")
     public String eliminarReserva(@PathVariable("id") Integer idReserva, RedirectAttributes redirectAttributes, Model model) {
@@ -220,6 +225,9 @@ public String obtenerReservasSemanales(Model model, @AuthenticationPrincipal Use
             return "redirect:/reservas/reservas-semanales";
         }
     }
+
+
+
     //desde la vista mismenus.
     @PostMapping("/eliminarUser/{id}")
     public String eliminarReservaUser(@PathVariable("id") Integer idReserva, RedirectAttributes redirectAttributes, Model model) {
@@ -263,6 +271,8 @@ public String obtenerReservasSemanales(Model model, @AuthenticationPrincipal Use
         }
     }
 
+
+    //aca muestro las reservas que vera el comedor para el dia del menu.
     @GetMapping("/reservas-dia-actual")
     public String obtenerReservasDelDia(Model model) {
         LocalDate hoy = LocalDate.now();
