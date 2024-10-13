@@ -12,74 +12,79 @@
   <link th:href="@{/bootstrap/css/sticky-footer-navbar.css}" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.5.0/font/bootstrap-icons.min.css">
   <link rel="stylesheet" th:href="@{/css/style.css}">
-  <title>Listado Reservas</title>
+
+  <title>Ingreso comida</title>
 </head>
 <body>
 <header th:insert="fragments/menu :: menu-principal">
 
 </header>
 
-<h2>Reservas del Día Actual</h2>
+<div class="container mt-5">
+  <div class="card text-white bg-dark mb-3">
+    <div class="card-header">
+      <h4>Reservas del Día - <span th:text="${totalReservas}"></span> Total, <span th:text="${totalConsumidas}"></span> Consumidas</h4>
+    </div>
+    <div class="card-body">
+      <div class="row">
+        <!-- Tabla de resumen de tipos de comida -->
+        <div class="col-md-6">
+          <h5>Resumen por Tipo de Comida</h5>
+          <ul class="list-group">
+            <li class="list-group-item" th:each="entry : ${sumaPorTipoComida}">
+              <span th:text="${tipoComidaDescripcion[entry.key]}"></span>:
+              <span th:text="${entry.value}"></span>
+            </li>
+          </ul>
+        </div>
 
-<!-- Mostrar sumas por tipo de comida -->
-<h3>Tipos de Comida</h3>
-<ul>
-  <li th:each="entry : ${sumaPorTipoComida}">
-    <span th:text="${tipoComidaDescripcion[entry.key]} + ': ' + ${entry.value}"></span>
-  </li>
-</ul>
+        <!-- Tabla de resumen por lugar de consumo -->
+        <div class="col-md-6">
+          <h5>Resumen por Lugar de Consumo</h5>
+          <ul class="list-group">
+            <li class="list-group-item" th:each="entry : ${sumaPorLugarConsumo}">
+              <span th:text="${medioDescripcion[entry.key]}"></span>:
+              <span th:text="${entry.value}"></span>
+            </li>
+          </ul>
+        </div>
+      </div>
 
-<!-- Mostrar sumas por lugar de consumo -->
-<h3>Lugares de Consumo</h3>
-<ul>
-  <li th:each="entry : ${sumaPorLugarConsumo}">
-    <span th:text="${medioDescripcion[entry.key]} + ': ' + ${entry.value}"></span>
-  </li>
-</ul>
+      <!-- Tabla de reservas -->
+      <h5 class="mt-4">Detalle de Reservas</h5>
+      <table class="table table-dark table-striped">
+        <thead>
+        <tr>
+          <th>Apellido</th>
+          <th>Nombre</th>
+          <th>Comida Principal</th>
+          <th>Tipo Comida</th>
+          <th>Lugar Consumo</th>
+          <th>Consumió</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="reserva : ${reservas}">
+          <td th:text="${reserva.usuario.apellido}"></td>
+          <td th:text="${reserva.usuario.nombre}"></td>
+          <td th:text="${reserva.menu.comida.principal}"></td>
+          <td th:text="${tipoComidaDescripcion[reserva.menu.comida.tipo_comida]}"></td>
+          <td th:text="${medioDescripcion[reserva.medio]}"></td>
+          <td>
+            <button type="button" class="btn btn-success" th:if="${reserva.entregado == null}">
+              Marcar como Consumido
+            </button>
+            <span th:if="${reserva.entregado != null}" class="badge badge-info">Consumido</span>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
 
-<!-- Tabla de reservas -->
-<table class="table table-striped">
-  <thead>
-  <tr>
-    <th>Apellido</th>
-    <th>Nombre</th>
-    <th>Menú Principal</th>
-    <th>Tipo Comida</th>
-    <th>Medio</th>
-    <th>Asistencia</th>
-  </tr>
-  </thead>
-  <tbody>
-  <tr th:each="reserva : ${reservas}">
-    <td th:text="${reserva.usuario.apellido}"></td>
-    <td th:text="${reserva.usuario.nombre}"></td>
-    <td th:text="${reserva.menu.comida.principal}"></td>
-    <td th:text="${tipoComidaDescripcion[reserva.menu.comida.tipo_comida]}"></td>
-    <td th:text="${medioDescripcion[reserva.medio]}"></td>
-    <td>
-      <input type="checkbox" th:checked="${reserva.entregado != null}"
-             th:onclick="'actualizarAsistencia(' + ${reserva.idReserva} + ', this.checked)'">
-    </td>
-  </tr>
-  </tbody>
-</table>
-
-<script>
-  function actualizarAsistencia(idReserva, entregado) {
-    fetch('/reservas/actualizar-entrega/' + idReserva, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ entregado: entregado })
-    }).then(response => {
-      if (response.ok) {
-        location.reload();  // Recargar la página para ver los cambios
-      }
-    });
-  }
-</script>
 <footer th:insert="fragments/footer :: footer" class="footer"></footer>
 <script th:src="@{/bootstrap/js/bootstrap.min.js}"></script>
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
-<script th:src="@{/js/horaActual.js}"></script>
 </body>
 </html>

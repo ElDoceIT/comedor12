@@ -1,8 +1,5 @@
 package com.comedor.comedor.controller;
 
-
-import com.comedor.comedor.dto.ReservaForm;
-import com.comedor.comedor.model.Comida;
 import com.comedor.comedor.model.Menu;
 import com.comedor.comedor.model.Reserva;
 import com.comedor.comedor.model.Usuario;
@@ -302,16 +299,25 @@ public String obtenerReservasSemanales(Model model, @AuthenticationPrincipal Use
                 .thenComparing(r -> r.getUsuario().getNombre())
                 .thenComparing(r -> r.getMenu().getComida().getPrincipal()));
 
+        // Total de reservas
+        long totalReservas = reservasDelDia.size();
+
+        // Contar reservas consumidas (entregado != null)
+        long totalConsumidas = reservasDelDia.stream()
+                .filter(reserva -> reserva.getEntregado() != null)
+                .count();
+
         // Agregar los resultados y descripciones al modelo
         model.addAttribute("reservas", reservasDelDia);
         model.addAttribute("sumaPorTipoComida", sumaPorTipoComida);
         model.addAttribute("sumaPorLugarConsumo", sumaPorLugarConsumo);
         model.addAttribute("tipoComidaDescripcion", tipoComidaDescripcion);
         model.addAttribute("medioDescripcion", medioDescripcion);
+        model.addAttribute("totalReservas", totalReservas);
+        model.addAttribute("totalConsumidas", totalConsumidas);
 
         return "reservas/reservas_dia";  // Nombre de la vista
     }
-
 
     @PostMapping("/reservas/actualizar-entrega/{idReserva}")
     @ResponseBody
