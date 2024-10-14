@@ -15,7 +15,7 @@ public class HomeController {
 
     @GetMapping("/")
     public String Home(){
-        return "home";
+        return "menu/menu_semanal";
     }
 
     @GetMapping("/fer")

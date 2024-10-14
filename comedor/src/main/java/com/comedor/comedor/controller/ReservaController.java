@@ -123,15 +123,14 @@ public String reservas(Model model) {
         LocalDate viernes = hoy.with(java.time.DayOfWeek.FRIDAY);
 
         // Si es viernes después de las 9 AM, sábado o domingo, empezar a mostrar los menús de la próxima semana
-        if ((hoy.getDayOfWeek() == DayOfWeek.FRIDAY && horaActual.isAfter(LocalTime.of(9, 0))) ||
-                hoy.getDayOfWeek() == DayOfWeek.SATURDAY ||
-                hoy.getDayOfWeek() == DayOfWeek.SUNDAY) {
-
+        if ((hoy.getDayOfWeek() == DayOfWeek.FRIDAY && horaActual.isAfter(LocalTime.of(9, 0)))
+                || hoy.getDayOfWeek() == DayOfWeek.SATURDAY
+                || hoy.getDayOfWeek() == DayOfWeek.SUNDAY) {
             lunes = lunes.plusWeeks(1);   // Mover a la próxima semana
             viernes = viernes.plusWeeks(1);
         }
 
-        // Obtener los menús de la semana (o de la siguiente semana si es viernes después de las 9 AM, sábado o domingo)
+        // Obtener los menús de la semana (o de la siguiente semana si es viernes después de las 9 AM)
         List<Menu> menusDeLaSemana = menuService.getMenusSemana(lunes, viernes);
 
         // Obtener las reservas del usuario
@@ -140,19 +139,19 @@ public String reservas(Model model) {
                 .filter(reserva -> reserva.getUsuario().getDni().equals(dni))
                 .collect(Collectors.toList());
 
-        // Crear un Set de fechas de las reservas del usuario
-        Set<LocalDate> fechasReservadas = reservasFiltradas.stream()
-                .map(reserva -> reserva.getMenu().getFechaMenu())
-                .collect(Collectors.toSet());
-
-        // Filtrar los menús de la semana para que no se muestren los días ya reservados
+        // Filtrar los menús de cada día según si ya fue reservado o si es el día actual después de las 9 AM
         Map<LocalDate, List<Menu>> menusPorDia = menusDeLaSemana.stream()
-                // Filtrar los menús del día actual si es después de las 9 AM o si ya tiene una reserva
-                .filter(menu -> !(menu.getFechaMenu().isEqual(hoy) && horaActual.isAfter(LocalTime.of(9, 0)))
-                        && !fechasReservadas.contains(menu.getFechaMenu())) // Filtra si ya hay una reserva para ese día
-                .collect(Collectors.groupingBy(Menu::getFechaMenu,
-                        () -> new TreeMap<>(Comparator.comparingInt(date -> date.getDayOfWeek().getValue())),
-                        Collectors.toList()));
+                .filter(menu -> {
+                    // Ocultar menús del día actual si es después de las 9 AM
+                    if (menu.getFechaMenu().isEqual(hoy) && horaActual.isAfter(LocalTime.of(9, 0))) {
+                        return false;
+                    }
+                    // Comprobar si ya hay una reserva para el día del menú
+                    boolean yaReservado = reservasFiltradas.stream()
+                            .anyMatch(reserva -> reserva.getMenu().getFechaMenu().isEqual(menu.getFechaMenu()));
+                    return !yaReservado;
+                })
+                .collect(Collectors.groupingBy(Menu::getFechaMenu));
 
         // Agregar los menús y reservas al modelo
         model.addAttribute("reservas", reservasFiltradas);
@@ -160,6 +159,7 @@ public String reservas(Model model) {
 
         return "/reservas/reserva_menu_semanal";
     }
+
 
 
     // aca chequeo mis propias reservas.
@@ -330,21 +330,18 @@ public String reservas(Model model) {
         return "reservas/reservas_dia";  // Nombre de la vista
     }
 
-    @PostMapping("/reservas/actualizar-entrega/{idReserva}")
-    @ResponseBody
-    public ResponseEntity<Void> actualizarEntrega(@PathVariable("idReserva") Integer idReserva, @RequestBody Map<String, Boolean> datos) {
-        Reserva reserva = reservaService.buscarPorId(idReserva);
 
-        if (reserva != null) {
-            if (datos.get("entregado")) {
-                reserva.setEntregado(LocalDateTime.now());
-            } else {
-                reserva.setEntregado(null);  // Si desmarcan la casilla, se borra la entrega
-            }
-            reservaService.guardar(reserva);
-            return ResponseEntity.ok().build();
-        }
-        return ResponseEntity.notFound().build();
-    }
+
+    @PostMapping("/marcar-consumido/{id}")
+   public String marcarComoConsumido(@PathVariable("id") Integer idReserva) {
+       Optional<Reserva> reservaOpt = reservaRepository.findById(idReserva);
+       if (reservaOpt.isPresent()) {
+           Reserva reserva = reservaOpt.get();
+           reserva.setEntregado(LocalDateTime.now());  // Marcar con fecha y hora actual
+           reservaRepository.save(reserva);  // Guardar la actualización
+       }
+       return "redirect:/reservas/reservas-dia-actual";  // Redirigir a la misma vista
+   }
+
 
 }
