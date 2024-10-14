@@ -272,7 +272,6 @@ public String reservas(Model model) {
     }
 
 
-    //aca muestro las reservas que vera el comedor para el dia del menu.
     @GetMapping("/reservas-dia-actual")
     public String obtenerReservasDelDia(Model model) {
         LocalDate hoy = LocalDate.now();
@@ -296,6 +295,15 @@ public String reservas(Model model) {
                 .filter(reserva -> reserva.getMenu().getFechaMenu().equals(hoy))
                 .collect(Collectors.toList());
 
+        // Filtrar reservas consumidas y no consumidas
+        List<Reserva> reservasNoConsumidas = reservasDelDia.stream()
+                .filter(reserva -> reserva.getEntregado() == null)
+                .collect(Collectors.toList());
+
+        List<Reserva> reservasConsumidas = reservasDelDia.stream()
+                .filter(reserva -> reserva.getEntregado() != null)
+                .collect(Collectors.toList());
+
         // Calcular la suma de cada tipo de comida
         Map<Integer, Long> sumaPorTipoComida = reservasDelDia.stream()
                 .collect(Collectors.groupingBy(reserva -> reserva.getMenu().getComida().getTipo_comida(), Collectors.counting()));
@@ -305,7 +313,7 @@ public String reservas(Model model) {
                 .collect(Collectors.groupingBy(Reserva::getMedio, Collectors.counting()));
 
         // Ordenar las reservas por apellido, nombre y menú principal
-        reservasDelDia.sort(Comparator.comparing((Reserva r) -> r.getUsuario().getApellido())
+        reservasNoConsumidas.sort(Comparator.comparing((Reserva r) -> r.getUsuario().getApellido())
                 .thenComparing(r -> r.getUsuario().getNombre())
                 .thenComparing(r -> r.getMenu().getComida().getPrincipal()));
 
@@ -318,7 +326,8 @@ public String reservas(Model model) {
                 .count();
 
         // Agregar los resultados y descripciones al modelo
-        model.addAttribute("reservas", reservasDelDia);
+        model.addAttribute("reservasNoConsumidas", reservasNoConsumidas);
+        model.addAttribute("reservasConsumidas", reservasConsumidas);
         model.addAttribute("sumaPorTipoComida", sumaPorTipoComida);
         model.addAttribute("sumaPorLugarConsumo", sumaPorLugarConsumo);
         model.addAttribute("tipoComidaDescripcion", tipoComidaDescripcion);
@@ -331,6 +340,8 @@ public String reservas(Model model) {
 
 
 
+
+ //Marco el usuario que consumio.
     @PostMapping("/marcar-consumido/{id}")
    public String marcarComoConsumido(@PathVariable("id") Integer idReserva) {
        Optional<Reserva> reservaOpt = reservaRepository.findById(idReserva);
@@ -341,6 +352,19 @@ public String reservas(Model model) {
        }
        return "redirect:/reservas/reservas-dia-actual";  // Redirigir a la misma vista
    }
+
+   //cancelo si por error marque un usuario que consumio.
+    @PostMapping("/cancelar-consumido/{id}")
+    public String cancelarConsumido(@PathVariable("id") Integer idReserva) {
+        Reserva reserva = reservaRepository.findById(idReserva).orElse(null);
+
+        if (reserva != null) {
+            reserva.setEntregado(null);  // Restablecer el estado de consumo
+            reservaRepository.save(reserva);  // Guardar los cambios en la base de datos
+        }
+
+        return "redirect:/reservas/reservas-dia-actual";  // Redirigir a la vista de reservas del día actual
+    }
 
 
 }
