@@ -24,6 +24,7 @@ import java.time.LocalTime;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 import java.util.stream.Collectors;
 
 @Controller
@@ -136,16 +137,13 @@ public String reservas(Model model) {
         // Obtener los menús de la semana (o de la siguiente semana si es viernes después de las 9 AM, sábado o domingo)
         List<Menu> menusDeLaSemana = menuService.getMenusSemana(lunes, viernes);
 
-        // Agrupar los menús por día
+        // Agrupar los menús por día y ordenar por los días de la semana
         Map<LocalDate, List<Menu>> menusPorDia = menusDeLaSemana.stream()
                 // Filtrar los menús del día actual si es después de las 9 AM
-                .filter(menu -> {
-                    if (menu.getFechaMenu().isEqual(hoy) && horaActual.isAfter(LocalTime.of(9, 0))) {
-                        return false; // Si es el día actual y son más de las 9 AM, no lo mostramos
-                    }
-                    return true;
-                })
-                .collect(Collectors.groupingBy(Menu::getFechaMenu));
+                .filter(menu -> !(menu.getFechaMenu().isEqual(hoy) && horaActual.isAfter(LocalTime.of(9, 0))))
+                .collect(Collectors.groupingBy(Menu::getFechaMenu,
+                        () -> new TreeMap<>(Comparator.comparingInt(date -> date.getDayOfWeek().getValue())),
+                        Collectors.toList()));
 
         // Obtener las reservas del usuario
         List<Reserva> todasLasReservas = reservaRepository.findAll();
