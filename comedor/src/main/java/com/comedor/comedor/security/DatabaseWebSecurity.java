@@ -43,6 +43,7 @@ public UserDetailsManager usersCustom(DataSource dataSource) {
                 .requestMatchers("/menu/**").hasAnyAuthority("Admin", "Jefe")
                 .requestMatchers("/productos/**").hasAnyAuthority("Admin", "Jefe")
                 .requestMatchers("/consumos/**").hasAnyAuthority("Admin", "Jefe")
+                .requestMatchers("/reservas/**").hasAnyAuthority("Admin", "Jefe")
                 .anyRequest().authenticated())
                 .formLogin(form -> form
                                 .loginPage("/login")  // Especifica la URL de la página de login
