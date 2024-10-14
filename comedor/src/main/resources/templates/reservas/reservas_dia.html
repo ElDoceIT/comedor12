@@ -29,28 +29,27 @@
       <div class="row">
         <!-- Tabla de resumen de tipos de comida -->
         <div class="col-md-6">
-          <h5>Resumen por Tipo de Comida</h5>
+          <h5 class="text-white">Resumen por Tipo de Comida</h5>
           <ul class="list-group">
-            <li class="list-group-item" th:each="entry : ${sumaPorTipoComida}">
+            <li class="list-group-item bg-secondary text-white" th:each="entry : ${sumaPorTipoComida}">
               <span th:text="${tipoComidaDescripcion[entry.key]}">Tipo de Comida</span>:
               <span th:text="${entry.value}">0</span>
             </li>
           </ul>
-
         </div>
 
         <!-- Tabla de resumen por lugar de consumo -->
         <div class="col-md-6">
-          <h5>Resumen por Lugar de Consumo</h5>
+          <h5 class="text-white">Resumen por Lugar de Consumo</h5>
           <ul class="list-group">
-            <li class="list-group-item" th:each="entry : ${sumaPorLugarConsumo}">
+            <li class="list-group-item bg-secondary text-white" th:each="entry : ${sumaPorLugarConsumo}">
               <span th:text="${medioDescripcion[entry.key]}">Lugar de Consumo</span>:
               <span th:text="${entry.value}">0</span>
             </li>
           </ul>
-
         </div>
       </div>
+
 
       <!-- Tabla de reservas -->
       <h5 class="mt-4">Detalle de Reservas</h5>
