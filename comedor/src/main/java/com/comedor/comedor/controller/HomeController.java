@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.time.temporal.TemporalAdjusters;
 import java.util.Comparator;
 import java.util.LinkedHashMap;
@@ -30,7 +31,7 @@ public class HomeController {
     public String Home(Model model) {
         LocalDate hoy = LocalDate.now();
         LocalDate inicioSemana = hoy.with(TemporalAdjusters.previousOrSame(DayOfWeek.MONDAY));
-        LocalDate finSemana = hoy.with(TemporalAdjusters.next(DayOfWeek.SUNDAY));
+        LocalDate finSemana = inicioSemana.plusDays(4); // Asegurarse de que el fin de semana sea el viernes
 
         // Obtener todos los menús y filtrar por la semana actual
         List<Menu> todosLosMenus = menuRepository.findAll().stream()
@@ -61,8 +62,15 @@ public class HomeController {
         // Agregar los menús agrupados al modelo
         model.addAttribute("menusPorDia", menusPorDia);
 
+        // Crear el rango de fechas para mostrar en la vista (de lunes a viernes)
+        String rangoFechas = "del " + inicioSemana.format(DateTimeFormatter.ofPattern("dd/MM")) +
+                " al " + finSemana.format(DateTimeFormatter.ofPattern("dd/MM"));
+        model.addAttribute("rangoFechas", rangoFechas);
+
         return "menu/menu_semanal";
     }
+
+
 
     @GetMapping("/fer")
     public String HomeFer(){
