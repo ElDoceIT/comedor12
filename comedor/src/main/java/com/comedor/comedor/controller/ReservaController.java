@@ -21,10 +21,7 @@ import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Controller
@@ -137,19 +134,25 @@ public String reservas(Model model) {
         // Obtener los menús de la semana (o de la siguiente semana si es viernes después de las 9 AM, sábado o domingo)
         List<Menu> menusDeLaSemana = menuService.getMenusSemana(lunes, viernes);
 
-        // Agrupar los menús por día y ordenar por los días de la semana
-        Map<LocalDate, List<Menu>> menusPorDia = menusDeLaSemana.stream()
-                // Filtrar los menús del día actual si es después de las 9 AM
-                .filter(menu -> !(menu.getFechaMenu().isEqual(hoy) && horaActual.isAfter(LocalTime.of(9, 0))))
-                .collect(Collectors.groupingBy(Menu::getFechaMenu,
-                        () -> new TreeMap<>(Comparator.comparingInt(date -> date.getDayOfWeek().getValue())),
-                        Collectors.toList()));
-
         // Obtener las reservas del usuario
         List<Reserva> todasLasReservas = reservaRepository.findAll();
         List<Reserva> reservasFiltradas = todasLasReservas.stream()
                 .filter(reserva -> reserva.getUsuario().getDni().equals(dni))
                 .collect(Collectors.toList());
+
+        // Crear un Set de fechas de las reservas del usuario
+        Set<LocalDate> fechasReservadas = reservasFiltradas.stream()
+                .map(reserva -> reserva.getMenu().getFechaMenu())
+                .collect(Collectors.toSet());
+
+        // Filtrar los menús de la semana para que no se muestren los días ya reservados
+        Map<LocalDate, List<Menu>> menusPorDia = menusDeLaSemana.stream()
+                // Filtrar los menús del día actual si es después de las 9 AM o si ya tiene una reserva
+                .filter(menu -> !(menu.getFechaMenu().isEqual(hoy) && horaActual.isAfter(LocalTime.of(9, 0)))
+                        && !fechasReservadas.contains(menu.getFechaMenu())) // Filtra si ya hay una reserva para ese día
+                .collect(Collectors.groupingBy(Menu::getFechaMenu,
+                        () -> new TreeMap<>(Comparator.comparingInt(date -> date.getDayOfWeek().getValue())),
+                        Collectors.toList()));
 
         // Agregar los menús y reservas al modelo
         model.addAttribute("reservas", reservasFiltradas);
