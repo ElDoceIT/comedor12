@@ -2,9 +2,14 @@ package com.comedor.comedor.controller;
 
 
 import com.comedor.comedor.model.Menu;
+import com.comedor.comedor.model.Reserva;
 import com.comedor.comedor.repository.MenuRepository;
+import com.comedor.comedor.repository.ReservaRepository;
+import com.comedor.comedor.service.IMenuService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,12 +18,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.TemporalAdjusters;
-import java.util.Comparator;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Controller
@@ -26,6 +29,12 @@ public class HomeController {
 
     @Autowired
     private MenuRepository menuRepository;
+
+    @Autowired
+    private IMenuService menuService;
+
+    @Autowired
+    private ReservaRepository reservaRepository;
 
     @GetMapping("/")
     public String Home(Model model) {
@@ -100,6 +109,48 @@ public class HomeController {
 
 
 
+    @GetMapping("/reserva")
+    public String reservasSemanal(Model model, @AuthenticationPrincipal UserDetails userDetails) {
+        // Convertir el username (dni) a Integer
+        Integer dni = Integer.parseInt(userDetails.getUsername());
+        LocalDate hoy = LocalDate.now();
+        LocalTime horaActual = LocalTime.now();
 
+        // Calcular el lunes y viernes de la semana actual
+        LocalDate lunes = hoy.with(java.time.DayOfWeek.MONDAY);
+        LocalDate viernes = hoy.with(java.time.DayOfWeek.FRIDAY);
 
+        // Si es viernes después de las 9 AM, sábado o domingo, empezar a mostrar los menús de la próxima semana
+        if ((hoy.getDayOfWeek() == DayOfWeek.FRIDAY && horaActual.isAfter(LocalTime.of(9, 0))) ||
+                hoy.getDayOfWeek() == DayOfWeek.SATURDAY ||
+                hoy.getDayOfWeek() == DayOfWeek.SUNDAY) {
+
+            lunes = lunes.plusWeeks(1);   // Mover a la próxima semana
+            viernes = viernes.plusWeeks(1);
+        }
+
+        // Obtener los menús de la semana (o de la siguiente semana si es viernes después de las 9 AM, sábado o domingo)
+        List<Menu> menusDeLaSemana = menuService.getMenusSemana(lunes, viernes);
+
+        // Agrupar los menús por día y ordenar por los días de la semana
+        Map<LocalDate, List<Menu>> menusPorDia = menusDeLaSemana.stream()
+                // Filtrar los menús del día actual si es después de las 9 AM
+                .filter(menu -> !(menu.getFechaMenu().isEqual(hoy) && horaActual.isAfter(LocalTime.of(9, 0))))
+                .collect(Collectors.groupingBy(Menu::getFechaMenu,
+                        () -> new TreeMap<>(Comparator.comparingInt(date -> date.getDayOfWeek().getValue())),
+                        Collectors.toList()));
+
+        // Obtener las reservas del usuario
+        List<Reserva> todasLasReservas = reservaRepository.findAll();
+        List<Reserva> reservasFiltradas = todasLasReservas.stream()
+                .filter(reserva -> reserva.getUsuario().getDni().equals(dni))
+                // Ordenar por la fecha del menú en orden descendente
+                .sorted(Comparator.comparing((Reserva reserva) -> reserva.getMenu().getFechaMenu()).reversed())
+                .collect(Collectors.toList());
+        // Agregar los menús y reservas al modelo
+        model.addAttribute("reservas", reservasFiltradas);
+        model.addAttribute("menusPorDia", menusPorDia);
+
+        return "home";
+    }
 }

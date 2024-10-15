@@ -1,40 +1,165 @@
-<!doctype html>
+<!DOCTYPE html>
 <html xmlns:th="http://thymeleaf.org">
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="">
-    <meta name="author" content="">
-    <link rel="icon" href="favicon.ico">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>ComidaApp | Login</title>
-    <!-- Bootstrap core CSS -->
+    <link rel="shortcut icon" th:href="@{/images/El-Doce-TV-en-vivo-Online-1.png}" type="image/x-icon">
+
     <link th:href="@{/bootstrap/css/bootstrap.min.css}" rel="stylesheet">
     <!-- Custom styles for this template -->
     <link th:href="@{/bootstrap/css/jumbotron.css}" rel="stylesheet">
     <link th:href="@{/bootstrap/css/sticky-footer-navbar.css}" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.5.0/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
 
+    <title>Menu Semanal</title>
 </head>
-
 <body>
 <header th:insert="fragments/menu :: menu-principal">
 
 </header>
 
-<main role="main">
-    <hr>
-   <p> Aca aparecera el menu del dia.</p>
+
+<h1>Menú Semanal <span id="fecha"></span></h1>
+<span><h3> Hoy es:  </h3> <h3 id="hora-actual" th:text="${#temporals.format(serverTime, 'EEEE dd MMMM yyyy HH:mm:ss')}">Día</h3> </span>
+
+<br><br>
+<!-- Mensaje de error -->
+<div th:if="${errorReservaDuplicada}" class="alert alert-danger" role="alert">
+    <span th:text="${errorReservaDuplicada}"></span>
+</div>
+<div th:if="${error}" class="alert alert-danger" role="alert">
+    <span th:text="${error}"></span>
+</div>
+<!-- Selección de Comida -->
+<h2>Seleccione su comida: </h2>
+<form th:action="@{/reservas/reservar}" method="post">
+    <div th:each="dia : ${menusPorDia}">
+        <div class="day-menu">
+            <caption th:text="'Menú del día: ' + ${#temporals.format(dia.key, 'EEEE dd MMMM yyyy')}"></caption>
+
+            <!-- Verificar si no hay una reserva para ese día -->
+
+            <table class="table table-striped">
+                <thead>
+                <!--<tr th:if="${#lists.isEmpty(reservasUsuario.?[menu.fechaMenu == dia.key])}">-->
+                <th>Entrada</th>
+                <th>Plato Principal</th>
+                <th>Postre</th>
+                <th>Tipo de Comida</th>
+                <th>Seleccionar</th>
+                </tr>
+                </thead>
+                <tbody th:each="menu : ${dia.value}">
+                <tr>
+                    <td th:text="${menu.comida.entrada}"></td>
+                    <td th:text="${menu.comida.principal}"></td>
+                    <td th:text="${menu.comida.postre}"></td>
+                    <td th:switch="${menu.comida.tipo_comida}">
+                        <span th:case="1">Principal</span>
+                        <span th:case="2">Vegetariana</span>
+                        <span th:case="3">Celiaco</span>
+                        <span th:case="4">Fruta</span>
+                    </td>
+
+                    <!-- Selección del menú -->
+                    <td>
+                        <input type="radio" name="menuSeleccionado" th:value="${menu.id_menu}" required>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+
+            <!-- Lugar de consumo -->
+            <div class="tipo-consumo-container">
+                <h4>¿Dónde comerá el <span th:text="${#temporals.format(dia.key, 'EEEE')}"></span>?</h4>
+
+                <div class="tipo-consumo-opciones">
+                    <input type="radio" id="|comedor__${#temporals.format(dia.key, 'yyyyMMdd')}|" name="tipoComida" value="1" required>
+                    <label th:for="|comedor__${#temporals.format(dia.key, 'yyyyMMdd')}|">Comedor</label>
+
+                    <input type="radio" id="|vianda__${#temporals.format(dia.key, 'yyyyMMdd')}|" name="tipoComida" value="2" required>
+                    <label th:for="|vianda__${#temporals.format(dia.key, 'yyyyMMdd')}|">Vianda</label>
+
+                    <input type="radio" id="|retirar__${#temporals.format(dia.key, 'yyyyMMdd')}|" name="tipoComida" value="3" required>
+                    <label th:for="|retirar__${#temporals.format(dia.key, 'yyyyMMdd')}|">Retira</label>
+                </div>
+            </div>
+            <!-- Botón para enviar la selección -->
+            <div class="d-flex justify-content-center">
+                <button type="submit" class="btn btn-primary">Confirmar Menu</button>
+            </div>
+            <br><br>
 
 
-    <footer th:insert="fragments/footer :: footer" class="footer">
 
-    </footer>
-</main>
 
-<!-- Bootstrap core JavaScript
-================================================== -->
-<!-- Placed at the end of the document so the pages load faster -->
+        </div> <!-- Cierra el th:each de dia -->
+    </div>
+</form>
+
+<!-- Tabla de menús procesados -->
+
+<br><br><br><br><br>
+<div class="card mt-4 shadow">
+    <div class="card1 card-body">
+        <h5>Mis Reservas de la semana</h5>
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th>Día</th>
+                <th>Entrada</th>
+                <th>Plato Principal</th>
+                <th>Postre</th>
+                <th>Tipo de Comida</th>
+                <th>Lugar de Consumo</th>
+                <th>Editar</th>
+            </tr>
+            </thead>
+            <tbody>
+
+            <tr th:each="reserva : ${reservas}">
+                <td th:text="${reserva.menu != null && reserva.menu.fechaMenu != null ? #temporals.format(reserva.menu.fechaMenu, 'EEEE dd MMMM yyyy') : 'Sin fecha'}"></td>
+                <td th:text="${reserva.menu != null && reserva.menu.comida != null && reserva.menu.comida.entrada != null ? reserva.menu.comida.entrada : 'Sin entrada'}"></td>
+                <td th:text="${reserva.menu != null && reserva.menu.comida != null && reserva.menu.comida.principal != null ? reserva.menu.comida.principal  : 'Sin Comida'}">Plato Principal</td>
+                <td th:text="${reserva.menu != null && reserva.menu.comida != null && reserva.menu.comida.postre != null ? reserva.menu.comida.postre : 'Sin Postre'}">Postre</td>
+                <td th:switch="${reserva.menu != null && reserva.menu.comida != null && reserva.menu.comida.tipo_comida != null ? reserva.menu.comida.tipo_comida : 'Sin Tipo'}">
+                    <span th:case="1">Principal</span>
+                    <span th:case="2">Vegetariana</span>
+                    <span th:case="3">Celiaco</span>
+                    <span th:case="4">Fruta</span>
+                </td>
+                <td th:switch="${reserva.medio}">
+                    <span th:case="1">Comedor</span>
+                    <span th:case="2">Vianda</span>
+                    <span th:case="3">Retira</span>
+                </td>
+                <td class="float-right">
+                    <form th:action="@{/reservas/eliminar/{id}(id=${reserva.idReserva})}" method="post" style="display:inline;"
+                          onsubmit="return confirm('¿Estás seguro de que deseas eliminar esta reserva?');">
+                        <button type="submit" class="btn btn-outline-secondary botoncito1 round-button mx-0 ml-2 p-1" title="Eliminar">
+                            <i class="bi bi-trash" aria-hidden="true"></i>
+                        </button>
+                    </form>
+                </td>
+            </tr>
+        </table>
+        <div th:if="${error}" class="alert alert-danger" role="alert">
+            <span th:text="${error}"></span>
+        </div>
+    </div>
+</div>
+<br>
+
+</div>
+</div>
+</div>
+
+
+<footer th:insert="fragments/footer :: footer" class="footer"></footer>
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
 <script th:src="@{/bootstrap/js/bootstrap.min.js}"></script>
+<script th:src="@{/js/horaActual.js}"></script>
 </body>
 </html>

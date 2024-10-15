@@ -56,53 +56,6 @@ public String reservas(Model model) {
     return "reservas/reservas_ver";
 }
 
-    @GetMapping("/reservas-semanales")
-    public String obtenerReservasSemanales(Model model, @AuthenticationPrincipal UserDetails userDetails) {
-        // Convertir el username (dni) a Integer
-        Integer dni = Integer.parseInt(userDetails.getUsername());
-        LocalDate hoy = LocalDate.now();
-        LocalTime horaActual = LocalTime.now();
-
-        // Calcular el lunes y viernes de la semana actual
-        LocalDate lunes = hoy.with(java.time.DayOfWeek.MONDAY);
-        LocalDate viernes = hoy.with(java.time.DayOfWeek.FRIDAY);
-
-        // Si es viernes después de las 9 AM, sábado o domingo, empezar a mostrar los menús de la próxima semana
-        if ((hoy.getDayOfWeek() == DayOfWeek.FRIDAY && horaActual.isAfter(LocalTime.of(9, 0))) ||
-                hoy.getDayOfWeek() == DayOfWeek.SATURDAY ||
-                hoy.getDayOfWeek() == DayOfWeek.SUNDAY) {
-
-            lunes = lunes.plusWeeks(1);   // Mover a la próxima semana
-            viernes = viernes.plusWeeks(1);
-        }
-
-        // Obtener los menús de la semana (o de la siguiente semana si es viernes después de las 9 AM, sábado o domingo)
-        List<Menu> menusDeLaSemana = menuService.getMenusSemana(lunes, viernes);
-
-        // Agrupar los menús por día y ordenar por los días de la semana
-        Map<LocalDate, List<Menu>> menusPorDia = menusDeLaSemana.stream()
-                // Filtrar los menús del día actual si es después de las 9 AM
-                .filter(menu -> !(menu.getFechaMenu().isEqual(hoy) && horaActual.isAfter(LocalTime.of(9, 0))))
-                .collect(Collectors.groupingBy(Menu::getFechaMenu,
-                        () -> new TreeMap<>(Comparator.comparingInt(date -> date.getDayOfWeek().getValue())),
-                        Collectors.toList()));
-
-        // Obtener las reservas del usuario
-        List<Reserva> todasLasReservas = reservaRepository.findAll();
-        List<Reserva> reservasFiltradas = todasLasReservas.stream()
-                .filter(reserva -> reserva.getUsuario().getDni().equals(dni))
-                // Ordenar por la fecha del menú en orden descendente
-                .sorted(Comparator.comparing((Reserva reserva) -> reserva.getMenu().getFechaMenu()).reversed())
-                .collect(Collectors.toList());
-        // Agregar los menús y reservas al modelo
-        model.addAttribute("reservas", reservasFiltradas);
-        model.addAttribute("menusPorDia", menusPorDia);
-
-        return "/reservas/reserva_semanal";
-    }
-
-
-
     @PostMapping("/reservar")
     public String reservar(
             @RequestParam("menuSeleccionado") Integer idMenu,
