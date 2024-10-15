@@ -69,7 +69,7 @@
           <td th:text="${medioDescripcion[reserva.medio]}"></td>
           <td>
             <form th:action="@{/reservas/marcar-consumido/{id}(id=${reserva.idReserva})}" method="post">
-              <button type="submit" class="btn btn-success">Marcar como Consumido</button>
+              <button type="submit" class="btn btn-success">No entregado</button>
             </form>
           </td>
         </tr>
@@ -98,7 +98,7 @@
           <td th:text="${tipoComidaDescripcion[reserva.menu.comida.tipo_comida]}"></td>
           <td th:text="${medioDescripcion[reserva.medio]}"></td>
           <td>
-            <span th:text="${#temporals.format(reserva.entregado, 'dd-MM-yyyy HH:mm')}"></span>
+            Entregado:  <span th:text="${#temporals.format(reserva.entregado, 'dd-MM-yyyy HH:mm')}"></span>
           </td>
           <td>
             <form th:action="@{/reservas/cancelar-consumido/{id}(id=${reserva.idReserva})}" method="post">
