@@ -90,7 +90,7 @@
                     </li>
 
                     <!-- Botón de página previa -->
-                    <li class="page-item" th:classappend="${currentPage == 0} ? 'disabled'">
+                    <li class="page-item" th:class="${currentPage == 0} ? 'page-item disabled' : 'page-item'">
                         <a class="btn btn-outline-secondary" th:href="@{/comida/search (page=${currentPage - 1}, size=${pageSize}, principal=${principal})}">Anterior</a>
                     </li>
 

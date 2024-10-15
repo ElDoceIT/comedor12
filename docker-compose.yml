@@ -1,4 +1,4 @@
-version: '3.1'
+version: '3.9'
 
 services:
   app_comedor:
@@ -13,8 +13,8 @@ services:
       SPORT: 8080
     restart: always
     depends_on:
-      comedor_db:
-          condition: service_healthy
+      - comedor_db  # Aquí cambiamos a una lista en lugar de un mapeo
+
   comedor_db:
     image: mysql:8.0.33 
     ports:
@@ -28,8 +28,11 @@ services:
       - comedor-db:/var/lib/mysql
     restart: always
     healthcheck:
-      test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
       timeout: 10s
+      interval: 30s  # Este es el intervalo para las verificaciones de salud
       retries: 4
+
 volumes:
-    comedor-db:
+  comedor-db:
+

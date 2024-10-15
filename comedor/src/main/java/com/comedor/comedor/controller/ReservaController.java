@@ -8,7 +8,6 @@ import com.comedor.comedor.service.IMenuService;
 import com.comedor.comedor.service.IReservaService;
 import com.comedor.comedor.service.IUsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
@@ -57,60 +56,6 @@ public String reservas(Model model) {
     return "reservas/reservas_ver";
 }
 
-
-
-    @PostMapping("/reservar")
-    public String reservar(
-            @RequestParam("menuSeleccionado") Integer idMenu,
-            @RequestParam("tipoComida") Integer medio,
-            Principal principal, // Para obtener al usuario logueado
-            Model model
-    ) {
-        // Obtener la hora actual y validar que es antes de las 9 AM
-        LocalDateTime now = LocalDateTime.now();
-        LocalTime nineAM = LocalTime.of(9, 0);
-
-        // Obtener el menú seleccionado
-        Menu menu = menuService.buscarPorId(idMenu);
-        LocalDate fechaMenu = menu.getFechaMenu();
-
-        // Verificar que la hora actual no sea después de las 9AM del día del menú
-        if (now.isAfter(fechaMenu.atTime(nineAM))) {
-            model.addAttribute("error", "No se puede reservar este menú, ya ha pasado el límite de las 9AM.");
-            return "reservas/reserva_menu_semanal"; // Mantener la misma página
-        }
-
-        // Obtener el usuario logueado
-        Integer username = Integer.valueOf(principal.getName());
-        Usuario usuario = usuarioService.obtenerPorDni(username);
-
-        // Verificar si el usuario ya tiene una reserva para esa fecha
-        boolean yaReservado = reservaService.existeReservaParaUsuarioYFecha(usuario, fechaMenu);
-
-        if (yaReservado) {
-            // Si el usuario ya tiene una reserva para este día, mostrar el mensaje de error
-            model.addAttribute("errorReservaDuplicada", "Ya has reservado un menú para este día.");
-            return "reservas/reserva_menu_semanal"; // Mantener la misma página
-        }
-
-        // Crear y guardar la nueva reserva
-        Reserva reserva = new Reserva();
-        reserva.setMenu(menu);
-        reserva.setUsuario(usuario);
-        reserva.setF_reserva(now);
-        reserva.setMedio(medio);
-
-        reservaService.guardar(reserva);
-
-        List<Reserva> reservasUsuario = reservaService.obtenerReservasPorUsuario(usuario);
-        model.addAttribute("reservasUsuario", reservasUsuario);
-
-        return "redirect:/reservas/reservas-semanales"; // Redirigir a la página de reservas si la reserva es exitosa
-    }
-
-
-
-
     @GetMapping("/reservas-semanales")
     public String obtenerReservasSemanales(Model model, @AuthenticationPrincipal UserDetails userDetails) {
         // Convertir el username (dni) a Integer
@@ -153,12 +98,59 @@ public String reservas(Model model) {
         model.addAttribute("reservas", reservasFiltradas);
         model.addAttribute("menusPorDia", menusPorDia);
 
-        return "/reservas/reserva_menu_semanal";
+        return "/reservas/reserva_semanal";
     }
 
 
 
+    @PostMapping("/reservar")
+    public String reservar(
+            @RequestParam("menuSeleccionado") Integer idMenu,
+            @RequestParam("tipoComida") Integer medio,
+            Principal principal, // Para obtener al usuario logueado
+            Model model
+    ) {
+        // Obtener la hora actual y validar que es antes de las 9 AM
+        LocalDateTime now = LocalDateTime.now();
+        LocalTime nineAM = LocalTime.of(9, 0);
 
+        // Obtener el menú seleccionado
+        Menu menu = menuService.buscarPorId(idMenu);
+        LocalDate fechaMenu = menu.getFechaMenu();
+
+        // Verificar que la hora actual no sea después de las 9AM del día del menú
+        if (now.isAfter(fechaMenu.atTime(nineAM))) {
+            model.addAttribute("error", "No se puede reservar este menú, ya ha pasado el límite de las 9AM.");
+            return "reservas/reserva_semanal"; // Mantener la misma página
+        }
+
+        // Obtener el usuario logueado
+        Integer username = Integer.valueOf(principal.getName());
+        Usuario usuario = usuarioService.obtenerPorDni(username);
+
+        // Verificar si el usuario ya tiene una reserva para esa fecha
+        boolean yaReservado = reservaService.existeReservaParaUsuarioYFecha(usuario, fechaMenu);
+
+        if (yaReservado) {
+            // Si el usuario ya tiene una reserva para este día, mostrar el mensaje de error
+            model.addAttribute("errorReservaDuplicada", "Ya has reservado un menú para este día.");
+            return "reservas/reserva_semanal"; // Mantener la misma página
+        }
+
+        // Crear y guardar la nueva reserva
+        Reserva reserva = new Reserva();
+        reserva.setMenu(menu);
+        reserva.setUsuario(usuario);
+        reserva.setF_reserva(now);
+        reserva.setMedio(medio);
+
+        reservaService.guardar(reserva);
+
+        List<Reserva> reservasUsuario = reservaService.obtenerReservasPorUsuario(usuario);
+        model.addAttribute("reservasUsuario", reservasUsuario);
+
+        return "redirect:/reservas/reservas-semanales"; // Redirigir a la página de reservas si la reserva es exitosa
+    }
 
 
     // aca chequeo mis propias reservas.

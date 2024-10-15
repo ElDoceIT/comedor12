@@ -1,5 +1,5 @@
-FROM openjdk:21-ea-33-jdk-bullseye
-ARG JAR_FILE=target/comedor-0.0.8.jar
+FROM eclipse-temurin:21.0.4_7-jdk
+ARG JAR_FILE=target/comedor-0.0.10.jar
 COPY ${JAR_FILE} comedor.jar
 EXPOSE 8080
 ENTRYPOINT ["java", "-jar", "comedor.jar"]
