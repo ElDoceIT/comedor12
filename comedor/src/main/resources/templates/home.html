@@ -114,6 +114,7 @@
                 <th>Postre</th>
                 <th>Tipo de Comida</th>
                 <th>Lugar de Consumo</th>
+                <th>Entregado</th>
                 <th>Editar</th>
             </tr>
             </thead>
@@ -134,6 +135,11 @@
                     <span th:case="1">Comedor</span>
                     <span th:case="2">Vianda</span>
                     <span th:case="3">Retira</span>
+                </td>
+                <td>
+                        <span th:class="${reserva.entregado != null ? 'text-success' : 'text-danger'}"
+                              th:text="${reserva.entregado != null ? 'Entregado ' + reserva.entregado : 'No entregado'}">
+                        </span>
                 </td>
                 <td class="float-right">
                     <form th:action="@{/reservas/eliminar/{id}(id=${reserva.idReserva})}" method="post" style="display:inline;"

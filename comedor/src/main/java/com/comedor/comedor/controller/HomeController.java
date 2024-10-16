@@ -204,7 +204,7 @@ public class HomeController {
 
         // Ordenar las reservas por la fecha del menú en orden descendente
         List<Reserva> reservasFiltradas = reservasUsuario.stream()
-                .sorted(Comparator.comparing((Reserva reserva) -> reserva.getMenu().getFechaMenu()).reversed())
+                .sorted(Comparator.comparing((Reserva reserva) -> reserva.getMenu().getFechaMenu()))
                 .collect(Collectors.toList());
 
         // Agregar los menús y reservas al modelo
