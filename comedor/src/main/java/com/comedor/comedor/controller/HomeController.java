@@ -6,6 +6,7 @@ import com.comedor.comedor.model.Reserva;
 import com.comedor.comedor.repository.MenuRepository;
 import com.comedor.comedor.repository.ReservaRepository;
 import com.comedor.comedor.service.IMenuService;
+import com.comedor.comedor.service.IReservaService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -35,6 +36,9 @@ public class HomeController {
 
     @Autowired
     private ReservaRepository reservaRepository;
+
+    @Autowired
+    private IReservaService reservaService;
 
     @GetMapping("/")
     public String Home(Model model) {
@@ -109,7 +113,7 @@ public class HomeController {
 
 
 
-    @GetMapping("/reserva")
+    /*@GetMapping("/reserva")
     public String reservasSemanal(Model model, @AuthenticationPrincipal UserDetails userDetails) {
         // Convertir el username (dni) a Integer
         Integer dni = Integer.parseInt(userDetails.getUsername());
@@ -152,5 +156,62 @@ public class HomeController {
         model.addAttribute("menusPorDia", menusPorDia);
 
         return "home";
+    }*/
+    @GetMapping("/reserva")
+    public String reservasSemanal(Model model, @AuthenticationPrincipal UserDetails userDetails) {
+        // Convertir el username (dni) a Integer
+        Integer dni = Integer.parseInt(userDetails.getUsername());
+        LocalDate hoy = LocalDate.now();
+        LocalTime horaActual = LocalTime.now();
+
+        // Calcular el lunes y viernes de la semana actual
+        LocalDate lunes = hoy.with(java.time.DayOfWeek.MONDAY);
+        LocalDate viernes = hoy.with(java.time.DayOfWeek.FRIDAY);
+
+        // Si es viernes después de las 9 AM, sábado o domingo, empezar a mostrar los menús de la próxima semana
+        if ((hoy.getDayOfWeek() == DayOfWeek.FRIDAY && horaActual.isAfter(LocalTime.of(9, 0))) ||
+                hoy.getDayOfWeek() == DayOfWeek.SATURDAY ||
+                hoy.getDayOfWeek() == DayOfWeek.SUNDAY) {
+            lunes = lunes.plusWeeks(1);   // Mover a la próxima semana
+            viernes = viernes.plusWeeks(1);
+        }
+
+        // Obtener los menús de la semana (o de la siguiente semana si es viernes después de las 9 AM, sábado o domingo)
+        List<Menu> menusDeLaSemana = menuService.getMenusSemana(lunes, viernes);
+
+        // Obtener las reservas del usuario actual
+        List<Reserva> reservasUsuario = reservaService.obtenerReservasSemanalesPorUsuario(dni);
+
+        // Filtrar los menús de días anteriores, del día actual después de las 9 AM y los menús ya reservados por el usuario
+        List<Menu> menusFiltrados = menusDeLaSemana.stream()
+                .filter(menu -> {
+                    // No mostrar menús de días anteriores ni del día actual si es después de las 9 AM
+                    if (menu.getFechaMenu().isBefore(hoy) ||
+                            (menu.getFechaMenu().isEqual(hoy) && horaActual.isAfter(LocalTime.of(9, 0)))) {
+                        return false;
+                    }
+                    // No mostrar menús de días donde el usuario ya reservó
+                    return reservasUsuario.stream()
+                            .noneMatch(reserva -> reserva.getMenu().getFechaMenu().equals(menu.getFechaMenu()));
+                })
+                .collect(Collectors.toList());
+
+        // Agrupar los menús filtrados por día y ordenar por los días de la semana
+        Map<LocalDate, List<Menu>> menusPorDia = menusFiltrados.stream()
+                .collect(Collectors.groupingBy(Menu::getFechaMenu,
+                        () -> new TreeMap<>(Comparator.comparingInt(date -> date.getDayOfWeek().getValue())),
+                        Collectors.toList()));
+
+        // Ordenar las reservas por la fecha del menú en orden descendente
+        List<Reserva> reservasFiltradas = reservasUsuario.stream()
+                .sorted(Comparator.comparing((Reserva reserva) -> reserva.getMenu().getFechaMenu()).reversed())
+                .collect(Collectors.toList());
+
+        // Agregar los menús y reservas al modelo
+        model.addAttribute("reservas", reservasFiltradas);
+        model.addAttribute("menusPorDia", menusPorDia);
+
+        return "home";
     }
+
 }

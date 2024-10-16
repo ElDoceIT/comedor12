@@ -74,7 +74,7 @@ public String reservas(Model model) {
         // Verificar que la hora actual no sea después de las 9AM del día del menú
         if (now.isAfter(fechaMenu.atTime(nineAM))) {
             model.addAttribute("error", "No se puede reservar este menú, ya ha pasado el límite de las 9AM.");
-            return "reservas/reserva_semanal"; // Mantener la misma página
+            return "home"; // Mantener la misma página
         }
 
         // Obtener el usuario logueado
@@ -87,7 +87,7 @@ public String reservas(Model model) {
         if (yaReservado) {
             // Si el usuario ya tiene una reserva para este día, mostrar el mensaje de error
             model.addAttribute("errorReservaDuplicada", "Ya has reservado un menú para este día.");
-            return "reservas/reserva_semanal"; // Mantener la misma página
+            return "homel"; // Mantener la misma página
         }
 
         // Crear y guardar la nueva reserva
@@ -102,7 +102,7 @@ public String reservas(Model model) {
         List<Reserva> reservasUsuario = reservaService.obtenerReservasPorUsuario(usuario);
         model.addAttribute("reservasUsuario", reservasUsuario);
 
-        return "redirect:/reservas/reservas-semanales"; // Redirigir a la página de reservas si la reserva es exitosa
+        return "redirect:/reserva"; // Redirigir a la página de reservas si la reserva es exitosa
     }
 
 
@@ -150,24 +150,24 @@ public String reservas(Model model) {
                     System.out.println("no se puede eliminar despues de las 9 ");
 
                     redirectAttributes.addFlashAttribute("error", "No se puede eliminar o modificar la reserva después de las 9.");
-                    return "redirect:/reservas/reservas-semanales";
+                    return "redirect:/reserva";
 
                     // Redirige a la página de reservas semanales
                 } else {
                     // Permite la eliminación si la fecha del menú es posterior a la actual o si es hoy antes de las 9 AM
                     reservaService.eliminarPorId(idReserva);
-                    return "redirect:/reservas/reservas-semanales";
+                    return "redirect:/reserva";
                     //return "reservas/reserva_seleccionar";
                 }
             } else {
                 // Manejar caso donde el menú no exista
                 model.addAttribute("error", "El menú asociado a la reserva no existe.");
-                return "redirect:/reservas/reservas-semanales";
+                return "redirect:/reserva";
             }
         } else {
             // Manejar caso donde la reserva no exista
             model.addAttribute("error", "La reserva no existe.");
-            return "redirect:/reservas/reservas-semanales";
+            return "redirect:/reserva";
         }
     }
 
