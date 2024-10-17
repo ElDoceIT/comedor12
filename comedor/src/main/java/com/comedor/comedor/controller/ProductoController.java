@@ -45,7 +45,7 @@ public class ProductoController {
     @GetMapping("/search")
     public String listarProductos(
             @RequestParam(value = "descripcion", required = false) String descripcion,
-            @PageableDefault(size = 10) Pageable pageable, Model model) {
+            @PageableDefault(size = 20) Pageable pageable, Model model) {
 
         Page<Producto> productos;
 
