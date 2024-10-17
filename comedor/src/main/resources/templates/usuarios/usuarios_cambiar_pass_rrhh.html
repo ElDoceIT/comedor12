@@ -13,7 +13,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.5.0/font/bootstrap-icons.min.css">
     <link rel="stylesheet" th:href="@{/css/style.css}">
 
-    <title>Cambiar Password</title>
+    <title>Blanquear Clave</title>
 </head>
 <body>
 <header th:insert="fragments/menu :: menu-principal">
@@ -22,7 +22,7 @@
 
 <div class="container justify-content-center mt-3">
     <div class="card1 ">
-        <h1 class="card-header text-center "><strong>Cambiar Contraseña</strong></h1>
+        <h1 class="card-header text-center "><strong>Blanquear Clave</strong></h1>
         <div class="card-body m-5 ">
 
             <!-- Mensajes de error o éxito -->
@@ -35,19 +35,30 @@
 
             <!-- Formulario para cambiar la clave -->
             <form th:action="@{/usuarios/cambiar-clave-rrhh}" method="post">
-
                 <div>
-
-                    <input class=" form-control mt-3 col-15 justify-content-center" type="number" id="dni" name="dni" placeholder="DNI" required>
+                    <input class=" form-control mt-3 col-15 justify-content-center"
+                           type="number"
+                           id="dni"
+                           name="dni"
+                           th:value="${dni}"
+                    placeholder="DNI"
+                    required >
                 </div>
-
                 <div>
-
-                    <input class=" form-control mt-3 col-15 justify-content-center" type="password" id="newPassword" name="newPassword" placeholder="Nueva contraseña" required>
+                    <input class=" form-control mt-3 col-15 justify-content-center"
+                           type="password"
+                           id="newPassword"
+                           name="newPassword"
+                           placeholder="Nueva contraseña"
+                           required>
                 </div>
                 <div>
-
-                    <input class=" form-control mt-3 col-15 justify-content-center" type="password" id="confirmPassword" name="confirmPassword" placeholder="Confirmar nueva contraseña" required>
+                    <input class=" form-control mt-3 col-15 justify-content-center"
+                           type="password"
+                           id="confirmPassword"
+                           name="confirmPassword"
+                           placeholder="Confirmar nueva contraseña"
+                           required>
                 </div>
                 <div class="d-flex justify-content-center">
                     <button type="submit" class="btn btn-outline-secondary botoncito1 table-light margen3 mt-5">Cambiar contraseña</button>

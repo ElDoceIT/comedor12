@@ -197,8 +197,9 @@ public class UsuarioController {
 
     // Muestra el formulario de cambio de contraseña para rrhh
     @GetMapping("/cambiar-clave-rrhh")
-    public String mostrarFormularioCambioClaveRRHH() {
-        return "usuarios/usuarios_cambiar_pass_rrhh";
+    public String mostrarCambioClave(@RequestParam("dni") Integer dni, Model model) {
+        model.addAttribute("dni", dni); // Agrega el DNI al modelo
+        return "usuarios/usuarios_cambiar_pass_rrhh"; // Devuelve la vista
     }
 
     // Procesa el cambio de contraseña
@@ -208,31 +209,30 @@ public class UsuarioController {
                                @RequestParam("confirmPassword") String confirmPassword,
                                Model model) {
 
-        // Busca el usuario por su DNI
+       // Busca el usuario por su DNI
         Usuario usuario = usuarioService.obtenerPorDni(dni);
 
-        // Verificar si el usuario existe
+         // Verificar si el usuario existe
         if (usuario == null) {
             model.addAttribute("error", "Usuario no encontrado");
             return "usuarios/usuarios_cambiar_pass_rrhh";
         }
-        
+        model.addAttribute("dni", dni);
+
         // Verificar si la nueva contraseña y la confirmación coinciden
         if (!newPassword.equals(confirmPassword)) {
             model.addAttribute("error", "Las contraseñas nuevas no coinciden");
             return "usuarios/usuarios_cambiar_pass_rrhh";
         }
 
+
         // Encriptar la nueva contraseña usando BCrypt
         String encodedPassword = passwordEncoder.encode(newPassword);
         usuario.setPass(encodedPassword);  // Actualiza la contraseña en el usuario
         usuarioService.actualizarUsuario(usuario);  // Guarda los cambios en la base de datos
-
         // Mostrar mensaje de éxito
         model.addAttribute("success", "La contraseña se cambió exitosamente");
-        return "/home";
+        return "usuarios/usuarios_cambiar_pass_rrhh";
     }
-
-    //Probando metodo para msotrar en la vistas nombre y apellido del usuario logueado, en ves de mostrar el dni
 
 }

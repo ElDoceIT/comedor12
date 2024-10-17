@@ -40,19 +40,7 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-md-4">
-                        <div class="form-group">
-                            <label for="password"><h6>Contraseña</h6></label>
-                            <input type="password" class="form-control" id="password" name="pass" >
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="form-group">
-                            <label for="confirmPassword"><h6>Confirmar Contraseña</h6></label>
-                            <input type="password" class="form-control" id="confirmPassword" >
-                            <span id="errorMensaje" style="color:red; display:none;">Las contraseñas no coinciden</span>
-                        </div>
-                    </div>
+
                     <div class="col-md-4">
                         <div class="form-group">
                             <label for="grupo"><h6>Grupo</h6></label>
@@ -105,16 +93,5 @@
 <footer th:insert="fragments/footer :: footer" class="footer"></footer>
 <script th:src="@{/bootstrap/js/bootstrap.min.js}"></script>
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
-<script>
-    function validarPassword() {
-        var password = document.getElementById("password").value;
-        var confirmPassword = document.getElementById("confirmPassword").value;
-        if (password !== confirmPassword) {
-            document.getElementById("errorMensaje").style.display = "block";
-            return false;
-        }
-        return true;
-    }
-</script>
 </body>
 </html>

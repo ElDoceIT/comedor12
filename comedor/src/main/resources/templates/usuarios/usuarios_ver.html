@@ -69,7 +69,7 @@
                 th:text="${usuario.estado == 1 ? 'Activo' : 'Inactivo'}">
             </td>
             <td class="">
-                <a th:href="@{/usuarios/cambiar-clave/{id} (id=${usuario.id_usuario})}" class="color1" role="button" title="Cambiar Clave">
+                <a th:href="@{/usuarios/cambiar-clave-rrhh(dni=${usuario.dni})}" class="color1" role="button" title="Cambiar Clave">
                     <i class="bi bi-key" aria-hidden="true"></i>
                 </a>
             </td>
