@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html xmlns:th="http://thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="shortcut icon" th:href="@{/images/El-Doce-TV-en-vivo-Online-1.png}" type="image/x-icon">
+
+    <link th:href="@{/bootstrap/css/bootstrap.min.css}" rel="stylesheet">
+    <!-- Custom styles for this template -->
+    <link th:href="@{/bootstrap/css/jumbotron.css}" rel="stylesheet">
+    <link th:href="@{/bootstrap/css/sticky-footer-navbar.css}" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.5.0/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+
+    <title>Asistencia</title>
+</head>
+<body>
+<header th:insert="fragments/menu :: menu-principal">
+
+</header>
+
+
+<table>
+    <thead>
+    <tr>
+        <th>Usuario</th>
+       <!-- <th th:each="fecha : ${fechasConMenu}" th:text="${#dates.format(fecha, 'dd/MM/yyyy')}"></th> -->
+        <th>algo</th>
+    </tr>
+    </thead>
+    <tbody>
+    <!-- Iterar sobre los usuarios y sus respectivas reservas -->
+    <tr th:each="entry : ${asistenciaPorUsuario}">
+        <td th:text="${entry.key.apellido} + ' ' + ${entry.key.nombre}"></td>
+        <!-- Iterar sobre los días que tienen menú para mostrar la asistencia -->
+        <td th:each="fecha : ${fechasConMenu}">
+            <span th:text="${entry.value[fecha]}"></span>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+
+
+<footer th:insert="fragments/footer :: footer" class="footer"></footer>
+<script th:src="@{/bootstrap/js/bootstrap.min.js}"></script>
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+</body>
+</html>

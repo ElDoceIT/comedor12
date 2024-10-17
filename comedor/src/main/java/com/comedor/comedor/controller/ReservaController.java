@@ -14,12 +14,14 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
+import java.time.format.DateTimeFormatter;
 import java.security.Principal;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.TemporalAdjusters;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -87,7 +89,7 @@ public String reservas(Model model) {
         if (yaReservado) {
             // Si el usuario ya tiene una reserva para este día, mostrar el mensaje de error
             model.addAttribute("errorReservaDuplicada", "Ya has reservado un menú para este día.");
-            return "homel"; // Mantener la misma página
+            return "home"; // Mantener la misma página
         }
 
         // Crear y guardar la nueva reserva
@@ -127,8 +129,67 @@ public String reservas(Model model) {
         return "/reservas/reservas_ver";
     }
 
+    @GetMapping("/asistencia")
+    public String asistenciaUsuarios(Model model) {
+        // Obtener todas las reservas
+        List<Reserva> reservasMes = reservaRepository.findAll();
 
-        //desde la vista de menu semanal
+        // Agrupar reservas por usuario y por día
+        Map<Usuario, Map<LocalDate, String>> asistenciaPorUsuario = new HashMap<>();
+
+        // Crear una lista de fechas con menús disponibles
+        List<LocalDate> fechasConMenu = new ArrayList<>();
+
+        // Obtener el mes actual y las fechas de lunes a viernes
+        LocalDate now = LocalDate.now();
+        for (int day = 1; day <= now.lengthOfMonth(); day++) {
+            LocalDate fecha = LocalDate.of(now.getYear(), now.getMonth(), day);
+            if (fecha.getDayOfWeek().getValue() >= 1 && fecha.getDayOfWeek().getValue() <= 5) { // Lunes a Viernes
+                fechasConMenu.add(fecha);
+            }
+        }
+
+        for (Reserva reserva : reservasMes) {
+            // Obtener la fecha del menú
+            LocalDate fechaMenu = reserva.getMenu().getFechaMenu();
+
+            // Solo considerar fechas que están en el mes actual y en los días con menú
+            if (fechasConMenu.contains(fechaMenu)) {
+                Usuario usuario = reserva.getUsuario();
+                String estadoReserva;
+
+                // Determinar el estado de la reserva
+                if (reserva.getEntregado() == null) {
+                    estadoReserva = "No Asistió";
+                } else {
+                    estadoReserva = reserva.getEntregado().toString(); // Asegúrate de que esto sea un String adecuado
+                }
+
+                // Agrupar reservas
+                asistenciaPorUsuario
+                        .computeIfAbsent(usuario, k -> new HashMap<>())
+                        .put(fechaMenu, estadoReserva); // Almacena directamente
+            }
+        }
+
+        // Rellenar usuarios sin reservas
+        for (Usuario usuario : asistenciaPorUsuario.keySet()) {
+            for (LocalDate fecha : fechasConMenu) {
+                asistenciaPorUsuario.get(usuario).putIfAbsent(fecha, "No Reservó");
+            }
+        }
+
+        // Agregar los datos al modelo
+        model.addAttribute("asistenciaPorUsuario", asistenciaPorUsuario);
+        model.addAttribute("fechasConMenu", fechasConMenu); // Solo días con menús
+
+        return "reservas/reserva_asistencia";
+    }
+
+
+
+
+    //desde la vista de menu semanal
     @PostMapping("/eliminar/{id}")
     public String eliminarReserva(@PathVariable("id") Integer idReserva, RedirectAttributes redirectAttributes, Model model) {
         // Obtiene la reserva
@@ -282,6 +343,8 @@ public String reservas(Model model) {
 
         return "reservas/reservas_dia";  // Nombre de la vista
     }
+
+
 
 
 

@@ -17,5 +17,6 @@ public interface ReservaRepository extends JpaRepository<Reserva, Integer> {
     //boolean existsByUsuarioIdAndMenuFecha(Integer idUsuario, LocalDate fechaMenu);
     boolean existsByUsuarioAndMenu_FechaMenu(Usuario usuario, LocalDate fechaMenu);
     List<Reserva> findByUsuario(Usuario usuario);
+    List<Reserva> findByMenu_FechaMenuBetween(LocalDate startDate, LocalDate endDate);
 
 }
