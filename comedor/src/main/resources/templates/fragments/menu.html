@@ -46,7 +46,7 @@
       </li>
 
       <li class="nav-item">
-        <a class="nav-link" th:href="@{/reservas/ver}">Mis reservas</a>
+        <a class="nav-link" th:href="@{/reservas/misreservas}">Mis reservas</a>
       </li>
       <li class="nav-item" th:if="${#strings.contains(#authentication.principal.authorities, 'Admin') or #strings.contains(#authentication.principal.authorities, 'Comedor')}">
         <a class="nav-link active" th:href="@{/reservas/reservas-dia-actual}">Reservas Diarias</a>
