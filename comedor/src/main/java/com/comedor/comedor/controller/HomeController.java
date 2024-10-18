@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.TemporalAdjusters;
@@ -44,6 +45,16 @@ public class HomeController {
     @GetMapping("/")
     public String Home(Model model) {
         LocalDate hoy = LocalDate.now();
+        LocalDateTime ahora = LocalDateTime.now();
+
+        // Definir 9:00 AM del viernes de la semana actual
+        LocalDateTime viernesNueveAM = hoy.with(TemporalAdjusters.nextOrSame(DayOfWeek.FRIDAY)).atTime(9, 0);
+
+        // Si es sábado, domingo o después de las 9:00 AM del viernes, ajustar a la semana siguiente
+        if (hoy.getDayOfWeek() == DayOfWeek.SATURDAY || hoy.getDayOfWeek() == DayOfWeek.SUNDAY || ahora.isAfter(viernesNueveAM)) {
+            hoy = hoy.with(TemporalAdjusters.next(DayOfWeek.MONDAY)); // Mover a la siguiente semana
+        }
+
         LocalDate inicioSemana = hoy.with(TemporalAdjusters.previousOrSame(DayOfWeek.MONDAY));
         LocalDate finSemana = inicioSemana.plusDays(4); // Asegurarse de que el fin de semana sea el viernes
 
@@ -53,7 +64,7 @@ public class HomeController {
                 .sorted(Comparator.comparingInt(menu -> {
                     switch (menu.getComida().getTipo_comida()) {
                         case 1: return 0; // Principal
-                        case 2: return 1; // Ligth
+                        case 2: return 1; // Light
                         case 3: return 2; // Celiaco
                         case 4: return 3; // Fruta
                         default: return 4; // Otros
@@ -83,6 +94,7 @@ public class HomeController {
 
         return "menu/menu_semanal";
     }
+
 
     @GetMapping("/waldo")
     public String HomeWaldo(){
