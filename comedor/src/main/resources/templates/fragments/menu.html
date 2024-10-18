@@ -44,6 +44,16 @@
       <li class="nav-item" th:if="${#strings.contains(#authentication.principal.authorities,'Admin')}">
         <a class="nav-link" th:href="@{/productos/ver}">Productos</a>
       </li>
+      <!-- Dropdown for Consumo -->
+      <li class="nav-item dropdown" th:if="${#strings.contains(#authentication.principal.authorities, 'Admin') or #strings.contains(#authentication.principal.authorities, 'Comedor')}">
+        <a class="nav-link dropdown-toggle" href="#" id="consumoDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          Consumo
+        </a>
+        <div class="dropdown-menu" aria-labelledby="consumoDropdown">
+          <a class="dropdown-item" th:href="@{/consumos/ver}">Ver consumos</a>
+          <a class="dropdown-item" th:href="@{/consumos/asignar}">Asigna consumos</a>
+        </div>
+      </li>
 
       <li class="nav-item">
         <a class="nav-link" th:href="@{/reservas/misreservas}">Mis reservas</a>
