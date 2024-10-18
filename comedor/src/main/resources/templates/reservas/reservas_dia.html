@@ -17,102 +17,113 @@
 <body>
 <header th:insert="fragments/menu :: menu-principal"></header>
 
-<div class="container mt-5">
-  <div class="card text-white bg-dark mb-3">
-    <div class="card-header">
-      <h4>Reservas del Día --> Total: <span th:text="${totalReservas}"></span>, Consumidas: <span th:text="${totalConsumidas}"></span></h4>
+<div class="col-md-12 col-lg-11 m-1 mx-auto">
+  <div class="card1 mt-3">
+    <div class="card-header text-center">
+      <h3>Reservas del Día : Total: <span th:text="${totalReservas}"></span>, Consumidas: <span th:text="${totalConsumidas}"></span></h3>
     </div>
-    <div class="card-body">
+    <div class="">
       <div class="row">
         <!-- Tabla de resumen de tipos de comida -->
         <div class="col-md-6">
-          <h5 class="text-white">Resumen por Tipo de Comida</h5>
+          <h5 class="text-center m-2">Resumen por Tipo de Comida</h5>
           <ul class="list-group">
-            <li class="list-group-item bg-secondary text-white" th:each="entry : ${sumaPorTipoComida}">
-              <span th:text="${tipoComidaDescripcion[entry.key]}">Tipo de Comida</span>:
-              <span th:text="${entry.value}">0</span>
+            <li class="list-group-item text-center" th:each="entry : ${sumaPorTipoComida}">
+              <span class="h4" th:text="${tipoComidaDescripcion[entry.key]}">Tipo de Comida</span>:
+              <span class="h4" th:text="${entry.value}">0</span>
             </li>
           </ul>
         </div>
 
         <!-- Tabla de resumen por lugar de consumo -->
         <div class="col-md-6">
-          <h5 class="text-white">Resumen por Lugar de Consumo</h5>
+          <h5 class="text-center m-2">Resumen por Lugar de Consumo</h5>
           <ul class="list-group">
-            <li class="list-group-item bg-secondary text-white" th:each="entry : ${sumaPorLugarConsumo}">
-              <span th:text="${medioDescripcion[entry.key]}">Lugar de Consumo</span>:
-              <span th:text="${entry.value}">0</span>
+            <li class="list-group-item text-center" th:each="entry : ${sumaPorLugarConsumo}">
+              <span class="h4" th:text="${medioDescripcion[entry.key]}">Lugar de Consumo</span>:
+              <span class="h4" th:text="${entry.value}">0</span>
             </li>
           </ul>
         </div>
       </div>
 
       <!-- Tabla de reservas -->
-      <h5 class="mt-4">Detalle de Reservas No Consumidas</h5>
-      <table class="table table-dark table-striped">
-        <thead>
-        <tr>
-          <th>Apellido</th>
-          <th>Nombre</th>
-          <th>Comida Principal</th>
-          <th>Tipo Comida</th>
-          <th>Lugar Consumo</th>
-          <th>Acciones</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr th:each="reserva  : ${reservasNoConsumidas}">
-          <td th:text="${reserva.usuario.apellido}"></td>
-          <td th:text="${reserva.usuario.nombre}"></td>
-          <td th:text="${reserva.menu.comida.principal}"></td>
-          <td th:text="${tipoComidaDescripcion[reserva.menu.comida.tipo_comida]}"></td>
-          <td th:text="${medioDescripcion[reserva.medio]}"></td>
-          <td>
-            <form th:action="@{/reservas/marcar-consumido/{id}(id=${reserva.idReserva})}" method="post">
-              <button type="submit" class="btn btn-success">No entregado</button>
-            </form>
-          </td>
-        </tr>
-        </tbody>
-      </table>
-
+      <div class="card1 m-1 border-dark mt-3">
+        <div class="card-header p-0 text-center">
+        <h5 class="m-2">Detalle de Reservas No Consumidas</h5>
+        </div>
+          <div class="table-responsive">
+          <table class="table">
+            <thead class="thead-light">
+            <tr>
+              <th>Apellido</th>
+              <th>Nombre</th>
+              <th>Comida Principal</th>
+              <th>Tipo Comida</th>
+              <th>Lugar Consumo</th>
+              <th class="text-center">Acciones</th>
+            </tr>
+            </thead>
+            <tbody class=" w-100 striped-table">
+            <tr th:each="reserva  : ${reservasNoConsumidas}">
+              <td th:text="${reserva.usuario.apellido}"></td>
+              <td th:text="${reserva.usuario.nombre}"></td>
+              <td th:text="${reserva.menu.comida.principal}"></td>
+              <td th:text="${tipoComidaDescripcion[reserva.menu.comida.tipo_comida]}"></td>
+              <td th:text="${medioDescripcion[reserva.medio]}"></td>
+              <td class="text-center">
+                <form th:action="@{/reservas/marcar-consumido/{id}(id=${reserva.idReserva})}" method="post">
+                  <button type="submit" class="btn btn-success rounded-pill botoncito1 border-dark " >ENTREGAR</button>
+                </form>
+              </td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
       <!-- Tabla de reservas consumidas -->
-      <h5 class="mt-4">Reservas Consumidas</h5>
-      <table class="table table-dark table-striped">
-        <thead>
-        <tr>
-          <th>Apellido</th>
-          <th>Nombre</th>
-          <th>Comida Principal</th>
-          <th>Tipo Comida</th>
-          <th>Lugar Consumo</th>
-          <th>Consumió</th>
-          <th>Acciones</th>  <!-- Nueva columna para las acciones -->
-        </tr>
-        </thead>
-        <tbody>
-        <tr th:each="reserva : ${reservasConsumidas}">
-          <td th:text="${reserva.usuario.apellido}"></td>
-          <td th:text="${reserva.usuario.nombre}"></td>
-          <td th:text="${reserva.menu.comida.principal}"></td>
-          <td th:text="${tipoComidaDescripcion[reserva.menu.comida.tipo_comida]}"></td>
-          <td th:text="${medioDescripcion[reserva.medio]}"></td>
-          <td>
-            Entregado:  <span th:text="${#temporals.format(reserva.entregado, 'dd-MM-yyyy HH:mm')}"></span>
-          </td>
-          <td>
-            <form th:action="@{/reservas/cancelar-consumido/{id}(id=${reserva.idReserva})}" method="post">
-              <button type="submit" class="btn btn-danger">
-                Cancelar
-              </button>
-            </form>
-          </td>
-        </tr>
-        </tbody>
-      </table>
+      <div class="card1 m-1 border-dark mt-3">
+        <div class="card-header p-0 text-center">
+          <h5 class="mt-4">Reservas Consumidas</h5>
+        </div>
+        <div class="table-responsive">
+          <table class="table">
+            <thead class="thead-light" >
+            <tr>
+              <th>Apellido</th>
+              <th>Nombre</th>
+              <th>Comida Principal</th>
+              <th>Tipo Comida</th>
+              <th>Lugar Consumo</th>
+              <th>Consumió</th>
+              <th>Acciones</th>  <!-- Nueva columna para las acciones -->
+            </tr>
+            </thead>
+            <tbody class="table-borderless w-100 striped-table">
+              <tr th:each="reserva : ${reservasConsumidas}">
+                <td th:text="${reserva.usuario.apellido}"></td>
+                <td th:text="${reserva.usuario.nombre}"></td>
+                <td th:text="${reserva.menu.comida.principal}"></td>
+                <td th:text="${tipoComidaDescripcion[reserva.menu.comida.tipo_comida]}"></td>
+                <td th:text="${medioDescripcion[reserva.medio]}"></td>
+                <td>
+                  Entregado:  <span th:text="${#temporals.format(reserva.entregado, 'dd-MM-yyyy HH:mm')}"></span>
+                </td>
+                <td>
+                  <form th:action="@{/reservas/cancelar-consumido/{id}(id=${reserva.idReserva})}" method="post">
+                    <button type="submit" class="btn btn-danger rounded-pill botoncito1 border-dark">
+                      Cancelar
+                    </button>
+                  </form>
+                </td>
+              </tr>
+            </tbody>
+           </table>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
-</div>
 
 <footer th:insert="fragments/footer :: footer" class="footer"></footer>
 <script th:src="@{/bootstrap/js/bootstrap.min.js}"></script>

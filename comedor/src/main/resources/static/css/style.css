@@ -144,3 +144,11 @@
 .mt-3 {
     margin-top: 1rem;
 }
+.form-check-input {
+        width: 1.5rem;
+        height: 1.5rem;
+    }
+
+    .form-check-label {
+        font-size: 1.2rem; /* Puedes ajustar el tamaño del texto si quieres etiquetas grandes */
+    }
