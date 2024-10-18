@@ -84,8 +84,12 @@ public class HomeController {
             }
         }
 
-        // Agregar los menús agrupados al modelo
-        model.addAttribute("menusPorDia", menusPorDia);
+        // Si no hay menús disponibles, agregar mensaje "Próximamente"
+        if (menusPorDia.isEmpty()) {
+            model.addAttribute("mensaje", "Próximamente");
+        } else {
+            model.addAttribute("menusPorDia", menusPorDia);
+        }
 
         // Crear el rango de fechas para mostrar en la vista (de lunes a viernes)
         String rangoFechas = "del " + inicioSemana.format(DateTimeFormatter.ofPattern("dd/MM")) +
@@ -94,6 +98,7 @@ public class HomeController {
 
         return "menu/menu_semanal";
     }
+
 
 
     @GetMapping("/waldo")

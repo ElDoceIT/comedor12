@@ -14,55 +14,64 @@
 <body>
 <header th:replace="fragments/menu :: menu-principal"></header>
 
-
 <main>
   <div class="mr-1 mr-md-3 mr-lg-5">
     <span><h4 class="m-4 text-right">Hoy es: <span id="hora-actual" th:text="${#temporals.format(serverTime, 'EEEE dd MMMM yyyy HH:mm:ss')}">Día</span></h4></span>
   </div>
-    <div class=" col-md-12 col-lg-11 m-1 mx-auto">
-    <div class="card1 mt-3" >
-      <h3 class="card-header text-center"><strong>Menú Semanal del: <span id="fecha"></span> <span th:text="${rangoFechas}"></span></strong> </h3>
 
-      <!-- Selección de Comida -->
-      <div class="card1 border-dark m-2" th:each="dia : ${menusPorDia}">
+  <div class="col-md-12 col-lg-11 m-1 mx-auto">
+    <div class="card1 mt-3">
+      <h3 class="card-header text-center">
+        <strong>Menú Semanal del: <span id="fecha"></span> <span th:text="${rangoFechas}"></span></strong>
+      </h3>
 
-        <div class="card-header p-0 text-center">
-        <h4 class="m-2"><caption th:text="'Menú del día ' + ${#temporals.format(dia.key, 'EEEE dd MMMM yyyy')}"></caption></h4>
+      <!-- Mostrar mensaje "Próximamente" si no hay menús -->
+      <div th:if="${mensaje}">
+        <h4 class="text-center m-4" th:text="${mensaje}"></h4>
       </div>
-        <div class="table-responsive">
 
-          <table class="table">
+      <!-- Mostrar los menús solo si existen -->
+      <div th:if="${menusPorDia}">
+        <!-- Selección de Comida -->
+        <div class="card1 border-dark m-2" th:each="dia : ${menusPorDia}">
+          <div class="card-header p-0 text-center">
+            <h4 class="m-2">
+              <caption th:text="'Menú del día ' + ${#temporals.format(dia.key, 'EEEE dd MMMM yyyy')}"></caption>
+            </h4>
+          </div>
 
-            <thead class="thead-light">
-            <tr>
-              <th>Entrada</th>
-              <th class="text-center">Plato Principal</th>
-              <th class="text-center">Postre</th>
-              <th class="text-right">Tipo de Comida</th>
-            </tr>
-            </thead>
-            <tbody class="table-borderless w-100 striped-table">
-            <tr th:each="menu : ${dia.value}">
-              <td th:text="${menu.comida.entrada}"></td>
-              <td class="text-center" th:text="${menu.comida.principal}"></td>
-              <td class="text-center" th:text="${menu.comida.postre}"></td>
-              <td class="text-right" th:switch="${menu.comida.tipo_comida}">
-                <span th:case="1">Principal</span>
-                <span th:case="2">Light</span>
-                <span th:case="3">Celiaco</span>
-                <span th:case="4">Fruta</span>
-              </td>
-            </tr>
-            </tbody>
-
-
-
-          </table>
+          <div class="table-responsive">
+            <table class="table">
+              <thead class="thead-light">
+              <tr>
+                <th>Entrada</th>
+                <th class="text-center">Plato Principal</th>
+                <th class="text-center">Postre</th>
+                <th class="text-right">Tipo de Comida</th>
+              </tr>
+              </thead>
+              <tbody class="table-borderless w-100 striped-table">
+              <tr th:each="menu : ${dia.value}">
+                <td th:text="${menu.comida.entrada}"></td>
+                <td class="text-center" th:text="${menu.comida.principal}"></td>
+                <td class="text-center" th:text="${menu.comida.postre}"></td>
+                <td class="text-right" th:switch="${menu.comida.tipo_comida}">
+                  <span th:case="1">Principal</span>
+                  <span th:case="2">Light</span>
+                  <span th:case="3">Celiaco</span>
+                  <span th:case="4">Fruta</span>
+                </td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
+
     </div>
   </div>
 </main>
+
 <footer th:insert="fragments/footer :: footer" class="footer"></footer>
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
 <script th:src="@{/bootstrap/js/bootstrap.min.js}"></script>
