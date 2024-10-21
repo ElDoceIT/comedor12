@@ -30,8 +30,8 @@
           <h5 class="text-center m-2">Resumen por Tipo de Comida</h5>
           <ul class="list-group">
             <li class="list-group-item text-center" th:each="entry : ${sumaPorTipoComida}">
-              <span class="h4" th:text="${tipoComidaDescripcion[entry.key]}">Tipo de Comida</span>:
-              <span class="h4" th:text="${entry.value}">0</span>
+              <span class="" th:text="${tipoComidaDescripcion[entry.key]}">Tipo de Comida</span>:
+              <span class="" th:text="${entry.value}">0</span>
             </li>
           </ul>
         </div>
@@ -41,8 +41,8 @@
           <h5 class="text-center m-2">Resumen por Lugar de Consumo</h5>
           <ul class="list-group">
             <li class="list-group-item text-center" th:each="entry : ${sumaPorLugarConsumo}">
-              <span class="h4" th:text="${medioDescripcion[entry.key]}">Lugar de Consumo</span>:
-              <span class="h4" th:text="${entry.value}">0</span>
+              <span class="" th:text="${medioDescripcion[entry.key]}">Lugar de Consumo</span>:
+              <span class="" th:text="${entry.value}">0</span>
             </li>
           </ul>
         </div>
@@ -108,7 +108,7 @@
                 <td th:text="${tipoComidaDescripcion[reserva.menu.comida.tipo_comida]}"></td>
                 <td th:text="${medioDescripcion[reserva.medio]}"></td>
                 <td>
-                  Entregado:  <span th:text="${#temporals.format(reserva.entregado, 'dd-MM-yyyy HH:mm')}"></span>
+                  Entregado:<span th:text="${#temporals.format(reserva.entregado, 'dd-MM-yyyy HH:mm')}"></span>
                 </td>
                 <td>
                   <form th:action="@{/reservas/cancelar-consumido/{id}(id=${reserva.idReserva})}" method="post">

@@ -16,14 +16,14 @@
 
 <main>
   <div class="mr-1 mr-md-3 mr-lg-5">
-    <span><h4 class="m-4 text-right">Hoy es: <span id="hora-actual" th:text="${#temporals.format(serverTime, 'EEEE dd MMMM yyyy HH:mm:ss')}">Día</span></h4></span>
+    <span><p class="m-4 text-right">Hoy es: <span id="hora-actual" th:text="${#temporals.format(serverTime, 'EEEE dd MMMM yyyy HH:mm:ss')}">Día</span></p></span>
   </div>
 
   <div class="col-md-12 col-lg-11 m-1 mx-auto">
     <div class="card1 mt-3">
-      <h3 class="card-header text-center">
+      <h4 class="card-header text-center">
         <strong>Menú Semanal del: <span id="fecha"></span> <span th:text="${rangoFechas}"></span></strong>
-      </h3>
+      </h4>
 
       <!-- Mostrar mensaje "Próximamente" si no hay menús -->
       <div th:if="${mensaje}">
@@ -35,9 +35,9 @@
         <!-- Selección de Comida -->
         <div class="card1 border-dark m-2" th:each="dia : ${menusPorDia}">
           <div class="card-header p-0 text-center">
-            <h4 class="m-2">
+            <h5 class="m-2">
               <caption th:text="'Menú del día ' + ${#temporals.format(dia.key, 'EEEE dd MMMM yyyy')}"></caption>
-            </h4>
+            </h5>
           </div>
 
           <div class="table-responsive">

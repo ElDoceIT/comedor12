@@ -22,11 +22,11 @@
 </header>
 <main>
     <div class="mr-1 mr-md-3 mr-lg-5">
-    <span><h4 class="m-4 text-right" id="hora-actual" th:text="${#temporals.format(serverTime, 'EEEE dd MMMM yyyy HH:mm:ss')}">Día</h4> </span>
+    <span><p class="m-4 text-right" id="hora-actual" th:text="${#temporals.format(serverTime, 'EEEE dd MMMM yyyy HH:mm:ss')}">Día</p> </span>
     </div>
     <div class=" col-md-12 col-lg-11 m-1 mx-auto">
         <div class="card1 mt-3" >
-            <h2 class="card-header text-center"><strong>Menú Semanal <span id="fecha"></span></strong></h2>
+            <h3 class="card-header text-center"><strong>Menú Semanal <span id="fecha"></span></strong></h3>
 
             <!-- Mensaje de error -->
             <div th:if="${errorReservaDuplicada}" class="alert alert-danger" role="alert">
@@ -36,7 +36,7 @@
                 <span th:text="${error}"></span>
             </div>
             <!-- Selección de Comida -->
-            <h3 class="m-1">Seleccione su comida: </h3><hr class="m-0">
+            <h4 class="m-1">Seleccione su comida: </h4><hr class="m-0">
 
             <form th:action="@{/reservas/reservar}" method="post">
                 <div th:each="dia : ${menusPorDia}">
@@ -113,7 +113,7 @@
     <div class="col-md-12 col-lg-11 m-1 mx-auto">
         <div class="card1 mt-4">
 
-            <h3 class="text-center m-3">Mis Reservas de la semana</h3>
+            <h4 class="text-center m-3">Mis Reservas de la semana</h4>
             <div class="table-responsive">
                 <table class="table">
                     <thead class="thead-light">
@@ -151,10 +151,10 @@
                                       th:text="${reserva.entregado != null ? 'Entregado ' + reserva.entregado : 'No entregado'}">
                                 </span>
                         </td>
-                        <td class="float-right">
+                        <td class="float-center">
                             <form th:action="@{/reservas/eliminar/{id}(id=${reserva.idReserva})}" method="post" style="display:inline;"
                                   onsubmit="return confirm('¿Estás seguro de que deseas eliminar esta reserva?');">
-                                <button type="submit" class="btn btn-outline-secondary botoncito1 round-button mx-0 ml-2 p-1" title="Eliminar">
+                                <button type="submit" class="btn-no-border" title="Eliminar">
                                     <i class="bi bi-trash" aria-hidden="true"></i>
                                 </button>
                             </form>

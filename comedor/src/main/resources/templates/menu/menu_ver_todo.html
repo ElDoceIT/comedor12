@@ -19,12 +19,12 @@
 <body>
 <header th:replace="fragments/menu :: menu-principal"></header>
 
-<div class="container mt-3">
+<div class="col-md-12 col-lg-11 m-3 mx-auto">
   <div class="card1">
-    <h1 class="card-header text-center"><strong>Menús desde la Fecha Actual</strong></h1>
+    <h3 class="card-header text-center"><strong>Menús desde la Fecha Actual</strong></h3>
     <div class="table-responsive">
       <table class="table">
-        <thead class="thead-dark">
+        <thead class="thead-light">
         <tr>
           <th class="text-left col-4">Fecha</th>
           <th class="text-center">Entrada</th>
@@ -36,12 +36,12 @@
         <tbody class="table table-borderless w-100 striped-table">
         <tr th:each="menu : ${menus.content}">
           <td th:text="${#temporals.format(menu.fechaMenu, 'EEEE dd  MMMM  yyyy')}"></td>
-          <td th:text="${menu.comida.entrada}"></td>
-          <td th:text="${menu.comida.principal}"></td>
-          <td th:text="${menu.comida.postre}"></td>
-          <td th:switch="${menu.comida.tipo_comida}">
+          <td class="text-center" th:text="${menu.comida.entrada}"></td>
+          <td class="text-center" th:text="${menu.comida.principal}"></td>
+          <td class="text-center" th:text="${menu.comida.postre}"></td>
+          <td class="text-center" th:switch="${menu.comida.tipo_comida}">
             <span th:case="1">Principal</span>
-            <span th:case="2">Ligth</span>
+            <span th:case="2">Light</span>
             <span th:case="3">Celiaco</span>
             <span th:case="4">Fruta</span>
           </td>
@@ -51,22 +51,23 @@
     </div>
     <!-- Paginación -->
     <nav>
-      <ul class="pagination">
+      <ul class="pagination justify-content-center">
         <li th:classappend="${currentPage == 0} ? 'disabled' : ''" class="page-item">
-          <a th:href="@{/menu/vertodo(page=${currentPage - 1}, size=${size})}" class="page-link">Previous</a>
+          <a th:href="@{/menu/vertodo(page=${currentPage - 1}, size=${size})}" class="btn btn-outline-secondary">Previous</a>
         </li>
         <li th:each="i : ${#numbers.sequence(0, totalPages - 1)}"
             th:classappend="${i == currentPage} ? 'active' : ''" class="page-item">
-          <a th:href="@{/menu/vertodo(page=${i}, size=${size})}" class="page-link" th:text="${i + 1}">1</a>
+          <a th:href="@{/menu/vertodo(page=${i}, size=${size})}" class="btn btn-outline-secondary" th:text="${i + 1}">1</a>
         </li>
         <li th:classappend="${currentPage == totalPages - 1} ? 'disabled' : ''" class="page-item">
-          <a th:href="@{/menu/vertodo(page=${currentPage + 1}, size=${size})}" class="page-link">Next</a>
+          <a th:href="@{/menu/vertodo(page=${currentPage + 1}, size=${size})}" class="btn btn-outline-secondary">Next</a>
         </li>
       </ul>
     </nav>
+
   </div>
   <div class="text-center mt-3">
-    <a th:href="@{/menu/ver}" class="btn btn-outline-secondary botoncito1 table-light margen3">MenusSemanal</a>
+    <a th:href="@{/menu/ver}" class="btn btn-outline-secondary botoncito1 table-light margen3">Menus Semanales</a>
   </div>
 </div>
 

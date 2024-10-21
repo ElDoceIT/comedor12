@@ -21,9 +21,9 @@
 <main role="main">
 
     <!-- Formulario de Búsqueda -->
-    <div class="container">
+    <div class="col-md-12 col-lg-11 m-1 mx-auto">
         <div class="card1 mt-3">
-            <h1 class="card-header text-center"><strong>Comidas Cargadas</strong></h1>
+            <h3 class="card-header text-center"><strong>Comidas Cargadas</strong></h3>
 
             <div class="d-flex justify-content-center">
                 <form class="form-inline margen4" th:action="@{/comida/search}" method="get">
@@ -37,7 +37,7 @@
 
             <div class="table-responsive">
                 <table class="table">
-                    <thead class="thead-dark">
+                    <thead class="thead-light">
                     <tr>
                         <th class="text-left col-2">Entrada</th>
                         <th class="text-center col-5">Principal</th>

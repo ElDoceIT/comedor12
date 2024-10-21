@@ -20,49 +20,48 @@
 
 
 
-<div class="container">
+<div class="col-md-12 col-lg-11 m-1 mx-auto">
     <div class="card1 mt-3">
-        <h1 class="text-center card-header"><strong>Carga de Menú</strong></h1>
+        <h4 class="text-center card-header"><strong>Carga de Menú</strong></h4>
 
 
-                <div class="card-body ">
-                    <form th:action="@{/menu/guardar}" method="post">
-                        <div class="mb-3">
-                            <label for="fecha" class="form-label"><h5>Fecha:</h5></label>
-                            <input type="date" class="form-control col-lg-5 " id="fecha" name="fechaMenu" min="[[${#dates.format(#dates.createNow(), 'yyyy-MM-dd')}]]" required>
+        <div class="card-body">
+            <form th:action="@{/menu/guardar}" method="post">
+                <div class="row mb-3">
+                    <!-- Columna para la fecha -->
+                    <div class="col-lg-6">
+                        <label for="fecha" class="form-label"><h5>Fecha:</h5></label>
+                        <input type="date" class="form-control" id="fecha" name="fechaMenu" min="[[${#dates.format(#dates.createNow(), 'yyyy-MM-dd')}]]" required>
+                    </div>
+
+                    <!-- Columna para la comida -->
+                    <div class="col-lg-6">
+                        <label for="comida" class="form-label"><h5>Comida:</h5></label>
+                        <div class="d-flex">
+                            <input type="text" class="form-control" id="comida" placeholder="Escriba la comida" required>
+                            <input type="hidden" id="comidaId" name="comidaId"> <!-- Campo oculto para comidaID -->
+                            <div id="comida-sugerencias" class="list-group"></div> <!-- Sugerencias -->
                         </div>
-                        <div class="mb-3">
-                           <!-- <label for="comida" class="form-label  "><h5>Comida:</h5></label>
-                            <div class="d-flex">
-                                <select class="form-control flex-grow-1 col-lg-5 a" id="comida" name="comidaId" required>
-                                    <option value="">Seleccionar comida</option>
-                                    <option class="a" th:each="comida : ${comidas}" th:value="${comida.id_comida}" th:text="${comida.principal}+' --- ' + ${comida.entrada} +' --- ' + ${comida.postre}"></option>
-                                </select>
-                                <button class="btn btn-outline-secondary float-end b" type="submit">Agregar  <i class="bi bi-plus"></i></button>
-                            </div>-->
-                            <div class="mb-3">
-                                <label for="comida" class="form-label"><h5>Comida:</h5></label>
-                                <div class="d-flex">
-                                    <input type="text" class="form-control flex-grow-1 col-lg-5 a" id="comida" placeholder="Escriba la comida" required>
-                                    <input type="hidden" id="comidaId" name="comidaId">  <!-- Campo oculto para almacenar comidaID -->
-                                    <div id="comida-sugerencias" class="list-group"></div>  <!-- Aquí se muestran las sugerencias -->
-                                </div>
-                            </div>
-                            <button class="btn btn-outline-secondary float-end b" type="submit">Agregar  <i class="bi bi-plus"></i></button>
-                        </div>
-
-                    </form>
+                    </div>
                 </div>
 
+                <!-- Botón centrado -->
+                <div class="text-center mt-3">
+                    <button class="btn btn-outline-secondary" type="submit">Agregar <i class="bi bi-plus"></i></button>
+                </div>
+            </form>
+        </div>
 
-            <!-- Tabla de menús no procesados -->
+
+
+        <!-- Tabla de menús no procesados -->
 
                 <div>
                     <h3 class="text-center border-bottom">Últimas cargas no procesadas</h3>
                     <div class="table-responsive">
                     <table class="table ">
                         <thead>
-                        <tr class="thead-dark">
+                        <tr class="thead-light">
                             <th>Fecha</th>
                             <th>Comida</th>
                             <th></th>
@@ -88,7 +87,7 @@
                                <div th:switch="${menu.comida.tipo_comida}">
                                    <strong>Tipo:</strong> <span ></span>
                                        <span th:case="1">Principal</span>
-                                       <span th:case="2">Ligth</span>
+                                       <span th:case="2">Light</span>
                                        <span th:case="3">Celiaco</span>
                                        <span th:case="4">Fruta</span>
                                </div>
@@ -112,7 +111,7 @@
             </div>
             <br>
             <!-- Botón para procesar menús -->
-            <form th:action="@{/menu/procesar}" method="post">
+            <form class="text-center" th:action="@{/menu/procesar}" method="post">
                 <button class="btn btn-outline-secondary botoncito1 table-light margen3 mt-3 float-end" type="submit">Publicar Menús</button>
             </form>
         </div>

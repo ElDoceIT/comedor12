@@ -19,12 +19,12 @@
 <body>
 <header th:replace="fragments/menu :: menu-principal"></header>
 
-<div class="container mt-3">
+<div class="col-md-12 col-lg-11 m-1 mx-auto mt-3 mb-3">
     <div class="card1">
-        <h1 class="card-header text-center"><strong>Menús desde la Fecha Actual</strong></h1>
+        <h3 class="card-header text-center"><strong>Menús desde la Fecha Actual</strong></h3>
         <div class="table-responsive">
         <table class="table">
-            <thead class="thead-dark">
+            <thead class="thead-light">
             <tr>
                 <th class="text-left col-4">Fecha</th>
                 <th class="text-center">Entrada</th>
@@ -39,12 +39,12 @@
             <tr th:each="menu : ${menus}">
                 <td th:if="${menu.fechaMenu != null}" th:text="${#temporals.format(menu.fechaMenu, 'EEEE dd  MMMM  yyyy')}"></td>
 
-                <td th:text="${menu.comida.entrada}"></td>
-                <td  th:text="${menu.comida.principal}"></td>
-                <td th:text="${menu.comida.postre}"></td>
-                <td th:switch="${menu.comida.tipo_comida}">
+                <td class="text-center" th:text="${menu.comida.entrada}"></td>
+                <td class="text-center" th:text="${menu.comida.principal}"></td>
+                <td class="text-center" th:text="${menu.comida.postre}"></td>
+                <td class="text-center" th:switch="${menu.comida.tipo_comida}">
                     <span th:case="1">Principal</span>
-                    <span th:case="2">Ligth</span>
+                    <span th:case="2">Light</span>
                     <span th:case="3">Celiaco</span>
                     <span th:case="4">Fruta</span>
                 </td>
@@ -52,7 +52,7 @@
             </tbody>
         </table>
             <div class="text-center mt-3">
-                <a th:href="@{/menu/vertodo}" class="btn btn-outline-secondary botoncito1 table-light margen3">MenusTodos</a>
+                <a th:href="@{/menu/vertodo}" class="btn btn-outline-secondary botoncito1 table-light margen3 mb-3">MenusTodos</a>
                 </div>
         </div>
     </div>
