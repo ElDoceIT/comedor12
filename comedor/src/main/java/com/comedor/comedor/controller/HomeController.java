@@ -178,7 +178,8 @@ public class HomeController {
         model.addAttribute("reservas", reservasFiltradas);
         model.addAttribute("menusPorDia", menusPorDia);
 
-        return "home";
+        //return "home";
+        return "reserva/reservar";
     }
 
 }

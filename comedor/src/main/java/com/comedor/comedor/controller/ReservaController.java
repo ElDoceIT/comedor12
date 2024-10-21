@@ -76,7 +76,8 @@ public String reservas(Model model) {
         // Verificar que la hora actual no sea después de las 9AM del día del menú
         if (now.isAfter(fechaMenu.atTime(nineAM))) {
             model.addAttribute("error", "No se puede reservar este menú, ya ha pasado el límite de las 9AM.");
-            return "home"; // Mantener la misma página
+            //return "home"; // Mantener la misma página
+            return "reserva/reservar";
         }
 
         // Obtener el usuario logueado
@@ -89,7 +90,8 @@ public String reservas(Model model) {
         if (yaReservado) {
             // Si el usuario ya tiene una reserva para este día, mostrar el mensaje de error
             model.addAttribute("errorReservaDuplicada", "Ya has reservado un menú para este día.");
-            return "home"; // Mantener la misma página
+            //return "home"; // Mantener la misma página
+            return "reserva/reservar";
         }
 
         // Crear y guardar la nueva reserva
@@ -126,7 +128,7 @@ public String reservas(Model model) {
         });
 
         model.addAttribute("reservas", reservasFiltradas);
-        return "reservas/misreservas";
+        return "reserva/misreservas";
     }
 
     @GetMapping("/asistencia")
