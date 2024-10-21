@@ -19,84 +19,93 @@
 <header th:replace="fragments/menu :: menu-principal"></header>
 
 </header>
-<form class="form-inline w-100" th:action="@{/usuarios/ver}" method="get">
-    <!-- Filtros de Búsqueda -->
-    <div class="row w-100">
-        <div class="col-2 mb-2 text-left mt-2">
-            <label for="dni"><h5>Filtrar por:</h5></label>
-        </div>
+<main>
 
-        <div class="col-3 mb-2">
-            <input type="number" class="form-control" id="dni" th:value="${dni}" name="dni" placeholder="DNI" />
-        </div>
+    <div class=" col-md-12 col-lg-11 m-1 mx-auto mt-3">
+        <div class="card1 mt-3" >
+            <h3 class="card-header text-center"><strong>Usuarios<span id="fecha"></span></strong></h3>
+                <form class="form-inline w-100 mt-3" th:action="@{/usuarios/ver}" method="get">
+                    <!-- Filtros de Búsqueda -->
+                    <div class="row w-100">
+                        <div class="col-lg-2 col-md-12 mb-2 text-left mt-2">
+                            <label for="dni"><h5>Filtrar por:</h5></label>
+                        </div>
 
-        <div class="col-3 mb-2">
-            <input type="text" class="form-control" id="apellido" th:value="${apellido}" name="apellido" placeholder="Apellido" />
-        </div>
+                        <div class="col-lg-3 col-md-12 mb-2">
+                            <input type="number" class="form-control w-100" id="dni" th:value="${dni}" name="dni" placeholder="DNI" />
+                        </div>
 
-        <div class="col-3 mb-2">
-            <input type="text" class="form-control" id="empresa" th:value="${empresa}" name="empresa" placeholder="Empresa" />
-        </div>
+                        <div class="col-lg-3 col-md-12 mb-2">
+                            <input type="text" class="form-control w-100" id="apellido" th:value="${apellido}" name="apellido" placeholder="Apellido" />
+                        </div>
 
-        <div class="col-1 mb-2 d-flex align-items-end">
-            <button type="submit" class="btn btn-outline-secondary btn-sm w-100">Buscar</button>
+                        <div class="col-lg-3 col-md-12 mb-2">
+                            <input type="text" class="form-control w-100" id="empresa" th:value="${empresa}" name="empresa" placeholder="Empresa" />
+                        </div>
+
+                        <div class="col-lg-1 col-md-12 mb-2 d-flex align-items-end">
+                            <button type="submit" class="btn btn-outline-secondary btn-sm w-100">Buscar</button>
+                        </div>
+                    </div>
+                </form>
+
+
+                <!-- Tabla de usuarios -->
+                <div class="table-responsive">
+                    <table class="table mt-3">
+                        <thead class="thead-light">
+                        <tr class="text-center">
+                            <th class="text-left">Nombre</th>
+                            <th class="text-center">Apellido</th>
+                            <th class="text-center" >DNI</th>
+                            <th class="text-center" >Empresa</th>
+                            <th class="text-center" >Estado</th>
+                            <th class="text-center" >Accion</th>
+                            <th class="text-center" ></th>
+                        </tr>
+                        </thead>
+                        <tbody class="table-borderless w-100 striped-table" >
+                        <tr th:each="usuario : ${usuarios.content}">
+                            <td class="text-center" th:text="${usuario.nombre}"></td>
+                            <td class="text-center" th:text="${usuario.apellido}"></td>
+                            <td class="text-center" th:text="${usuario.dni}"></td>
+                            <td class="text-center" th:text="${usuario.empresa}"></td>
+                            <td class="text-center" th:classappend="${usuario.estado == 1} ? 'text-success' : 'text-danger'"
+                                th:text="${usuario.estado == 1 ? 'Activo' : 'Inactivo'}">
+                            </td>
+                            <td class="">
+                                <a th:href="@{/usuarios/cambiar-clave-rrhh(dni=${usuario.dni})}" class="color1" role="button" title="Cambiar Clave">
+                                    <i class="bi bi-key" aria-hidden="true"></i>
+                                </a>
+                            </td>
+
+                            <td class="">
+                                <a th:href="@{/usuarios/editar/{id} (id=${usuario.id_usuario})}" class=" color1" role="button" title="Editar"><i class="bi bi-pencil" aria-hidden="true"></i></a>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Paginación -->
+            <nav>
+                <ul class="pagination d-flex flex-wrap justify-content-center pagination-sm">
+                    <li th:classappend="${currentPage == 0} ? 'disabled' : ''" class="page-item">
+                        <a th:href="@{/usuarios/ver(page=${currentPage - 1}, dni=${dni}, apellido=${apellido}, empresa=${empresa})}" class="btn btn-outline-secondary table-light mb-1">Anterior</a>
+                    </li>
+                    <li th:each="i : ${#numbers.sequence(0, totalPages - 1)}"
+                        th:classappend="${i == currentPage} ? 'active' : ''" class="page-item">
+                        <a th:href="@{/usuarios/ver(page=${i}, dni=${dni}, apellido=${apellido}, empresa=${empresa})}" class="btn btn-outline-secondary table-light mb-1" th:text="${i + 1}">1</a>
+                    </li>
+                    <li th:classappend="${currentPage == totalPages - 1} ? 'disabled' : ''" class="page-item">
+                        <a th:href="@{/usuarios/ver(page=${currentPage + 1}, dni=${dni}, apellido=${apellido}, empresa=${empresa})}" class="btn btn-outline-secondary table-light mb-1">Siguiente</a>
+                    </li>
+                </ul>
+            </nav>
+
         </div>
     </div>
-
-</form>
-
-<!-- Tabla de usuarios -->
-<div class="table-responsive">
-    <table class="table mt-3">
-        <thead class="thead-dark">
-        <tr class="text-center">
-            <th class="text-left">Nombre</th>
-            <th>Apellido</th>
-            <th>DNI</th>
-            <th>Empresa</th>
-            <th>Estado</th>
-            <th></th>
-            <th></th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr th:each="usuario : ${usuarios.content}">
-            <td th:text="${usuario.nombre}"></td>
-            <td th:text="${usuario.apellido}"></td>
-            <td th:text="${usuario.dni}"></td>
-            <td th:text="${usuario.empresa}"></td>
-            <td th:classappend="${usuario.estado == 1} ? 'text-success' : 'text-danger'"
-                th:text="${usuario.estado == 1 ? 'Activo' : 'Inactivo'}">
-            </td>
-            <td class="">
-                <a th:href="@{/usuarios/cambiar-clave-rrhh(dni=${usuario.dni})}" class="color1" role="button" title="Cambiar Clave">
-                    <i class="bi bi-key" aria-hidden="true"></i>
-                </a>
-            </td>
-
-            <td class="">
-                <a th:href="@{/usuarios/editar/{id} (id=${usuario.id_usuario})}" class=" color1" role="button" title="Editar"><i class="bi bi-pencil" aria-hidden="true"></i></a>
-            </td>
-        </tr>
-        </tbody>
-    </table>
-</div>
-
-<!-- Paginación -->
-<nav>
-    <ul class="pagination">
-        <li th:classappend="${currentPage == 0} ? 'disabled' : ''" class="page-item">
-            <a th:href="@{/usuarios/ver(page=${currentPage - 1}, dni=${dni}, apellido=${apellido}, empresa=${empresa})}" class="page-link">Anterior</a>
-        </li>
-        <li th:each="i : ${#numbers.sequence(0, totalPages - 1)}"
-            th:classappend="${i == currentPage} ? 'active' : ''" class="page-item">
-            <a th:href="@{/usuarios/ver(page=${i}, dni=${dni}, apellido=${apellido}, empresa=${empresa})}" class="page-link" th:text="${i + 1}">1</a>
-        </li>
-        <li th:classappend="${currentPage == totalPages - 1} ? 'disabled' : ''" class="page-item">
-            <a th:href="@{/usuarios/ver(page=${currentPage + 1}, dni=${dni}, apellido=${apellido}, empresa=${empresa})}" class="page-link">Siguiente</a>
-        </li>
-    </ul>
-</nav>
+</main>
 
 <footer th:insert="fragments/footer :: footer" class="footer"></footer>
 <script th:src="@{/bootstrap/js/bootstrap.min.js}"></script>
