@@ -152,3 +152,8 @@
     .form-check-label {
         font-size: 1.2rem; /* Puedes ajustar el tamaño del texto si quieres etiquetas grandes */
     }
+    .nanbtn{
+     width: 2.5rem;
+     height: 2.5rem;
+     box-shadow: grey 5px 5px 10px;
+    }

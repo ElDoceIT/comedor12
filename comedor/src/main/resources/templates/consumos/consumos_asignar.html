@@ -19,12 +19,12 @@
 <header th:replace="fragments/menu :: menu-principal"></header>
 
 
-<main class="margen2" role="main">
+<main>
   <hr>
-  <div class="container">
+  <div class="col-md-12 col-lg-11 m-1 mx-auto">
 
-    <div class="card1">
-      <h1 class="card-header text-center"><strong>Asginar consumos</strong></h1>
+    <div class="card1 mt-4">
+      <h4 class="card-header text-center"><strong>Asginar consumos</strong></h4>
       <div class="card-body">
         <form th:action="@{/consumos/save}" method="post">
 

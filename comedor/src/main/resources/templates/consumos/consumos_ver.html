@@ -18,9 +18,9 @@
 
 <header th:replace="fragments/menu :: menu-principal"></header>
 
-<div class="container">
-  <div class="card1">
-    <h1 class="text-center card-header"><strong>Todos los consumos</strong></h1>
+<div class="col-md-12 col-lg-11 m-1 mx-auto">
+  <div class="card1 mt-4">
+    <h4 class="text-center card-header"><strong>Todos los consumos</strong></h4>
 
     <form class="form-inline mb-4 mt-3 align-items-center justify-content-center" th:action="@{/consumos/search}" method="get">
       <label for="fechaInicio" class="mr-sm-2"><h6>Desde:</h6></label>
@@ -38,7 +38,7 @@
     <!-- Tabla de resultados -->
     <div class="table-responsive">
       <table class="table">
-        <thead class="thead-dark justify-content-around">
+        <thead class="thead-light justify-content-around">
         <tr class="text-center">
           <th class="col-2 text-left">Fecha</th>
           <th>Nombre</th>
