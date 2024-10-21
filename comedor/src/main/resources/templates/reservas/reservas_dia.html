@@ -110,7 +110,7 @@
                 <td>
                   Entregado:<span th:text="${#temporals.format(reserva.entregado, 'dd-MM-yyyy HH:mm')}"></span>
                 </td>
-                <td>
+                <td class="text-center" >
                   <form th:action="@{/reservas/cancelar-consumido/{id}(id=${reserva.idReserva})}" method="post">
                     <button type="submit" class="btn-no-border" ><img class="nanbtn" th:src="@{/images/x.png}" alt="Cancelar">
 
