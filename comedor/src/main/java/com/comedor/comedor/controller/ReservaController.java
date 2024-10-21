@@ -126,7 +126,7 @@ public String reservas(Model model) {
         });
 
         model.addAttribute("reservas", reservasFiltradas);
-        return "/reservas/reservas_ver";
+        return "reservas/misreservas";
     }
 
     @GetMapping("/asistencia")
