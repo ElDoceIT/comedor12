@@ -74,7 +74,7 @@
               <td th:text="${medioDescripcion[reserva.medio]}"></td>
               <td class="text-center">
                 <form th:action="@{/reservas/marcar-consumido/{id}(id=${reserva.idReserva})}" method="post">
-                  <button type="submit" class="nanbtn" ><img src="../../static/images/chklm.webp"></button>
+                  <button type="submit" class="btn-no-border"  ><img class="nanbtn" th:src="@{/images/chklm.webp}" alt="Marcar como consumido"></button>
                 </form>
               </td>
             </tr>
@@ -112,7 +112,7 @@
                 </td>
                 <td>
                   <form th:action="@{/reservas/cancelar-consumido/{id}(id=${reserva.idReserva})}" method="post">
-                    <button type="submit" class="nanbtn"><img src="../../static/images/x.png">
+                    <button type="submit" class="btn-no-border" ><img class="nanbtn" th:src="@{/images/x.png}" alt="Cancelar">
 
                     </button>
                   </form>

@@ -152,8 +152,13 @@
     .form-check-label {
         font-size: 1.2rem; /* Puedes ajustar el tamaño del texto si quieres etiquetas grandes */
     }
-    .nanbtn{
-     width: 2.5rem;
-     height: 2.5rem;
-     box-shadow: grey 5px 5px 10px;
+    .nanbtn {
+        width: 2.5rem;
+        height: 2.5rem;
+        box-shadow: grey 5px 5px 10px;
+        background: none; /* Eliminar fondo */
+        border: none; /* Eliminar borde */
+        border-radius: 50%; /* Opcional, para bordes redondeados o circulares */
+        padding: 0; /* Eliminar padding */
+        display: inline-block;
     }
