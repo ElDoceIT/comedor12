@@ -25,7 +25,7 @@
         <span><p class="m-4 text-right" id="hora-actual" th:text="${#temporals.format(serverTime, 'EEEE dd MMMM yyyy HH:mm:ss')}">Día</p> </span>
     </div>
     <div class=" col-md-12 col-lg-11 m-1 mx-auto">
-        <div class="card1 mt-3" >
+        <div class="card1 mt-3 " >
             <h3 class="card-header text-center"><strong>Menú Semanal <span id="fecha"></span></strong></h3>
 
             <!-- Mensaje de error -->
@@ -40,7 +40,7 @@
 
             <form th:action="@{/reservas/reservar}" method="post">
                 <div th:each="dia : ${menusPorDia}">
-                    <div class="card1 mt-2 border-dark m-1">
+                    <div class="card1 mt-2 border-dark m-1 pb-3 ">
                         <div class="card-header p-0 text-center">
                             <h4 class="m-3"><caption th:text="'Menú del día ' + ${#temporals.format(dia.key, 'EEEE dd MMMM yyyy')}"></caption></h4>
                         </div>
@@ -62,11 +62,12 @@
                                     <td class="text-center" th:text="${menu.comida.principal}"></td>
                                     <td class="text-center" th:text="${menu.comida.postre}"></td>
                                     <td class="text-center" th:switch="${menu.comida.tipo_comida}">
-                                        <span th:case="1">Principal</span>
-                                        <span th:case="2">Light</span>
-                                        <span th:case="3">Celiaco</span>
-                                        <span th:case="4">Fruta</span>
+                                        <span th:case="1"><img class="nanbtn2" th:src="@{/images/principal.png}" alt="Principal"></span>
+                                        <span th:case="2"><img class="nanbtn2" th:src="@{/images/light.png}" alt="Light"></span>
+                                        <span th:case="3"><img class="nanbtn2" th:src="@{/images/celiaco.png}" alt="Celiaco"></span>
+                                        <span th:case="4"><img class="nanbtn2" th:src="@{/images/frutas.png}" alt="Frutas"></span>
                                     </td>
+
 
                                     <!-- Selección del menú -->
                                     <td class="text-center">
@@ -136,10 +137,10 @@
                         <td th:text="${reserva.menu != null && reserva.menu.comida != null && reserva.menu.comida.principal != null ? reserva.menu.comida.principal  : 'Sin Comida'}">Plato Principal</td>
                         <td th:text="${reserva.menu != null && reserva.menu.comida != null && reserva.menu.comida.postre != null ? reserva.menu.comida.postre : 'Sin Postre'}">Postre</td>
                         <td th:switch="${reserva.menu != null && reserva.menu.comida != null && reserva.menu.comida.tipo_comida != null ? reserva.menu.comida.tipo_comida : 'Sin Tipo'}">
-                            <span th:case="1">Principal</span>
-                            <span th:case="2">Light</span>
-                            <span th:case="3">Celiaco</span>
-                            <span th:case="4">Fruta</span>
+                            <span th:case="1"><img class="nanbtn2" th:src="@{/images/principal.png}" alt="Principal"></span>
+                            <span th:case="2"><img class="nanbtn2" th:src="@{/images/light.png}" alt="Light"></span>
+                            <span th:case="3"><img class="nanbtn2" th:src="@{/images/celiaco.png}" alt="Celiaco"></span>
+                            <span th:case="4"><img class="nanbtn2" th:src="@{/images/frutas.png}" alt="Frutas"></span>
                         </td>
                         <td th:switch="${reserva.medio}">
                             <span th:case="1">Comedor</span>

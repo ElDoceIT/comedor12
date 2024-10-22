@@ -162,3 +162,12 @@
         padding: 0; /* Eliminar padding */
         display: inline-block;
     }
+.nanbtn2 {
+        width: 2.5rem;
+        height: 2.5rem;
+        filter: drop-shadow(5px 5px 10px rgba(0, 0, 0, 0.5));
+        background: none; /* Eliminar fondo */
+        border: none; /* Eliminar borde */
+        padding: 0; /* Eliminar padding */
+        display: inline-block;
+    }
