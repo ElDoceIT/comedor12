@@ -23,7 +23,7 @@
 
   <div class="col-md-12 col-lg-11 m-1 mx-auto ">
 
-    <div class=" card1 mt-4 ">
+    <div class=" card1 mt-4 pb-3 ">
       <h4 class="card-header text-center"><strong>Listado de Productos</strong></h4>
       <div class="card-body botocito1">
 
@@ -68,7 +68,7 @@
           <tr th:each="producto :${productos}">
             <td class="float-left" th:text="${producto.descripcion}">CocaCola</td>
             <td class="float-right">
-              <a th:href="@{/productos/editar/{id} (id=${producto.id_producto})}" class=" color1" role="button" title="Editar"><i class="bi bi-pencil" aria-hidden="true"></i></a>
+              <a th:href="@{/productos/editar/{id} (id=${producto.id_producto})}" class="m-3 color1" role="button" title="Editar"><i class="bi bi-pencil" aria-hidden="true"></i></a>
             </td>
           </tr>
 
