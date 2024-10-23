@@ -6,12 +6,12 @@
 
   <div class="collapse navbar-collapse" id="navbarsExampleDefault">
     <ul class="navbar-nav mr-auto">
-      <li class="nav-item">
+      <li class="nav-item" th:if="${#strings.contains(#authentication.principal.authorities, 'Admin') or #strings.contains(#authentication.principal.authorities, 'Usuario') or #strings.contains(#authentication.principal.authorities, 'RRHH') or #strings.contains(#authentication.principal.authorities, 'Jefe')}">
         <a class="nav-link active" th:href="@{/reserva}">Reservar</a>
       </li>
 
 
-      <li class="nav-item dropdown" th:if="${#strings.contains(#authentication.principal.authorities,'Admin')}">
+      <li class="nav-item dropdown" th:if="${#strings.contains(#authentication.principal.authorities, 'Admin') or #strings.contains(#authentication.principal.authorities, 'Comedor')}">
         <a class="nav-link dropdown-toggle" href="#" id="comidaDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           Comida
         </a>
@@ -21,7 +21,7 @@
         </div>
       </li>
 
-      <li class="nav-item dropdown" th:if="${#strings.contains(#authentication.principal.authorities,'Admin')}">
+      <li class="nav-item dropdown" th:if="${#strings.contains(#authentication.principal.authorities, 'Admin') or #strings.contains(#authentication.principal.authorities, 'RRHH')}">
         <a class="nav-link dropdown-toggle" href="#" id="usuariosDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           Usuarios
         </a>
@@ -32,7 +32,7 @@
       </li>
 
       <!-- Dropdown for Menu -->
-      <li class="nav-item dropdown" th:if="${#strings.contains(#authentication.principal.authorities,'Admin')}">
+      <li class="nav-item dropdown" th:if="${#strings.contains(#authentication.principal.authorities, 'Admin') or #strings.contains(#authentication.principal.authorities, 'Comedor') or #strings.contains(#authentication.principal.authorities, 'RRHH')}">
         <a class="nav-link dropdown-toggle" href="#" id="menuDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           Menu
         </a>
@@ -41,11 +41,11 @@
           <a class="dropdown-item" th:href="@{/menu/ver}">Ver menu</a>
         </div>
       </li>
-      <li class="nav-item" th:if="${#strings.contains(#authentication.principal.authorities,'Admin')}">
+      <li class="nav-item" th:if="${#strings.contains(#authentication.principal.authorities, 'Admin') or #strings.contains(#authentication.principal.authorities, 'Comedor')}">
         <a class="nav-link" th:href="@{/productos/ver}">Productos</a>
       </li>
       <!-- Dropdown for Consumo -->
-      <li class="nav-item dropdown" th:if="${#strings.contains(#authentication.principal.authorities, 'Admin') or #strings.contains(#authentication.principal.authorities, 'Comedor')}">
+      <li class="nav-item dropdown" th:if="${#strings.contains(#authentication.principal.authorities, 'Admin') or #strings.contains(#authentication.principal.authorities, 'Comedor') or #strings.contains(#authentication.principal.authorities, 'RRHH')}">
         <a class="nav-link dropdown-toggle" href="#" id="consumoDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           Consumo
         </a>
@@ -55,7 +55,7 @@
         </div>
       </li>
 
-      <li class="nav-item">
+      <li class="nav-item" th:if="${#strings.contains(#authentication.principal.authorities, 'Admin') or #strings.contains(#authentication.principal.authorities, 'Usuario') or #strings.contains(#authentication.principal.authorities, 'RRHH') or #strings.contains(#authentication.principal.authorities, 'Jefe')}">
         <a class="nav-link" th:href="@{/reservas/misreservas}">Mis reservas</a>
       </li>
       <li class="nav-item" th:if="${#strings.contains(#authentication.principal.authorities, 'Admin') or #strings.contains(#authentication.principal.authorities, 'Comedor')}">

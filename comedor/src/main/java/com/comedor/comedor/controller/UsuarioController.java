@@ -39,7 +39,7 @@ public class UsuarioController {
     }
 
     //este metodo se ejecuta automaticamente cada vez que se inicia la aplicacion, una vez migrados todos los user, lo doy de baja.
-    public void migratePasswords() {
+  /*  public void migratePasswords() {
         List<Usuario> users = usuarioRepository.findAll();
         for (Usuario user : users) {
             if (!user.getPass().startsWith("$2a$")) {
@@ -48,7 +48,7 @@ public class UsuarioController {
                 usuarioRepository.save(user);
             }
         }
-    }
+    }*/
 
     @GetMapping("/new")
     public String nuevoUsuarios(Model model) {
@@ -94,6 +94,16 @@ public class UsuarioController {
     @PostMapping("/save")
     public String guardarUsuario(Usuario usuario) {
         usuarioRepository.save(usuario);
+
+        // Verificar si la contraseña no está codificada
+        if (!usuario.getPass().startsWith("$2a$")) {
+            // Codificar la contraseña con BCrypt
+            String encodedPassword = passwordEncoder.encode(usuario.getPass());
+            // Actualizar la contraseña codificada
+            usuario.setPass(encodedPassword);
+            // Guardar nuevamente el usuario con la contraseña codificada
+            usuarioRepository.save(usuario);
+        }
         return "redirect:/usuarios/ver";
     }
 
@@ -142,11 +152,11 @@ public class UsuarioController {
             return "usuarios/usuarios_ver";
     }
    //una vez migrados todos los usuarios, activo para encriptar claves por la url
-   /* @GetMapping("/migrate-passwords")
+   @GetMapping("/migrate-passwords")
     public String migratePasswords() {
         usuarioService.migratePasswords();
         return "Migración completada";
-    }*/
+    }
 
     @GetMapping("/cambiar-clave")
     public String mostrarFormularioCambioClave() {

@@ -38,13 +38,13 @@ public UserDetailsManager usersCustom(DataSource dataSource) {
                .requestMatchers( "/signup", "/login").permitAll()
 
                 // Asignar permisos a URLs por ROLES
-                .requestMatchers("/comida/**").hasAnyAuthority("Admin", "Jefe")
-                .requestMatchers("/usuarios/**").hasAnyAuthority("Admin", "Jefe")
-                .requestMatchers("/menu/**").hasAnyAuthority("Admin", "Jefe")
-                .requestMatchers("/productos/**").hasAnyAuthority("Admin", "Jefe")
-                .requestMatchers("/consumos/**").hasAnyAuthority("Admin", "Jefe")
-                .requestMatchers("/reservas/**").hasAnyAuthority("Admin", "Jefe", "Usuario")
-                .requestMatchers("/home/**").hasAnyAuthority("Admin", "Jefe", "Usuario")
+                .requestMatchers("/comida/**").hasAnyAuthority("Admin", "Comedor")
+                .requestMatchers("/usuarios/**").hasAnyAuthority("Admin", "RRHH")
+                .requestMatchers("/menu/**").hasAnyAuthority("Admin", "Jefe", "RRHH","Comedor")
+                .requestMatchers("/productos/**").hasAnyAuthority("Admin", "Comedor")
+                .requestMatchers("/consumos/**").hasAnyAuthority("Admin","RRHH","Comedor")
+                .requestMatchers("/reservas/**").hasAnyAuthority("Admin", "Jefe", "Usuario","RRHH","Comedor")
+                .requestMatchers("/home/**").hasAnyAuthority("Admin", "Jefe", "Usuario", "RRHH","Comedor")
                 .anyRequest().authenticated())
                 .formLogin(form -> form
                                 .loginPage("/login")  // Especifica la URL de la página de login
