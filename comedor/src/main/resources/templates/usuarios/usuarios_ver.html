@@ -61,7 +61,6 @@
                             <th class="text-center" >Empresa</th>
                             <th class="text-center" >Estado</th>
                             <th class="text-center" >Accion</th>
-                            <th class="text-center" ></th>
                         </tr>
                         </thead>
                         <tbody class="table-borderless w-100 striped-table" >
@@ -70,17 +69,16 @@
                             <td class="text-center" th:text="${usuario.apellido}"></td>
                             <td class="text-center" th:text="${usuario.dni}"></td>
                             <td class="text-center" th:text="${usuario.empresa}"></td>
-                            <td class="text-center" th:classappend="${usuario.estado == 1} ? 'text-success' : 'text-danger'"
-                                th:text="${usuario.estado == 1 ? 'Activo' : 'Inactivo'}">
-                            </td>
-                            <td class="">
-                                <a th:href="@{/usuarios/cambiar-clave-rrhh(dni=${usuario.dni})}" class="color1" role="button" title="Cambiar Clave">
-                                    <i class="bi bi-key" aria-hidden="true"></i>
-                                </a>
+                            <td class="text-center" th:classappend="${usuario.estado == 1} ? 'text-success' : 'text-danger'">
+                                <img class="nanbtn2" th:src="${usuario.estado == 1} ? @{/images/activo.png} : @{/images/inactivo.png}"
+                                     th:alt="${usuario.estado == 1} ? 'Activo' : 'Inactivo'" />
                             </td>
 
-                            <td class="">
-                                <a th:href="@{/usuarios/editar/{id} (id=${usuario.id_usuario})}" class=" color1" role="button" title="Editar"><i class="bi bi-pencil" aria-hidden="true"></i></a>
+                            <td class="text-center" >
+                                <a  th:href="@{/usuarios/cambiar-clave-rrhh(dni=${usuario.dni})}" class="color1 nanbtn2 mr-1" role="button" title="Cambiar Clave">
+                                    <i class="bi bi-key nanbtn2" aria-hidden="true"></i>
+                                </a>
+                                <a th:href="@{/usuarios/editar/{id} (id=${usuario.id_usuario})}" class=" color1 nanbtn2 ml-1" role="button" title="Editar"><i class="bi bi-pencil" aria-hidden="true"></i></a>
                             </td>
                         </tr>
                         </tbody>

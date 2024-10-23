@@ -132,7 +132,15 @@
                     <tbody class="table-borderless w-100 striped-table">
 
                     <tr th:each="reserva : ${reservas}">
-                        <td th:text="${reserva.menu != null && reserva.menu.fechaMenu != null ? #temporals.format(reserva.menu.fechaMenu, 'EEEE dd MMMM yyyy') : 'Sin fecha'}"></td>
+                        <!-- Formato de fecha para pantallas grandes -->
+                        <td class="d-none d-md-table-cell">
+                            <span th:text="${reserva.menu != null && reserva.menu.fechaMenu != null ? #temporals.format(reserva.menu.fechaMenu, 'EEEE dd MMMM yyyy') : 'Sin fecha'}"></span>
+                        </td>
+
+                        <!-- Formato de fecha para pantallas pequeñas -->
+                        <td class="d-md-none">
+                            <span th:text="${reserva.menu != null && reserva.menu.fechaMenu != null ? #temporals.format(reserva.menu.fechaMenu, 'dd/MM') : 'Sin fecha'}"></span>
+                        </td>
                         <td th:text="${reserva.menu != null && reserva.menu.comida != null && reserva.menu.comida.entrada != null ? reserva.menu.comida.entrada : 'Sin entrada'}"></td>
                         <td th:text="${reserva.menu != null && reserva.menu.comida != null && reserva.menu.comida.principal != null ? reserva.menu.comida.principal  : 'Sin Comida'}">Plato Principal</td>
                         <td th:text="${reserva.menu != null && reserva.menu.comida != null && reserva.menu.comida.postre != null ? reserva.menu.comida.postre : 'Sin Postre'}">Postre</td>

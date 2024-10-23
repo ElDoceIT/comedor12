@@ -57,21 +57,44 @@
           <table class="table">
             <thead class="thead-light">
             <tr>
-              <th>Apellido</th>
-              <th>Nombre</th>
-              <th>Comida Principal</th>
-              <th>Tipo Comida</th>
-              <th>Lugar Consumo</th>
+              <th >Apellido</th>
+              <th class="text-center" >Nombre</th>
+              <th class="text-center" >Comida Principal</th>
+              <th class="text-center" >Tipo</th>
+              <th class="text-center" >Lugar Consumo</th>
               <th class="text-center">Acciones</th>
             </tr>
             </thead>
             <tbody class=" w-100 striped-table">
             <tr th:each="reserva  : ${reservasNoConsumidas}">
               <td th:text="${reserva.usuario.apellido}"></td>
-              <td th:text="${reserva.usuario.nombre}"></td>
-              <td th:text="${reserva.menu.comida.principal}"></td>
-              <td th:text="${tipoComidaDescripcion[reserva.menu.comida.tipo_comida]}"></td>
-              <td th:text="${medioDescripcion[reserva.medio]}"></td>
+              <td class="text-center" th:text="${reserva.usuario.nombre}"></td>
+              <td class="text-center" th:text="${reserva.menu.comida.principal}"></td>
+              <td class="text-center" >
+    <span th:switch="${reserva.menu.comida.tipo_comida}">
+        <span th:case="1">
+            <img class="nanbtn2" th:src="@{/images/principal.png}" alt="Principal">
+
+        </span>
+        <span th:case="2">
+            <img class="nanbtn2" th:src="@{/images/light.png}" alt="Light">
+
+        </span>
+        <span th:case="3">
+            <img class="nanbtn2" th:src="@{/images/celiaco.png}" alt="Celiaco">
+
+        </span>
+        <span th:case="4">
+            <img class="nanbtn2" th:src="@{/images/frutas.png}" alt="Frutas">
+
+        </span>
+        <span th:case="*">
+            <span th:text="${tipoComidaDescripcion[reserva.menu.comida.tipo_comida]}"></span> <!-- Default case -->
+        </span>
+    </span>
+              </td>
+
+              <td class="text-center" th:text="${medioDescripcion[reserva.medio]}"></td>
               <td class="text-center">
                 <form th:action="@{/reservas/marcar-consumido/{id}(id=${reserva.idReserva})}" method="post">
                   <button type="submit" class="btn-no-border"  ><img class="nanbtn" th:src="@{/images/chklm.webp}" alt="Marcar como consumido"></button>
@@ -92,22 +115,42 @@
             <thead class="thead-light" >
             <tr>
               <th>Apellido</th>
-              <th>Nombre</th>
-              <th>Comida Principal</th>
-              <th>Tipo Comida</th>
-              <th>Lugar Consumo</th>
-              <th>Consumió</th>
-              <th>Acciones</th>  <!-- Nueva columna para las acciones -->
+              <th class="text-center" >Nombre</th>
+              <th class="text-center" >Comida Principal</th>
+              <th class="text-center" >Tipo</th>
+              <th class="text-center" >Lugar Consumo</th>
+              <th class="text-center" >Consumió</th>
+              <th class="text-center" >Acciones</th>  <!-- Nueva columna para las acciones -->
             </tr>
             </thead>
             <tbody class="table-borderless w-100 striped-table">
               <tr th:each="reserva : ${reservasConsumidas}">
                 <td th:text="${reserva.usuario.apellido}"></td>
-                <td th:text="${reserva.usuario.nombre}"></td>
-                <td th:text="${reserva.menu.comida.principal}"></td>
-                <td th:text="${tipoComidaDescripcion[reserva.menu.comida.tipo_comida]}"></td>
-                <td th:text="${medioDescripcion[reserva.medio]}"></td>
-                <td>
+                <td class="text-center" th:text="${reserva.usuario.nombre}"></td>
+                <td class="text-center" th:text="${reserva.menu.comida.principal}"></td>
+                <td class="text-center">
+    <span th:switch="${reserva.menu.comida.tipo_comida}">
+        <span th:case="1">
+            <img class="nanbtn2" th:src="@{/images/principal.png}" alt="Principal">
+        </span>
+        <span th:case="2">
+            <img class="nanbtn2" th:src="@{/images/light.png}" alt="Light">
+        </span>
+        <span th:case="3">
+            <img class="nanbtn2" th:src="@{/images/celiaco.png}" alt="Celiaco">
+        </span>
+        <span th:case="4">
+            <img class="nanbtn2" th:src="@{/images/frutas.png}" alt="Frutas">
+        </span>
+        <span th:case="*">
+            <!-- Si quieres un caso por defecto, puedes dejar una imagen o dejar vacío -->
+            <span th:text="${tipoComidaDescripcion[reserva.menu.comida.tipo_comida]}"></span>
+        </span>
+    </span>
+                </td>
+
+                <td class="text-center" th:text="${medioDescripcion[reserva.medio]}"></td>
+                <td class="text-center">
                   Entregado:<span th:text="${#temporals.format(reserva.entregado, 'dd-MM-yyyy HH:mm')}"></span>
                 </td>
                 <td class="text-center" >
