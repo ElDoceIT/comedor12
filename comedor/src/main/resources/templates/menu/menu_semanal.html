@@ -33,7 +33,7 @@
       <!-- Mostrar los menús solo si existen -->
       <div th:if="${menusPorDia}">
         <!-- Selección de Comida -->
-        <div class="card1 border-dark m-2" th:each="dia : ${menusPorDia}">
+        <div class="card1 border-dark m-2 overflow-hidden" th:each="dia : ${menusPorDia}">
           <div class="card-header p-0 text-center">
             <h5 class="m-2">
               <caption th:text="'Menú del día ' + ${#temporals.format(dia.key, 'EEEE dd MMMM yyyy')}"></caption>

@@ -18,11 +18,11 @@
 <header th:replace="fragments/menu :: menu-principal"></header>
 
 <main role="main">
-    <div class="container mt-3">
+    <div class="col-md-12 col-lg-11 m-1 mx-auto mt-3 pb-5 ">
 
-        <div class="card1 ">
+        <div class="card1 overflow-hidden">
 
-            <div class="text-center card-header"><h1><strong>Editar comida</strong></h1></div>
+            <div class="text-center card-header"><h4><strong>Editar comida</strong></h4></div>
             <form th:action="@{/comida/save}" method="post" th:object="${comidas}">
                 <input type="hidden" th:field="*{id_comida}">
                  <div class="p-3">
@@ -57,7 +57,7 @@
                                 <label for="tipo"><h6>Tipo de menu</h6></label>
                                 <select class="form-control p-2 " th:field="*{tipo_comida}" name="tipo_comida" id="tipo">
                                     <option value="0">Principal</option>
-                                    <option value="1">Vegetariano</option>
+                                    <option value="1">light</option>
                                     <option value="2">Celiaco</option>
                                 </select>
                             </div>
