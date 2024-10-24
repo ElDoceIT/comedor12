@@ -21,13 +21,13 @@
           <div class="col-md-4">
             <div class="form-group">
               <label for="nombre"><h6>Nombre</h6></label>
-              <input type="text" class="form-control" name="nombre" id="nombre" placeholder="nombre" required="required">
+              <input type="text" class="form-control" name="nombre" id="nombre" placeholder="nombre" required="required" style="text-transform: capitalize;">
             </div>
           </div>
           <div class="col-md-4">
             <div class="form-group">
               <label for="apellido"><h6>Apellido</h6></label>
-              <input type="text" class="form-control" name="apellido" id="apellido" placeholder="apellido" required="required">
+              <input type="text" class="form-control" name="apellido" id="apellido" placeholder="apellido" required="required" style="text-transform: capitalize;">
             </div>
           </div>
           <div class="col-md-4">
@@ -99,6 +99,7 @@
 </div>
 <footer th:insert="fragments/footer :: footer" class="footer"></footer>
 <script th:src="@{/bootstrap/js/bootstrap.min.js}"></script>
+<script th:src="@{/js/capitalizar.js}"></script>
 <script>
   function validarPassword() {
     var password = document.getElementById("password").value;
