@@ -8,6 +8,7 @@ import com.comedor.comedor.service.IMenuService;
 import com.comedor.comedor.service.IReservaService;
 import com.comedor.comedor.service.IUsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
@@ -375,6 +376,74 @@ public String reservas(Model model) {
 
         return "redirect:/reservas/reservas-dia-actual";  // Redirigir a la vista de reservas del día actual
     }
+
+    // aca chequeo mis propias reservas.
+    @GetMapping("/all")
+    public String reservasTodos(@RequestParam(value = "usuario", required = false) Integer dni,
+                                @RequestParam(value = "startDate", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate startDate,
+                                @RequestParam(value = "endDate", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate endDate,
+                                Model model) {
+
+        // Obtener todas las reservas
+        List<Reserva> todasLasReservas = reservaRepository.findAll();
+
+        // Aplicar filtro por usuario si se proporciona
+        if (dni != null) {
+            todasLasReservas = todasLasReservas.stream()
+                    .filter(reserva -> reserva.getUsuario().getDni().equals(dni))
+                    .collect(Collectors.toList());
+        }
+
+        // Aplicar filtro por rango de fecha si se proporciona
+        if (startDate != null && endDate != null) {
+            todasLasReservas = todasLasReservas.stream()
+                    .filter(reserva -> reserva.getMenu().getFechaMenu().isAfter(startDate.minusDays(1)) &&
+                            reserva.getMenu().getFechaMenu().isBefore(endDate.plusDays(1)))
+                    .collect(Collectors.toList());
+        }
+
+        // Ordenar por fecha de menú descendente
+        List<Reserva> reservasOrdenadas = todasLasReservas.stream()
+                .sorted((r1, r2) -> r2.getMenu().getFechaMenu().compareTo(r1.getMenu().getFechaMenu()))
+                .collect(Collectors.toList());
+
+        // Añadir la lista de reservas filtradas y ordenadas al modelo
+        model.addAttribute("reservas", reservasOrdenadas);
+        return "reserva/todos";
+    }
+
+    @GetMapping("/allagrupado")
+    public String reservasAgrupadasPorUsuario(@RequestParam(value = "startDate", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate startDate,
+                                              @RequestParam(value = "endDate", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate endDate,
+                                              Model model) {
+
+        // Obtener todas las reservas
+        List<Reserva> todasLasReservas = reservaRepository.findAll();
+
+        // Aplicar filtro por rango de fecha si se proporciona
+        if (startDate != null && endDate != null) {
+            todasLasReservas = todasLasReservas.stream()
+                    .filter(reserva -> reserva.getMenu().getFechaMenu().isAfter(startDate.minusDays(1)) &&
+                            reserva.getMenu().getFechaMenu().isBefore(endDate.plusDays(1)))
+                    .collect(Collectors.toList());
+        }
+
+        // Agrupar reservas por usuario
+        Map<Usuario, List<Reserva>> reservasPorUsuario = todasLasReservas.stream()
+                .collect(Collectors.groupingBy(Reserva::getUsuario));
+
+        // Ordenar cada lista de reservas por fecha de menú descendente
+        reservasPorUsuario.values().forEach(reservas ->
+                reservas.sort((r1, r2) -> r2.getMenu().getFechaMenu().compareTo(r1.getMenu().getFechaMenu()))
+        );
+
+        // Añadir el mapa de reservas agrupadas al modelo
+        model.addAttribute("reservasPorUsuario", reservasPorUsuario);
+
+        return "reserva/agrupadasPorUsuario";
+    }
+
+
 
 
 }
