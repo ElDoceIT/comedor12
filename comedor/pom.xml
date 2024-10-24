@@ -10,7 +10,7 @@
     </parent>
     <groupId>com.comedor</groupId>
     <artifactId>comedor</artifactId>
-    <version>0.1.1</version>
+    <version>0.1.2</version>
     <name>comedor</name>
     <description>comedor</description>
     <url/>
