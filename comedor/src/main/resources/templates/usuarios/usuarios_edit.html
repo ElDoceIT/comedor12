@@ -23,13 +23,13 @@
                     <div class="col-md-4">
                         <div class="form-group">
                             <label for="nombre"><h6>Nombre</h6></label>
-                            <input type="text" class="form-control" th:field="*{nombre}" name="nombre" id="nombre" placeholder="nombre" required="required">
+                            <input type="text" class="form-control" th:field="*{nombre}" name="nombre" id="nombre" placeholder="nombre" required="required" style="text-transform: capitalize;">
                         </div>
                     </div>
                     <div class="col-md-4">
                         <div class="form-group">
                             <label for="apellido"><h6>Apellido</h6></label>
-                            <input type="text" class="form-control" th:field="*{apellido}" name="apellido" id="apellido" placeholder="apellido" required="required">
+                            <input type="text" class="form-control" th:field="*{apellido}" name="apellido" id="apellido" placeholder="apellido" required="required" style="text-transform: capitalize;">
                         </div>
                     </div>
                     <div class="col-md-4">
@@ -92,6 +92,7 @@
 </div>
 <footer th:insert="fragments/footer :: footer" class="footer"></footer>
 <script th:src="@{/bootstrap/js/bootstrap.min.js}"></script>
+<script th:src="@{/js/capitalizar.js}"></script>
 <!-- Scripts necesarios -->
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
