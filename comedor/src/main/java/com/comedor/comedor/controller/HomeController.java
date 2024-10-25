@@ -52,15 +52,16 @@ public class HomeController {
 
         // Si es sábado, domingo o después de las 9:00 AM del viernes, ajustar a la semana siguiente
         if (hoy.getDayOfWeek() == DayOfWeek.SATURDAY || hoy.getDayOfWeek() == DayOfWeek.SUNDAY || ahora.isAfter(viernesNueveAM)) {
-            hoy = hoy.with(TemporalAdjusters.next(DayOfWeek.MONDAY)); // Mover a la siguiente semana
+            hoy = hoy.with(TemporalAdjusters.next(DayOfWeek.MONDAY)); // Mover a la semana siguiente
         }
 
         LocalDate inicioSemana = hoy.with(TemporalAdjusters.previousOrSame(DayOfWeek.MONDAY));
         LocalDate finSemana = inicioSemana.plusDays(4); // Asegurarse de que el fin de semana sea el viernes
 
-        // Obtener todos los menús y filtrar por la semana actual
+        // Obtener todos los menús y filtrar por la semana actual y condición publicar=1
         List<Menu> todosLosMenus = menuRepository.findAll().stream()
                 .filter(menu -> !menu.getFechaMenu().isBefore(inicioSemana) && !menu.getFechaMenu().isAfter(finSemana))
+                .filter(menu -> menu.getPublicar() == 1) // Solo menús públicos
                 .sorted(Comparator.comparingInt(menu -> {
                     switch (menu.getComida().getTipo_comida()) {
                         case 1: return 0; // Principal
@@ -98,6 +99,7 @@ public class HomeController {
 
         return "menu/menu_semanal";
     }
+
 
 
 
