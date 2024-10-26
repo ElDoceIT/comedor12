@@ -34,10 +34,11 @@
             </div>
 
             <!-- Formulario para seleccionar el menú -->
-            <h4 class="m-1">Seleccione su comida: </h4>
-            <hr class="m-0">
+            <h4 th:if="${not #lists.isEmpty(menusPorDia)}" class="m-1">Seleccione su comida: </h4>
+            <h4 th:if="${#lists.isEmpty(menusPorDia)}" class="m-1 text-danger">Sin menús pendientes de reservar.</h4>
+            <hr class="m-0" th:if="${not #lists.isEmpty(menusPorDia)}">
 
-            <form th:action="@{/reservas/reservar}" method="post">
+            <form th:action="@{/reservas/reservar}" method="post" th:if="${not #lists.isEmpty(menusPorDia)}">
                 <div th:each="dia : ${menusPorDia}">
                     <div class="card1 mt-2 border-dark m-1 pb-3">
                         <div class="card-header p-0 text-center">
@@ -159,6 +160,10 @@
 </main>
 
 <!-- Bootstrap JS -->
-<script th:src="@{/bootstrap/js/bootstrap.bundle.min.js}"></script>
+<footer th:insert="fragments/footer :: footer" class="footer"></footer>
+<script th:src="@{/bootstrap/js/bootstrap.min.js}"></script>
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>
