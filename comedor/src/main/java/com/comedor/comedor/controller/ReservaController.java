@@ -265,18 +265,18 @@ public String reservas(Model model) {
                 } else {
                     // Permite la eliminación si la fecha del menú es posterior a la actual o si es hoy antes de las 9 AM
                     reservaService.eliminarPorId(idReserva);
-                    return "redirect:/reservas/ver";
+                    return "redirect:/reservas/misreservas";
                     //return "reservas/reserva_seleccionar";
                 }
             } else {
                 // Manejar caso donde el menú no exista
                 model.addAttribute("error", "El menú asociado a la reserva no existe.");
-                return "redirect:/reservas/ver";
+                return "redirect:/reservas/misreservas";
             }
         } else {
             // Manejar caso donde la reserva no exista
             model.addAttribute("error", "La reserva no existe.");
-            return "redirect:/reservas/ver";
+            return "redirect:/reservas/misreservas";
         }
     }
 
