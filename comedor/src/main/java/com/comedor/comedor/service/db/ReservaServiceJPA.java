@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -83,5 +84,8 @@ public class ReservaServiceJPA implements IReservaService {
     public List<Reserva> obtenerReservasPorUsuario(Usuario usuario) {
         return reservaRepository.findByUsuario(usuario);
     }
+
+    public List<Reserva> obtenerReservasEntreFechasPorUsuario(Integer dni, LocalDate fechaInicio, LocalDate fechaFin) {
+        return reservaRepository.findReservasByUsuarioAndFechaMenuBetween(dni, fechaInicio, fechaFin);}
 
 }

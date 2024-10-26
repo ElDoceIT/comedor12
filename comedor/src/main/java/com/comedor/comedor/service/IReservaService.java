@@ -8,6 +8,7 @@ import com.comedor.comedor.model.Reserva;
 import com.comedor.comedor.model.Usuario;
 
 import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 
 public interface IReservaService {
@@ -19,6 +20,8 @@ public interface IReservaService {
     void guardar(Reserva reserva);
     boolean existeReservaParaUsuarioYFecha(Usuario usuario, LocalDate fechaMenu);
     List<Reserva> obtenerReservasPorUsuario(Usuario usuario);
+
+    List<Reserva> obtenerReservasEntreFechasPorUsuario(Integer dni, LocalDate fechaInicio, LocalDate fechaFin);
 
 
 }
