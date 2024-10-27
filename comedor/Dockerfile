@@ -1,5 +1,5 @@
 FROM eclipse-temurin:21.0.4_7-jdk
-ARG JAR_FILE=target/comedor-0.1.3.jar
+ARG JAR_FILE=target/comedor-0.1.4.jar
 COPY ${JAR_FILE} comedor.jar
 EXPOSE 8080
 ENTRYPOINT ["java", "-jar", "comedor.jar"]
