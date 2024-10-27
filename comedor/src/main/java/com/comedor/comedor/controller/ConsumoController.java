@@ -68,7 +68,7 @@ public class ConsumoController {
     }*/
     @GetMapping("/ver")
     public String consumosVer(@RequestParam(defaultValue = "0") int page, Model model) {
-        int pageSize = 3;  // Cambia el tamaño de página según tus necesidades
+        int pageSize = 20;  // Cambia el tamaño de página según tus necesidades
         Pageable pageable = PageRequest.of(page, pageSize, Sort.by("fecha").descending());
         Page<Consumo> consumosPage = consumoRepository.findAllByOrderByFechaDesc(pageable);
 
