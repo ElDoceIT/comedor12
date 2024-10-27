@@ -8,6 +8,7 @@ import com.comedor.comedor.service.IComidaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.jackson.JsonComponentModule;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
@@ -30,11 +31,20 @@ public class ComidasController {
 
 
     @GetMapping("/ver")
-    public String VerComidas(Model model){
-        model.addAttribute("comidas", comidaRepository.findAll((Sort.by(Sort.Direction.DESC,"id"))));
+    public String VerComidas(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            Model model) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "id"));
+        Page<Comida> comidaPage = comidaRepository.findAll(pageable);
+
+        model.addAttribute("comidas", comidaPage.getContent());
+        model.addAttribute("currentPage", page);
+        model.addAttribute("totalPages", comidaPage.getTotalPages());
+        model.addAttribute("pageSize", size);
+
         return "comida/comida_ver";
     }
-
     @GetMapping("/new")
     public String guardarComida(){
         return "comida/comida_new";
