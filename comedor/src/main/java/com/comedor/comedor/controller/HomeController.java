@@ -153,10 +153,12 @@ public class HomeController {
         // Obtener todas las reservas del usuario para la semana actual y la siguiente
         List<Reserva> reservasUsuario = reservaService.obtenerReservasEntreFechasPorUsuario(dni, lunesActual, viernesProxima);
 
-        // Filtrar los menús ya reservados por el usuario
+        // Filtrar los menús ya reservados por el usuario y ocultar los menús del día actual después de las 9 AM
         List<Menu> menusFiltrados = menusDisponibles.stream()
                 .filter(menu -> reservasUsuario.stream()
-                        .noneMatch(reserva -> reserva.getMenu().getFechaMenu().equals(menu.getFechaMenu())))
+                        .noneMatch(reserva -> reserva.getMenu().getFechaMenu().equals(menu.getFechaMenu())) &&
+                        // Condición para ocultar menús del día actual si la hora es después de las 9 AM
+                        !(menu.getFechaMenu().isEqual(hoy) && horaActual.isAfter(LocalTime.of(9, 0))))
                 .collect(Collectors.toList());
 
         // Agrupar los menús filtrados por día de la semana
