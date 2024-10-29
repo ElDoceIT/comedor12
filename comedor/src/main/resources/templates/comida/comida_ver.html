@@ -37,22 +37,22 @@
 
             <div class="table-responsive">
                 <table class="table">
-                    <thead class="thead-light">
+                    <thead class="thead-light1">
                     <tr>
-                        <th class="text-left col-2">Entrada</th>
-                        <th class="text-center col-5">Principal</th>
-                        <th class="text-center col-3">Postre</th>
-                        <th class="text-center">Tipo</th>
-                        <th class="text-center">Función</th>
+                        <th class="col-2 pl-1 pr-1">Entrada</th>
+                        <th class="col-5 pl-1 pr-1">Principal</th>
+                        <th class="col-3 pl-1 pr-1">Postre</th>
+                        <th class="">Tipo</th>
+                        <th class=""></th>
                     </tr>
                     </thead>
 
                     <tbody class="table-borderless w-100 striped-table">
                     <tr th:each="comida : ${comidas}">
-                        <td class="text-left" th:text="${comida.entrada}"></td>
-                        <td class="text-center" th:text="${comida.principal}"></td>
-                        <td class="text-center" th:text="${comida.postre}"></td>
-                        <td class="text-center">
+                        <td class="pl-1 pr-1" th:text="${comida.entrada}"></td>
+                        <td class="pl-1 pr-1" th:text="${comida.principal}"></td>
+                        <td class="pl-1 pr-1" th:text="${comida.postre}"></td>
+                        <td class="">
                                 <span th:switch="${comida.tipo_comida}">
                                     <span th:case="1"><img class="nanbtn2" th:src="@{/images/principal.png}" alt="Principal"></span>
                                     <span th:case="2"><img class="nanbtn2" th:src="@{/images/light.png}" alt="Light"></span>

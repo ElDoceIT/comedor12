@@ -11,7 +11,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.5.0/font/bootstrap-icons.min.css">
     <link rel="stylesheet" th:href="@{/css/style.css}">
 
-    <title>Menú Semanal</title>
+    <title>Reservas</title>
 </head>
 <body>
 <header th:replace="fragments/menu :: menu-principal"></header>
@@ -23,7 +23,7 @@
 
     <div class="col-md-12 col-lg-11 m-1 mx-auto">
         <div class="card1 mt-3">
-            <h3 class="card-header text-center"><strong>Menú Semanal <span id="fecha"></span></strong></h3>
+            <h3 class="card-header text-center"><strong>Reservas <span id="fecha"></span></strong></h3>
 
             <!-- Mensajes de error -->
             <div th:if="${errorReservaDuplicada}" class="alert alert-danger" role="alert">
@@ -34,7 +34,6 @@
             </div>
 
             <!-- Formulario para seleccionar el menú -->
-            <h4 th:if="${not #lists.isEmpty(menusPorDia)}" class="m-1">Seleccione su comida: </h4>
             <h4 th:if="${#lists.isEmpty(menusPorDia)}" class="m-1 text-danger">Sin menús pendientes de reservar.</h4>
             <hr class="m-0" th:if="${not #lists.isEmpty(menusPorDia)}">
 
@@ -47,31 +46,33 @@
 
                         <div class="table-responsive">
                             <table class="table">
-                                <thead class="thead-light">
+                                <thead class="thead-light1">
                                 <tr>
-                                    <th class="text-left">Entrada</th>
-                                    <th class="text-center">Plato Principal</th>
-                                    <th class="text-center">Postre</th>
-                                    <th class="text-center">Tipo de Comida</th>
-                                    <th class="text-center">Seleccionar</th>
+                                    <th class="text-center pl-1 pr-1"></th>
+                                    <th class="pl-1 pr-1">Tipo</th>
+                                    <th class="pl-1 pr-1">Principal</th>
+                                    <th class="pl-1 pr-1">Entrada</th>
+                                    <th class=pl-1 pr-1"">Postre</th>
+
                                 </tr>
                                 </thead>
                                 <tbody class="table-borderless w-100 striped-table">
                                 <tr th:each="menu : ${dia.value}">
-                                    <td class="text-left" th:text="${menu.comida.entrada}"></td>
-                                    <td class="text-center" th:text="${menu.comida.principal}"></td>
-                                    <td class="text-center" th:text="${menu.comida.postre}"></td>
-                                    <td class="text-center" th:switch="${menu.comida.tipo_comida}">
+                                    <td class="text-center pl-1 pr-1">
+                                        <div class="form-check form-check-lg">
+                                            <input class="form-check-input" type="radio" name="menuSeleccionado" th:value="${menu.id_menu}" required>
+                                        </div>
+                                    </td>
+                                    <td class="pl-1 pr-1" th:switch="${menu.comida.tipo_comida}">
                                         <span th:case="1"><img class="nanbtn2" th:src="@{/images/principal.png}" alt="Principal"></span>
                                         <span th:case="2"><img class="nanbtn2" th:src="@{/images/light.png}" alt="Light"></span>
                                         <span th:case="3"><img class="nanbtn2" th:src="@{/images/celiaco.png}" alt="Celiaco"></span>
                                         <span th:case="4"><img class="nanbtn2" th:src="@{/images/frutas.png}" alt="Frutas"></span>
                                     </td>
-                                    <td class="text-center">
-                                        <div class="form-check form-check-lg">
-                                            <input class="form-check-input" type="radio" name="menuSeleccionado" th:value="${menu.id_menu}" required>
-                                        </div>
-                                    </td>
+                                    <td class="pl-1 pr-1" th:text="${menu.comida.principal}"></td>
+                                    <td class="pl-1 pr-1" th:text="${menu.comida.entrada}"></td>
+                                    <td class="pl-1 pr-1" th:text="${menu.comida.postre}"></td>
+
                                 </tr>
                                 </tbody>
                             </table>
@@ -80,8 +81,8 @@
                         <!-- Selección del lugar de consumo -->
                         <div class="tipo-consumo-container text-center">
                             <hr>
-                            <h4>¿Dónde comerá el <span th:text="${#temporals.format(dia.key, 'EEEE')}"></span>?</h4>
-                            <div class="tipo-consumo-opciones">
+                            <h5>¿Dónde comerá el <span th:text="${#temporals.format(dia.key, 'EEEE')}"></span>?</h5>
+                            <div class="tipo-consumo-opciones ml-3">
                                 <input type="radio" th:id="${'comedor_' + #temporals.format(dia.key, 'yyyyMMdd')}" name="tipoComida" value="1" required>
                                 <label th:for="${'comedor_' + #temporals.format(dia.key, 'yyyyMMdd')}">Comedor</label>
 
@@ -110,7 +111,7 @@
             <h4 class="text-center m-3">Mis Reservas de la semana</h4>
             <div class="table-responsive">
                 <table class="table">
-                    <thead class="thead-light">
+                    <thead class="thead-light1">
                     <tr>
                         <th>Día</th>
                         <th>Entrada</th>

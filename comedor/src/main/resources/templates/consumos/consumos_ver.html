@@ -38,24 +38,32 @@
     <!-- Tabla de resultados -->
     <div class="table-responsive">
       <table class="table">
-        <thead class="thead-light justify-content-around">
-        <tr class="text-center">
-          <th class="col-2 text-left">Fecha</th>
-          <th>Nombre</th>
-          <th>Apellido</th>
-          <th>Producto</th>
-          <th>Cantidad</th>
-          <th>Acciones</th>
+        <thead class="thead-light1 justify-content-around">
+        <tr>
+          <th class="col-2 pl-1 pr-1">Fecha</th>
+          <th class="col-2 pl-1 pr-1">Nombre</th>
+          <th class="col-2 pl-1 pr-1">Apellido</th>
+          <th class="col-2 pl-1 pr-1">Producto</th>
+          <th class="col-2 pl-1 pr-1">
+            <span class="d-none d-md-inline">Cantidad</span>
+            <span class="d-inline d-md-none">Cant</span>
+          </th>
+          <th class="col-2 pl-1 pr-1"></th>
         </tr>
+
         </thead>
         <tbody class="table-borderless w-100 striped-table">
         <tr th:each="consumo :${consumos}">
-          <td class="col-2" th:if="${consumo.fecha != null}" th:text="${#temporals.format(consumo.fecha, 'EEEE dd  MMMM  yyyy')}"></td>
-          <td class="text-center" th:text="${consumo.usuario.nombre}"></td>
-          <td class="text-center" th:text="${consumo.usuario.apellido}"></td>
-          <td class="text-center" th:text="${consumo.producto.descripcion}"></td>
-          <td class="text-center" th:text="${consumo.cantidad}"></td>
-          <td class="text-center">
+          <td class="col-2" th:if="${consumo.fecha != null}">
+            <span class="d-none d-md-inline" th:text="${#temporals.format(consumo.fecha, 'EEEE dd MMMM yyyy')}"></span>
+            <span class="d-inline d-md-none" th:text="${#temporals.format(consumo.fecha, 'dd/MM')}"></span>
+          </td>
+
+          <td class=" pl-1 pr-1" th:text="${consumo.usuario.nombre}"></td>
+          <td class=" pl-1 pr-1" th:text="${consumo.usuario.apellido}"></td>
+          <td class=" pl-1 pr-1" th:text="${consumo.producto.descripcion}"></td>
+          <td class=" pl-1 pr-1" th:text="${consumo.cantidad}"></td>
+          <td class=" pl-1 pr-1">
             <div class="d-inline-flex align-items-center">
               <a th:href="@{/consumos/editar/{id} (id=${consumo.idConsumo})}" class="color1 mx-0 mr-1" role="button" title="Editar">
                 <i class="bi bi-pencil" aria-hidden="true"></i>

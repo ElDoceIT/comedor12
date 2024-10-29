@@ -61,7 +61,7 @@
                     <div class="table-responsive">
                     <table class="table ">
                         <thead>
-                        <tr class="thead-light">
+                        <tr class="thead-light1">
                             <th>Fecha</th>
                             <th>Comida</th>
                             <th></th>
@@ -71,7 +71,11 @@
 
                        <tr th:each="menu : ${menus}">
 
-                           <td th:if="${menu.fechaMenu != null}" th:text="${#temporals.format(menu.fechaMenu, 'EEEE dd  MMMM  yyyy')}"></td>
+                           <td th:if="${menu.fechaMenu != null}">
+                               <span class="d-none d-md-inline" th:text="${#temporals.format(menu.fechaMenu, 'EEEE dd MMMM yyyy')}"></span>
+                               <span class="d-inline d-md-none" th:text="${#temporals.format(menu.fechaMenu, 'dd/MM')}"></span>
+                           </td>
+
 
                            <!-- Formatear la comida con una separación visual -->
                            <td>

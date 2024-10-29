@@ -24,34 +24,34 @@
         <h3 class="card-header text-center"><strong>Menús desde la Fecha Actual</strong></h3>
         <div class="table-responsive">
         <table class="table">
-            <thead class="thead-light">
+            <thead class="thead-light1">
             <tr>
-                <th class="text-left">Fecha</th>
-                <th class="text-center">Entrada</th>
-                <th  class="text-center">Principal</th>
-                <th class="text-center">Postre</th>
-                <th class="text-center">Tipo</th>
+                <th class="col-2 pl-1 pr-1">Fecha</th>
+                <th class="col-2 pl-1 pr-1">Entrada</th>
+                <th  class="col-3 pl-1 pr-1">Principal</th>
+                <th class="col-2 pl-1 pr-1">Postre</th>
+                <th class="col-2 pl-1 pr-1">Tipo</th>
             </tr>
             </thead>
 
 
             <tbody class="table table-borderless w-100 striped-table">
             <tr th:each="menu : ${menus}">
-                <!-- Formato de fecha para pantallas grandes -->
+
                 <td class="d-none d-md-table-cell" th:if="${menu.fechaMenu != null}"
                     th:text="${#temporals.format(menu.fechaMenu, 'EEEE dd  MMMM  yyyy')}">
                 </td>
 
-                <!-- Formato de fecha para pantallas pequeñas -->
+
                 <td class="d-md-none" th:if="${menu.fechaMenu != null}"
                     th:text="${#temporals.format(menu.fechaMenu, 'dd/MM')}">
                 </td>
 
 
-                <td class="text-center" th:text="${menu.comida.entrada}"></td>
-                <td class="text-center" th:text="${menu.comida.principal}"></td>
-                <td class="text-center" th:text="${menu.comida.postre}"></td>
-                <td class="text-center" th:switch="${menu.comida.tipo_comida}">
+                <td class=" pl-1 pr-1" th:text="${menu.comida.entrada}"></td>
+                <td class=" pl-1 pr-1" th:text="${menu.comida.principal}"></td>
+                <td class=" pl-1 pr-1" th:text="${menu.comida.postre}"></td>
+                <td class=" pl-1 pr-1" th:switch="${menu.comida.tipo_comida}">
                     <span th:case="1"><img class="nanbtn2" th:src="@{/images/principal.png}" alt="Principal"></span>
                     <span th:case="2"><img class="nanbtn2" th:src="@{/images/light.png}" alt="Light"></span>
                     <span th:case="3"><img class="nanbtn2" th:src="@{/images/celiaco.png}" alt="Celiaco"></span>
@@ -61,7 +61,7 @@
             </tbody>
         </table>
             <div class="text-center mt-3">
-                <a th:href="@{/menu/vertodo}" class="btn btn-outline-secondary botoncito1 table-light margen3 mb-3">MenusTodos</a>
+                <a th:href="@{/menu/vertodo}" class="btn btn-outline-secondary botoncito1 table-light margen3 mb-3">Ver todos</a>
                 </div>
         </div>
     </div>

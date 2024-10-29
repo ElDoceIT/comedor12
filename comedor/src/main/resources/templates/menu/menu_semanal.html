@@ -15,14 +15,12 @@
 <header th:replace="fragments/menu :: menu-principal"></header>
 
 <main>
-  <div class="mr-1 mr-md-3 mr-lg-5">
-    <span><p class="m-4 text-right">Hoy es: <span id="hora-actual" th:text="${#temporals.format(serverTime, 'EEEE dd MMMM yyyy HH:mm:ss')}">Día</span></p></span>
-  </div>
+
 
   <div class="col-md-12 col-lg-11 m-1 mx-auto">
     <div class="card1 mt-3">
       <h4 class="card-header text-center">
-        <strong>Menú Semanal del: <span id="fecha"></span> <span th:text="${rangoFechas}"></span></strong>
+        <strong>Menú Semanal <span id="fecha"></span> <span th:text="${rangoFechas}"></span></strong>
       </h4>
 
       <!-- Mostrar mensaje "Próximamente" si no hay menús -->
@@ -44,18 +42,18 @@
             <table class="table">
               <thead class="thead-light">
               <tr>
-                <th>Entrada</th>
-                <th class="text-center">Plato Principal</th>
-                <th class="text-center">Postre</th>
-                <th class="text-center">Tipo</th>
+                <th class="col-3">Entrada</th>
+                <th class="col-5">Principal</th>
+                <th class="col-2">Postre</th>
+                <th class="col-2">Tipo</th>
               </tr>
               </thead>
               <tbody class="table-borderless w-100 striped-table">
               <tr th:each="menu : ${dia.value}">
                 <td th:text="${menu.comida.entrada}"></td>
-                <td class="text-center" th:text="${menu.comida.principal}"></td>
-                <td class="text-center" th:text="${menu.comida.postre}"></td>
-                <td class="text-center" th:switch="${menu.comida.tipo_comida}">
+                <td class="" th:text="${menu.comida.principal}"></td>
+                <td class="" th:text="${menu.comida.postre}"></td>
+                <td class="" th:switch="${menu.comida.tipo_comida}">
                   <span th:case="1"><img class="nanbtn2" th:src="@{/images/principal.png}" alt="Principal"></span>
                   <span th:case="2"><img class="nanbtn2" th:src="@{/images/light.png}" alt="Light"></span>
                   <span th:case="3"><img class="nanbtn2" th:src="@{/images/celiaco.png}" alt="Celiaco"></span>
@@ -64,6 +62,7 @@
               </tr>
               </tbody>
             </table>
+
           </div>
         </div>
       </div>

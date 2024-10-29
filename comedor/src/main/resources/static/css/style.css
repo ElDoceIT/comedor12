@@ -147,6 +147,7 @@
 .form-check-input {
         width: 1.5rem;
         height: 1.5rem;
+        position: relative;
     }
 
     .form-check-label {
@@ -171,3 +172,23 @@
         padding: 0; /* Eliminar padding */
         display: inline-block;
     }
+    .nanbtn3 {
+            width: 1.5rem;
+            height: 1.5rem;
+            filter: drop-shadow(5px 5px 10px rgba(0, 0, 0, 0.5));
+            background: none; /* Eliminar fondo */
+            border: none; /* Eliminar borde */
+            padding: 0; /* Eliminar padding */
+            display: inline-block;
+        }
+    .table td, .table th {
+      padding-top: 2px;
+      padding-bottom: 2px;
+      line-height: 1; /* Ajusta a 1 para minimizar la altura de la línea */
+      vertical-align: middle;
+    }
+    .thead-light1{
+    background-color: #808080;
+      color: GhostWhite;
+    }
+

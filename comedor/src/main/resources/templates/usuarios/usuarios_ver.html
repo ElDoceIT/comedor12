@@ -53,24 +53,28 @@
                 <!-- Tabla de usuarios -->
                 <div class="table-responsive">
                     <table class="table mt-3">
-                        <thead class="thead-light">
-                        <tr class="text-center">
-                            <th class="text-left">Nombre</th>
-                            <th class="text-center">Apellido</th>
-                            <th class="text-center" >DNI</th>
-                            <th class="text-center" >Empresa</th>
-                            <th class="text-center" >Estado</th>
-                            <th class="text-center" >Accion</th>
+                        <thead class="thead-light1">
+                        <tr>
+                            <th class="col-2 pl-1 pr-1">Nombre</th>
+                            <th class="col-2 pl-1 pr-1">Apellido</th>
+                            <th class="col-2 pl-1 pr-1">DNI</th>
+                            <th class="col-1 pl-1 pr-1">
+                                <span class="d-none d-md-inline">Empresa</span>
+                                <span class="d-inline d-md-none">Emp</span>
+                            </th>
+                            <th class="col-1 pl-1 pr-1"></th>
+                            <th class="col-2 pl-1 pr-1"></th>
                         </tr>
+
                         </thead>
                         <tbody class="table-borderless w-100 striped-table" >
                         <tr th:each="usuario : ${usuarios.content}">
-                            <td class="text-center" th:text="${usuario.nombre}"></td>
-                            <td class="text-center" th:text="${usuario.apellido}"></td>
-                            <td class="text-center" th:text="${usuario.dni}"></td>
-                            <td class="text-center" th:text="${usuario.empresa}"></td>
-                            <td class="text-center" th:classappend="${usuario.estado == 1} ? 'text-success' : 'text-danger'">
-                                <img class="nanbtn2" th:src="${usuario.estado == 1} ? @{/images/activo.png} : @{/images/inactivo.png}"
+                            <td class="pl-1 pr-1" th:text="${usuario.nombre}"></td>
+                            <td class="pl-1 pr-1" th:text="${usuario.apellido}"></td>
+                            <td class="pl-1 pr-1" th:text="${usuario.dni}"></td>
+                            <td class="pl-1 pr-1" th:text="${usuario.empresa}"></td>
+                            <td class="pl-1 pr-1" th:classappend="${usuario.estado == 1} ? 'text-success' : 'text-danger'">
+                                <img class="nanbtn3" th:src="${usuario.estado == 1} ? @{/images/activo.png} : @{/images/inactivo.png}"
                                      th:alt="${usuario.estado == 1} ? 'Activo' : 'Inactivo'" />
                             </td>
 
