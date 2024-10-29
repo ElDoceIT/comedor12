@@ -34,6 +34,7 @@
             </div>
 
             <!-- Formulario para seleccionar el menú -->
+            <h4 th:if="${not #lists.isEmpty(menusPorDia)}" class="m-1">Seleccione su comida: </h4>
             <h4 th:if="${#lists.isEmpty(menusPorDia)}" class="m-1 text-danger">Sin menús pendientes de reservar.</h4>
             <hr class="m-0" th:if="${not #lists.isEmpty(menusPorDia)}">
 
@@ -52,7 +53,7 @@
                                     <th class="pl-1 pr-1">Tipo</th>
                                     <th class="pl-1 pr-1">Principal</th>
                                     <th class="pl-1 pr-1">Entrada</th>
-                                    <th class=pl-1 pr-1"">Postre</th>
+                                    <th class="pl-1 pr-1">Postre</th>
 
                                 </tr>
                                 </thead>
