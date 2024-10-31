@@ -83,21 +83,21 @@
                         <div class="tipo-consumo-container text-center">
                             <hr>
                             <h5>¿Dónde comerá el <span th:text="${#temporals.format(dia.key, 'EEEE')}"></span>?</h5>
-                            <div class="tipo-consumo-opciones ml-3">
-                                <input type="radio" th:id="${'comedor_' + #temporals.format(dia.key, 'yyyyMMdd')}" name="tipoComida" value="1" required>
-                                <label th:for="${'comedor_' + #temporals.format(dia.key, 'yyyyMMdd')}">Comedor</label>
+                            <div class="tipo-consumo-opciones m-3">
+                                <input class="ml-2 mr-2" type="radio" th:id="${'comedor_' + #temporals.format(dia.key, 'yyyyMMdd')}" name="tipoComida" value="1" required>
+                                <label th:for="${'comedor_' + #temporals.format(dia.key, 'yyyyMMdd')}"><img class="nanbtn3" th:src="@{/images/comedor.png}" alt="Comedor">Comedor</label>
 
-                                <input type="radio" th:id="${'vianda_' + #temporals.format(dia.key, 'yyyyMMdd')}" name="tipoComida" value="2" required>
-                                <label th:for="${'vianda_' + #temporals.format(dia.key, 'yyyyMMdd')}">Vianda</label>
+                                <input class="ml-2 mr-2" type="radio" th:id="${'vianda_' + #temporals.format(dia.key, 'yyyyMMdd')}" name="tipoComida" value="2" required>
+                                <label th:for="${'vianda_' + #temporals.format(dia.key, 'yyyyMMdd')}"><img class="nanbtn3" th:src="@{/images/vianda.svg}" alt="vianda">Vianda</label>
 
-                                <input type="radio" th:id="${'retirar_' + #temporals.format(dia.key, 'yyyyMMdd')}" name="tipoComida" value="3" required>
-                                <label th:for="${'retirar_' + #temporals.format(dia.key, 'yyyyMMdd')}">Retira</label>
+                                <input class="ml-2 mr-2" type="radio" th:id="${'retirar_' + #temporals.format(dia.key, 'yyyyMMdd')}" name="tipoComida" value="3" required>
+                                <label th:for="${'retirar_' + #temporals.format(dia.key, 'yyyyMMdd')}"><img class="nanbtn3" th:src="@{/images/retira.png}" alt="retira">Retira</label>
                             </div>
 
                         </div>
 
                         <div class="d-flex justify-content-center">
-                            <button type="submit" class="btn btn-outline-secondary botoncito1 table-light margen3 mt-3 float-end">Confirmar Menu</button>
+                            <button type="submit" class="btn btn-outline-secondary botoncito1 table-light margen3 mt-1 float-end">Confirmar Menu</button>
                         </div>
                     </div>
                 </div>
@@ -116,11 +116,11 @@
                     <tr>
                         <th>Día</th>
                         <th>Entrada</th>
-                        <th>Plato Principal</th>
+                        <th>Principal</th>
                         <th>Postre</th>
-                        <th>Tipo de Comida</th>
-                        <th>Lugar de Consumo</th>
-                        <th>Entregado</th>
+                        <th>Tipo</th>
+                        <th>Lugar</th>
+                        <th>Estado</th>
                         <th>Editar</th>
                     </tr>
                     </thead>
@@ -139,9 +139,9 @@
                             <span th:case="4"><img class="nanbtn2" th:src="@{/images/frutas.svg}" alt="Frutas"></span>
                         </td>
                         <td th:switch="${reserva.medio}">
-                            <span th:case="1">Comedor</span>
-                            <span th:case="2">Vianda</span>
-                            <span th:case="3">Retira</span>
+                            <span th:case="1"><img class="nanbtn2" th:src="@{/images/comedor.png}" alt="Comedor"></span>
+                            <span th:case="2"><img class="nanbtn2" th:src="@{/images/vianda.svg}" alt="vianda"></span>
+                            <span th:case="3"><img class="nanbtn2" th:src="@{/images/retira.png}" alt="retira"></span>
                         </td>
                         <td>
                                     <span th:class="${reserva.entregado != null ? 'text-success' : 'text-danger'}"
@@ -150,7 +150,7 @@
                         </td>
                         <td class="float-center">
                             <form th:action="@{/reservas/eliminar/{id}(id=${reserva.idReserva})}" method="post" onsubmit="return confirm('¿Estás seguro de que deseas eliminar esta reserva?')">
-                                <button class="btn btn-outline-secondary"><i class="bi bi-trash"></i></button>
+                                <button class="nanbtn2"><i class="bi bi-trash"></i></button>
                             </form>
                         </td>
                     </tr>

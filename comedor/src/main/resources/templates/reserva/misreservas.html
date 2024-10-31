@@ -63,9 +63,18 @@
                             <span th:case="4"><img class="nanbtn2" th:src="@{/images/frutas.svg}" alt="Frutas"></span>
                         </td>
                         <td class="p-1" th:switch="${reserva.medio}">
-                            <span th:case="1">Comedor</span>
-                            <span th:case="2">Vianda</span>
-                            <span th:case="3">Retira</span>
+                           <span th:case="1">
+                                         <img class="nanbtn2" th:src="@{/images/comedor.png}" alt="Comedor">
+                                   </span>
+                            <span th:case="2">
+                                        <img class="nanbtn2" th:src="@{/images/retira.png}" alt="retira">
+                                   </span>
+                            <span th:case="3">
+                                        <img class="nanbtn2" th:src="@{/images/vianda.svg}" alt="vianda">
+                                   </span>
+                            <span th:case="*">
+                                        <span th:text="'Valor de medio desconocido: ' + ${reserva.medio}"></span>
+                                   </span>
                         </td>
                         <td class="p-1">
                         <span th:class="${reserva.entregado != null ? 'text-success' : 'text-danger'}"
