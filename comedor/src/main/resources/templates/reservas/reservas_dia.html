@@ -30,7 +30,7 @@
                   <h5 class="text-center m-2">Resumen por Tipo de Comida</h5>
                   <div class="d-flex justify-content-center align-items-center">
                       <ul class="list-group list-group-horizontal-md flex-wrap">
-                          <li class="list-group-item text-center border-0 " th:each="entry : ${sumaPorTipoComida}">
+                          <li class="list-group-item text-center border-0 p-2 " th:each="entry : ${sumaPorTipoComida}">
                               <span th:switch="${entry.key}">
                               <span th:case="1">
                             <img class="nanbtn3" th:src="@{/images/principal.svg}" alt="Principal">
@@ -63,7 +63,7 @@
                   <h5 class="text-center m-2">Resumen por Lugar de Consumo</h5>
                   <div class="d-flex justify-content-center align-items-center" >
                       <ul class="list-group list-group-horizontal-md flex-wrap ">
-                          <li class="list-group-item text-center border-0" th:each="entry : ${sumaPorLugarConsumo}">
+                          <li class="list-group-item text-center border-0 p-2" th:each="entry : ${sumaPorLugarConsumo}">
                               <span th:switch="${entry.key}">
                                    <span th:case="1">
                                          <img class="nanbtn3" th:src="@{/images/comedor.png}" alt="Comedor">
@@ -108,7 +108,7 @@
             <tr th:each="reserva  : ${reservasNoConsumidas}">
               <td class="text-center">
                     <form th:action="@{/reservas/marcar-consumido/{id}(id=${reserva.idReserva})}" method="post">
-                        <button type="submit" class="btn-no-border"  ><img class="nanbtn" th:src="@{/images/chklm.webp}" alt="Marcar como consumido"></button>
+                        <button type="submit" class="btn-no-border"  ><img class="nanbtn" th:src="@{/images/accept.png}" alt="Marcar como consumido"></button>
                     </form>
               </td>
               <td class="pl-1 pr-1" th:text="${reserva.usuario.apellido}"></td>
@@ -169,17 +169,25 @@
           <table class="table">
             <thead class="thead-light" >
             <tr>
+              <th class="col-2 pl-1 pr-1" ></th>
               <th class="col-1 pl-1 pr-1" >Apellido</th>
               <th class="col-1 pl-1 pr-1" >Nombre</th>
               <th class="col-2 pl-1 pr-1" >Principal</th>
               <th class="col-1 pl-1 pr-1" >Tipo</th>
               <th class="col-1 pl-1 pr-1" >Lugar</th>
               <th class="col-3 pl-1 pr-1" >Consumió</th>
-              <th class="col-2 pl-1 pr-1" ></th>  <!-- Nueva columna para las acciones -->
+                <!-- Nueva columna para las acciones -->
             </tr>
             </thead>
             <tbody class="table-borderless w-100 striped-table">
               <tr th:each="reserva : ${reservasConsumidas}">
+                <td class="text-center" >
+                      <form th:action="@{/reservas/cancelar-consumido/{id}(id=${reserva.idReserva})}" method="post">
+                          <button type="submit" class="btn-no-border" ><img class="nanbtn" th:src="@{/images/cancel.png}" alt="Cancelar">
+
+                          </button>
+                      </form>
+                </td>
                 <td class="pl-1 pr-1" th:text="${reserva.usuario.apellido}"></td>
                 <td class="pl-1 pr-1" th:text="${reserva.usuario.nombre}"></td>
                 <td class="pl-1 pr-1" th:text="${reserva.menu.comida.principal}"></td>
@@ -223,13 +231,7 @@
                 <td class="pl-1 pr-1">
                   Entregado:<span th:text="${#temporals.format(reserva.entregado, 'dd-MM-yyyy HH:mm')}"></span>
                 </td>
-                <td class="text-center" >
-                  <form th:action="@{/reservas/cancelar-consumido/{id}(id=${reserva.idReserva})}" method="post">
-                    <button type="submit" class="btn-no-border" ><img class="nanbtn" th:src="@{/images/x.png}" alt="Cancelar">
 
-                    </button>
-                  </form>
-                </td>
               </tr>
             </tbody>
            </table>
