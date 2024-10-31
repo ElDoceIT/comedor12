@@ -46,7 +46,7 @@
                         <li th:switch="${menu.comida.tipo}">
                             <strong>Tipo:</strong>
                             <span th:case="1">Principal</span>
-                            <span th:case="2">Ligth</span>
+                            <span th:case="2">Light</span>
                             <span th:case="3">Celiaco</span>
                             <span th:case="4">Fruta</span>
                         </li>
@@ -69,15 +69,15 @@
                 <td>
                     <div>
                         <input type="radio" th:name="medio[${menu.fechaMenu}]" value="comedor" id="comedor_${menu.fechaMenu}" required>
-                        <label th:for="comedor_${menu.fechaMenu}">Comedor</label>
+                        <label th:for="comedor_${menu.fechaMenu}"><img class="nanbtn2" th:src="@{/images/comedor.svg}" alt="comedor">Comedor</label>
                     </div>
                     <div>
                         <input type="radio" th:name="medio[${menu.fechaMenu}]" value="retirar" id="retirar_${menu.fechaMenu}">
-                        <label th:for="retirar_${menu.fechaMenu}">Retirar</label>
+                        <label th:for="retirar_${menu.fechaMenu}"><img class="nanbtn2" th:src="@{/images/retirar.svg}" alt="retirar">Retirar</label>
                     </div>
                     <div>
                         <input type="radio" th:name="medio[${menu.fechaMenu}]" value="vianda" id="vianda_${menu.fechaMenu}">
-                        <label th:for="vianda_${menu.fechaMenu}">Vianda</label>
+                        <label th:for="vianda_${menu.fechaMenu}"><img class="nanbtn2" th:src="@{/images/vianda.svg}" alt="vianda">Vianda</label>
                     </div>
                 </td>
             </tr>
