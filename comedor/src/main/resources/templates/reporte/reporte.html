@@ -14,67 +14,73 @@
 <body>
 <header th:replace="fragments/menu :: menu-principal"></header>
 
-<div class="container">
-  <h1>Consumos</h1>
+<div class="col-md-12 col-lg-11 m-1 mx-auto pb-3 mb-2">
+  <div class="card1 mt-3">
+      <h3 class="card-header text-center"><strong>Consumos</strong></h3>
 
-  <!-- Formulario para seleccionar el rango de fechas y filtros adicionales -->
-  <form th:action="@{/reportes/reporte}" method="get" class="mb-3">
-    <div class="form-row">
-      <div class="col-md-3">
-        <label for="fechaInicio">Fecha Inicio:</label>
-        <input type="date" id="fechaInicio" name="fechaInicio" th:value="${fechaInicio}" class="form-control">
-      </div>
-      <div class="col-md-3">
-        <label for="fechaFin">Fecha Fin:</label>
-        <input type="date" id="fechaFin" name="fechaFin" th:value="${fechaFin}" class="form-control">
-      </div>
-      <div class="col-md-3">
-        <label for="apellido">Apellido:</label>
-        <input type="text" id="apellido" name="apellido" th:value="${apellido}" class="form-control">
-      </div>
-      <div class="col-md-3">
-        <label for="empresa">Empresa:</label>
-        <input type="text" id="empresa" name="empresa" th:value="${empresa}" class="form-control">
+        <!-- Formulario para seleccionar el rango de fechas y filtros adicionales -->
+        <form th:action="@{/reportes/reporte}" method="get" class="mb-3">
+          <div class="form-row m-3">
+            <div class="col-md-3">
+              <label for="fechaInicio">Fecha Inicio:</label>
+              <input type="date" id="fechaInicio" name="fechaInicio" th:value="${fechaInicio}" class="form-control">
+            </div>
+            <div class="col-md-3">
+              <label for="fechaFin">Fecha Fin:</label>
+              <input type="date" id="fechaFin" name="fechaFin" th:value="${fechaFin}" class="form-control">
+            </div>
+            <div class="col-md-3">
+              <label for="apellido">Apellido:</label>
+              <input type="text" id="apellido" name="apellido" th:value="${apellido}" class="form-control">
+            </div>
+            <div class="col-md-3">
+              <label for="empresa">Empresa:</label>
+              <input type="text" id="empresa" name="empresa" th:value="${empresa}" class="form-control">
+            </div>
+          </div>
+          <div class="mt-3 text-center">
+            <button type="submit" class="btn btn-outline-secondary botoncito1 table-light margen3 mb-4">Filtrar</button>
+          </div>
+        </form>
+
+
+    <div class="card1 mt-2 border-dark m-1 pb-3">
+      <div class="card-header p-0 text-center">
+          <h4 class="">Resumen de Reservas</h4>
+        <div class="table-responsive">
+          <table class="table">
+            <thead class="thead-light1" >
+            <tr class="text-left">
+              <th>Apellido</th>
+              <th>Nombre</th>
+              <th>Tipo de Comida</th>
+              <th>Lugar de Consumo</th>
+              <th>Estado de Entrega</th>
+            </tr>
+            </thead>
+            <tbody class="table-borderless w-100 striped-table text-left" >
+            <tr th:each="reserva : ${reservasFiltradas}">
+              <td th:text="${reserva.usuario.apellido}"></td>
+              <td th:text="${reserva.usuario.nombre}"></td>
+              <td th:text="${tipoComidaDescripcion[reserva.menu.comida.tipo_comida]}"></td>
+              <td th:text="${medioDescripcion[reserva.medio]}"></td>
+              <td th:text="${reserva.entregado != null ? 'Entregado' : 'No Entregado'}"
+                  th:classappend="${reserva.entregado == null} ? 'text-danger' : 'text-success'"></td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
-    <div class="mt-3">
-      <button type="submit" class="btn btn-primary">Filtrar</button>
-    </div>
-  </form>
-
-  <!-- Resumen de Reservas -->
-  <h2>Resumen de Reservas</h2>
-  <table class="table table-striped">
-    <thead>
-    <tr>
-      <th>Apellido</th>
-      <th>Nombre</th>
-      <th>Tipo de Comida</th>
-      <th>Lugar de Consumo</th>
-      <th>Estado de Entrega</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr th:each="reserva : ${reservasFiltradas}">
-      <td th:text="${reserva.usuario.apellido}"></td>
-      <td th:text="${reserva.usuario.nombre}"></td>
-      <td th:text="${tipoComidaDescripcion[reserva.menu.comida.tipo_comida]}"></td>
-      <td th:text="${medioDescripcion[reserva.medio]}"></td>
-      <td th:text="${reserva.entregado != null ? 'Entregado' : 'No Entregado'}"
-          th:classappend="${reserva.entregado == null} ? 'text-danger' : 'text-success'"></td>
-    </tr>
-    </tbody>
-  </table>
-
-  <!-- Resumen de Totales -->
-  <h3>Totales</h3>
-  <ul>
-    <li>Total de Reservas: <span th:text="${totalReservas}"></span></li>
-    <li>Total Consumidas: <span th:text="${totalConsumidas}"></span></li>
-    <li><span class="text-danger">No Consumidas:</span> <span th:text="${totalNoConsumidas}"></span></li>
-  </ul>
+          <!-- Resumen de Totales -->
+          <h3 class=" text-center mt-4 ">Totales</h3>
+          <ul class="list text-center m-0 p-0 list-unstyled mb-3">
+            <li>Total de Reservas: <span th:text="${totalReservas}"></span></li>
+            <li>Total Consumidas: <span th:text="${totalConsumidas}"></span></li>
+            <li><span class="text-danger">No Consumidas:</span> <span th:text="${totalNoConsumidas}"></span></li>
+          </ul>
+  </div>
 </div>
-
 <footer th:insert="fragments/footer :: footer" class="footer"></footer>
 <script th:src="@{/bootstrap/js/bootstrap.min.js}"></script>
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
