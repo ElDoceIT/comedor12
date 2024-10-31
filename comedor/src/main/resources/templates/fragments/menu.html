@@ -61,6 +61,10 @@
       <li class="nav-item" th:if="${#strings.contains(#authentication.principal.authorities, 'Admin') or #strings.contains(#authentication.principal.authorities, 'Comedor')}">
         <a class="nav-link active" th:href="@{/reservas/reservas-dia-actual}">Reservas Diarias</a>
       </li>
+
+      <li class="nav-item" th:if="${#strings.contains(#authentication.principal.authorities, 'Admin') or #strings.contains(#authentication.principal.authorities, 'Comedor')}">
+        <a class="nav-link active" th:href="@{/reportes/reporte}">Reportes</a>
+      </li>
     </ul>
     <span class="text-light">Bienvenido</span>&nbsp;<span class="text-light" th:text="${nombreCompleto}"></span>
     <a class="btn btn-outline-secondary table-light round-button ml-2" th:href="@{/logout}">
