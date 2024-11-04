@@ -26,13 +26,13 @@ public class ReportesController {
 
     @GetMapping("/reporte")
     public String obtenerReservasFiltradas(
-            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fechaInicio,
-            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fechaFin,
-            @RequestParam(required = false) String apellido,
-            @RequestParam(required = false) String empresa,
+            @RequestParam(name = "fechaInicio", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fechaInicio,
+            @RequestParam(name = "fechaFin", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fechaFin,
+            @RequestParam(name = "apellido", required = false) String apellido,
+            @RequestParam(name = "empresa", required = false) String empresa,
+            @RequestParam(name = "cc", required = false) String cc,
             Model model) {
 
-        // Mapas para las descripciones
         Map<Integer, String> tipoComidaDescripcion = Map.of(
                 1, "Principal",
                 2, "Light",
@@ -46,20 +46,18 @@ public class ReportesController {
                 3, "Vianda"
         );
 
-        // Filtros
         List<Reserva> reservasFiltradas = reservaRepository.findAll().stream()
                 .filter(reserva -> (fechaInicio == null || !reserva.getMenu().getFechaMenu().isBefore(fechaInicio)))
                 .filter(reserva -> (fechaFin == null || !reserva.getMenu().getFechaMenu().isAfter(fechaFin)))
                 .filter(reserva -> (apellido == null || reserva.getUsuario().getApellido().toLowerCase().contains(apellido.toLowerCase())))
                 .filter(reserva -> (empresa == null || reserva.getUsuario().getEmpresa().toLowerCase().contains(empresa.toLowerCase())))
+                .filter(reserva -> (cc == null || reserva.getUsuario().getCc().toLowerCase().contains(cc.toLowerCase())))
                 .collect(Collectors.toList());
 
-        // Contar el total de reservas y las no consumidas
         long totalReservas = reservasFiltradas.size();
         long totalConsumidas = reservasFiltradas.stream().filter(reserva -> reserva.getEntregado() != null).count();
         long totalNoConsumidas = totalReservas - totalConsumidas;
 
-        // Añadir datos al modelo
         model.addAttribute("reservasFiltradas", reservasFiltradas);
         model.addAttribute("tipoComidaDescripcion", tipoComidaDescripcion);
         model.addAttribute("medioDescripcion", medioDescripcion);
@@ -70,9 +68,11 @@ public class ReportesController {
         model.addAttribute("fechaFin", fechaFin);
         model.addAttribute("apellido", apellido);
         model.addAttribute("empresa", empresa);
+        model.addAttribute("cc", cc);
 
-        return "reporte/reporte";  // Nombre de la vista
+        return "reporte/reporte";
     }
+
 
 
 }
