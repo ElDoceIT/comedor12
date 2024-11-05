@@ -33,13 +33,27 @@
               <label for="apellido">Apellido:</label>
               <input type="text" id="apellido" name="apellido" th:value="${apellido}" class="form-control">
             </div>
-            <div class="col-md-3">
+            <!--<div class="col-md-3">
               <label for="empresa">Empresa:</label>
               <input type="text" id="empresa" name="empresa" th:value="${empresa}" class="form-control">
-            </div>
+            </div>-->
             <div class="col-md-3">
+              <label for="empresa"><h6>Empresa</h6></label>
+              <select class="form-control" name="empresa" id="empresa">
+                <option value="" disabled selected>Seleccione empresa</option>
+                <option th:each="empresa : ${empresas}" th:value="${empresa}" th:text="${empresa}"></option>
+              </select>
+            </div>
+            <!--<div class="col-md-3">
               <label for="empresa">cc:</label>
               <input type="text" id="cc" name="cc" th:value="${cc}" class="form-control">
+            </div>-->
+            <div class="col-md-3">
+              <label for="ceco"><h6>CeCo</h6></label>
+              <select class="form-control" name="cc" id="ceco">
+                <option value="" disabled selected>Seleccione CeCo</option>
+                <option th:each="ceco : ${cecos}" th:value="${ceco}" th:text="${ceco}"></option>
+              </select>
             </div>
             <div class="col-md-3">
               <label for="entregado">Estado de Entrega:</label>
