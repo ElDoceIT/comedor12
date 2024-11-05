@@ -443,6 +443,37 @@ public String reservas(Model model) {
         return "reserva/agrupadasPorUsuario";
     }
 
+    //logica para mostrar el menu fuera de horario, tomo como usuario el usuario con perfil comedor, pero no sera a nombre de quien se reserve.
+    @GetMapping("/reservacomedor")
+    public String reservasDelDia(Model model, @AuthenticationPrincipal UserDetails userDetails) {
+        Integer dni = Integer.parseInt(userDetails.getUsername());
+        LocalDate hoy = LocalDate.now();
+
+        // Obtener el menú solo para el día actual
+        List<Menu> menusDelDia = menuService.getMenusSemana(hoy, hoy);
+
+        // Obtener las reservas del usuario para el día actual
+        List<Reserva> reservasUsuario = reservaService.obtenerReservasEntreFechasPorUsuario(dni, hoy, hoy);
+
+        // Filtrar los menús para excluir los que ya fueron reservados por el usuario
+        List<Menu> menusFiltrados = menusDelDia.stream()
+                .filter(menu -> reservasUsuario.stream()
+                        .noneMatch(reserva -> reserva.getMenu().getFechaMenu().equals(menu.getFechaMenu()))
+                )
+                .collect(Collectors.toList());
+
+        // Ordenar las reservas del día actual en orden descendente por fecha de menú (aunque en este caso es solo un día)
+        List<Reserva> reservasFiltradas = reservasUsuario.stream()
+                .sorted(Comparator.comparing((Reserva reserva) -> reserva.getMenu().getFechaMenu()).reversed())
+                .collect(Collectors.toList());
+
+        // Agregar los datos al modelo
+        model.addAttribute("reservas", reservasFiltradas);
+        model.addAttribute("menusPorDia", Map.of(hoy, menusFiltrados)); // Solo contiene el día actual
+
+        return "reserva/reservacomedor";
+    }
+
 
 
 

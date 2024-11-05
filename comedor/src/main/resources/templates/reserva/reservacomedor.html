@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html xmlns:th="http://thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="shortcut icon" th:href="@{/images/El-Doce-TV-en-vivo-Online-1.png}" type="image/x-icon">
+
+    <link th:href="@{/bootstrap/css/bootstrap.min.css}" rel="stylesheet">
+    <!-- Custom styles for this template -->
+    <link th:href="@{/bootstrap/css/jumbotron.css}" rel="stylesheet">
+    <link th:href="@{/bootstrap/css/sticky-footer-navbar.css}" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.5.0/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+
+    <title>Ingreso comida</title>
+</head>
+<body>
+<header th:replace="fragments/menu :: menu-principal"></header>
+
+</header>
+
+<div class="mr-1 mr-md-3 mr-lg-5">
+    <span><p class="m-4 text-right" id="hora-actual" th:text="${#temporals.format(serverTime, 'EEEE dd MMMM yyyy HH:mm:ss')}">Día</p></span>
+</div>
+
+<div class="col-md-12 col-lg-11 m-1 mx-auto">
+    <div class="card1 mt-3">
+        <h3 class="card-header text-center"><strong>Reserva Comedor <span id="fecha"></span></strong></h3>
+
+        <!-- Mensajes de error -->
+        <div th:if="${errorReservaDuplicada}" class="alert alert-danger" role="alert">
+            <span th:text="${errorReservaDuplicada}"></span>
+        </div>
+        <div th:if="${error}" class="alert alert-danger" role="alert">
+            <span th:text="${error}"></span>
+        </div>
+
+        <!-- Formulario para seleccionar el menú -->
+        <h4 th:if="${not #lists.isEmpty(menusPorDia)}" class="m-1">Seleccione su comida: </h4>
+        <h4 th:if="${#lists.isEmpty(menusPorDia)}" class="m-1 text-danger">Sin menús pendientes de reservar.</h4>
+        <hr class="m-0" th:if="${not #lists.isEmpty(menusPorDia)}">
+
+        <form th:action="@{/reservas/reservar}" method="post" th:if="${not #lists.isEmpty(menusPorDia)}">
+            <div th:each="dia : ${menusPorDia}">
+                <div class="card1 mt-2 border-dark m-1 pb-3">
+                    <div class="card-header p-0 text-center">
+                        <h4 class="m-3"><span th:text="'Menú del día ' + ${#temporals.format(dia.key, 'EEEE dd MMMM yyyy')}"></span></h4>
+                    </div>
+
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead class="thead-light1">
+                            <tr>
+                                <th class="text-center pl-1 pr-1"></th>
+                                <th class="pl-1 pr-1">Tipo</th>
+                                <th class="pl-1 pr-1">Principal</th>
+                                <th class="pl-1 pr-1">Entrada</th>
+                                <th class="pl-1 pr-1">Postre</th>
+
+                            </tr>
+                            </thead>
+                            <tbody class="table-borderless w-100 striped-table">
+                            <tr th:each="menu : ${dia.value}">
+                                <td class="text-center pl-1 pr-1">
+                                    <div class="form-check form-check-lg">
+                                        <input class="form-check-input" type="radio" name="menuSeleccionado" th:value="${menu.id_menu}" required>
+                                    </div>
+                                </td>
+                                <td class="pl-1 pr-1" th:switch="${menu.comida.tipo_comida}">
+                                    <span th:case="1"><img class="nanbtn2" th:src="@{/images/principal.png}" alt="Principal"></span>
+                                    <span th:case="2"><img class="nanbtn2" th:src="@{/images/light.png}" alt="Light"></span>
+                                    <span th:case="3"><img class="nanbtn2" th:src="@{/images/celiaco.png}" alt="Celiaco"></span>
+                                    <span th:case="4"><img class="nanbtn2" th:src="@{/images/frutas.png}" alt="Frutas"></span>
+                                </td>
+                                <td class="pl-1 pr-1" th:text="${menu.comida.principal}"></td>
+                                <td class="pl-1 pr-1" th:text="${menu.comida.entrada}"></td>
+                                <td class="pl-1 pr-1" th:text="${menu.comida.postre}"></td>
+
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- Selección del lugar de consumo -->
+                    <div class="tipo-consumo-container text-center">
+                        <hr>
+                        <h5>¿Dónde comerá el <span th:text="${#temporals.format(dia.key, 'EEEE')}"></span>?</h5>
+                        <div class="tipo-consumo-opciones m-3">
+                            <!-- Campo de búsqueda -->
+                            <input type="text" id="busquedaUsuario" class="form-control" placeholder="Buscar por apellido o nombre">
+                            <div id="resultadosBusqueda" class="list-group mt-2" style="display: none;"></div>
+
+                            <input class="ml-2 mr-2" type="radio" th:id="${'comedor_' + #temporals.format(dia.key, 'yyyyMMdd')}" name="tipoComida" value="1" required>
+                            <label th:for="${'comedor_' + #temporals.format(dia.key, 'yyyyMMdd')}"><img class="nanbtn3" th:src="@{/images/comedor.png}" alt="Comedor">Comedor</label>
+
+                            <input class="ml-2 mr-2" type="radio" th:id="${'vianda_' + #temporals.format(dia.key, 'yyyyMMdd')}" name="tipoComida" value="2" required>
+                            <label th:for="${'vianda_' + #temporals.format(dia.key, 'yyyyMMdd')}"><img class="nanbtn3" th:src="@{/images/vianda.svg}" alt="vianda">Vianda</label>
+
+                            <input class="ml-2 mr-2" type="radio" th:id="${'retirar_' + #temporals.format(dia.key, 'yyyyMMdd')}" name="tipoComida" value="3" required>
+                            <label th:for="${'retirar_' + #temporals.format(dia.key, 'yyyyMMdd')}"><img class="nanbtn3" th:src="@{/images/retira.png}" alt="retira">Retira</label>
+                        </div>
+                    </div>
+
+                    <div class="d-flex justify-content-center">
+                        <button type="submit" class="btn btn-outline-secondary botoncito1 table-light margen3 mt-1 float-end">Confirmar Menu</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Tabla de reservas de la semana -->
+<hr>
+<div class="col-md-12 col-lg-11 m-1 mx-auto pb-4">
+    <div class="card1 mt-4 overflow-hidden">
+        <h4 class="text-center m-3">Reservas extras del dia</h4>
+        <div class="table-responsive">
+            <table class="table">
+                <thead class="thead-light1">
+                <tr>
+                    <th>Día</th>
+                    <th>Entrada</th>
+                    <th>Principal</th>
+                    <th>Postre</th>
+                    <th>Tipo</th>
+                    <th>Lugar</th>
+                    <th>Estado</th>
+                    <th>Editar</th>
+                </tr>
+                </thead>
+                <tbody class="table-borderless w-100 striped-table">
+                <tr th:each="reserva : ${reservas}">
+                    <td>
+                        <span th:text="${#temporals.format(reserva.menu.fechaMenu, 'EEEE dd MMMM yyyy')}">Fecha</span>
+                    </td>
+                    <td th:text="${reserva.menu.comida.entrada}">Entrada</td>
+                    <td th:text="${reserva.menu.comida.principal}">Plato Principal</td>
+                    <td th:text="${reserva.menu.comida.postre}">Postre</td>
+                    <td th:switch="${reserva.menu.comida.tipo_comida}">
+                        <span th:case="1"><img class="nanbtn2" th:src="@{/images/principal.svg}" alt="Principal"></span>
+                        <span th:case="2"><img class="nanbtn2" th:src="@{/images/light.svg}" alt="Light"></span>
+                        <span th:case="3"><img class="nanbtn2" th:src="@{/images/celiaco.svg}" alt="Celiaco"></span>
+                        <span th:case="4"><img class="nanbtn2" th:src="@{/images/frutas.svg}" alt="Frutas"></span>
+                    </td>
+                    <td th:switch="${reserva.medio}">
+                        <span th:case="1"><img class="nanbtn2" th:src="@{/images/comedor.png}" alt="Comedor"></span>
+                        <span th:case="2"><img class="nanbtn2" th:src="@{/images/vianda.svg}" alt="vianda"></span>
+                        <span th:case="3"><img class="nanbtn2" th:src="@{/images/retira.png}" alt="retira"></span>
+                    </td>
+                    <td>
+                                    <span th:class="${reserva.entregado != null ? 'text-success' : 'text-danger'}"
+                                          th:text="${reserva.entregado != null ? 'Entregado ' + reserva.entregado : 'No entregado'}">
+                                    </span>
+                    </td>
+                    <td class="float-center">
+                        <form th:action="@{/reservas/eliminar/{id}(id=${reserva.idReserva})}" method="post" onsubmit="return confirm('¿Estás seguro de que deseas eliminar esta reserva?')">
+                            <button class="nanbtn2"><i class="bi bi-trash"></i></button>
+                        </form>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+</main>
+
+
+<footer th:insert="fragments/footer :: footer" class="footer"></footer>
+<script th:src="@{/bootstrap/js/bootstrap.min.js}"></script>
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
+
