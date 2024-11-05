@@ -41,10 +41,19 @@
               <label for="empresa">cc:</label>
               <input type="text" id="cc" name="cc" th:value="${cc}" class="form-control">
             </div>
+            <div class="col-md-3">
+              <label for="entregado">Estado de Entrega:</label>
+              <select id="entregado" name="entregado" class="form-control">
+                <option value="">Todos</option>
+                <option value="true">Entregado</option>
+                <option value="false">No Entregado</option>
+              </select>
+            </div>
           </div>
           <div class="mt-3 text-center">
             <button type="submit" class="btn btn-outline-secondary botoncito1 table-light margen3 mb-4">Filtrar</button>
           </div>
+
         </form>
 
 
@@ -84,9 +93,27 @@
             <li><span class="text-danger">No Consumidas:</span> <span th:text="${totalNoConsumidas}"></span></li>
           </ul>
   </div>
+  <div class="col-md-3">
+    <a th:href="@{'/reportes/excel'(fechaInicio=${fechaInicio}, fechaFin=${fechaFin}, apellido=${apellido}, empresa=${empresa}, cc=${cc}, entregado=${entregado})}" class="btn btn-primary">Exportar a Excel</a>
+  </div>
+  <!--<div class="pagination">
+    <ul class="pagination justify-content-center">
+      <li class="page-item" th:classappend="${currentPage == 0} ? 'disabled'">
+        <a class="page-link" th:href="@{'/reportes/reporte'(page=${currentPage - 1}, fechaInicio=${fechaInicio}, fechaFin=${fechaFin}, apellido=${apellido}, empresa=${empresa}, cc=${cc}, entregado=${entregado})}">Anterior</a>
+      </li>
+      <li class="page-item" th:each="i : ${#numbers.sequence(0, totalPages - 1)}" th:classappend="${i == currentPage} ? 'active'">
+        <a class="page-link" th:href="@{'/reportes/reporte'(page=${i}, fechaInicio=${fechaInicio}, fechaFin=${fechaFin}, apellido=${apellido}, empresa=${empresa}, cc=${cc}, entregado=${entregado})}" th:text="${i + 1}">1</a>
+      </li>
+      <li class="page-item" th:classappend="${currentPage == totalPages - 1} ? 'disabled'">
+        <a class="page-link" th:href="@{'/reportes/reporte'(page=${currentPage + 1}, fechaInicio=${fechaInicio}, fechaFin=${fechaFin}, apellido=${apellido}, empresa=${empresa}, cc=${cc}, entregado=${entregado})}">Siguiente</a>
+      </li>
+    </ul>
+  </div>-->
 </div>
 <footer th:insert="fragments/footer :: footer" class="footer"></footer>
 <script th:src="@{/bootstrap/js/bootstrap.min.js}"></script>
-<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>
