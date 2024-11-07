@@ -120,33 +120,57 @@ public class ReportesController {
         response.setContentType("application/vnd.ms-excel");
         response.setHeader("Content-Disposition", "attachment; filename=ReporteReservas.xlsx");
 
-        // Lógica para crear el archivo Excel con Apache POI
+        // Crear archivo Excel
         Workbook workbook = new XSSFWorkbook();
         Sheet sheet = workbook.createSheet("Reservas");
 
+        // Encabezados
         Row header = sheet.createRow(0);
-        header.createCell(0).setCellValue("Apellido");
-        header.createCell(1).setCellValue("Nombre");
-        header.createCell(2).setCellValue("Tipo de Comida");
-        header.createCell(3).setCellValue("Lugar de Consumo");
-        header.createCell(4).setCellValue("Estado de Entrega");
+        header.createCell(0).setCellValue("FechaMenu");
+        header.createCell(1).setCellValue("Apellido");
+        header.createCell(2).setCellValue("Nombre");
+        header.createCell(3).setCellValue("CC");
+        header.createCell(4).setCellValue("Empresa");
+        header.createCell(5).setCellValue("Tipo de Comida");
+        header.createCell(6).setCellValue("Lugar de Consumo");
+        header.createCell(7).setCellValue("Estado de Entrega");
 
+        // Mapeo para convertir valores numéricos en descripciones
+        Map<Integer, String> tipoComidaDescripcion = Map.of(
+                1, "Principal",
+                2, "Light",
+                3, "Celiaco",
+                4, "Fruta"
+        );
+
+        Map<Integer, String> medioDescripcion = Map.of(
+                1, "Comedor",
+                2, "Vianda",
+                3, "Retira"
+        );
+
+        // Datos
         int rowIdx = 1;
         for (Reserva reserva : reservasFiltradas) {
             Row row = sheet.createRow(rowIdx++);
-            row.createCell(0).setCellValue(reserva.getUsuario().getApellido());
-            row.createCell(1).setCellValue(reserva.getUsuario().getNombre());
-            row.createCell(2).setCellValue(reserva.getMenu().getComida().getTipo_comida());
-            row.createCell(3).setCellValue(reserva.getMedio());
-            row.createCell(4).setCellValue(reserva.getEntregado() != null ? "Entregado" : "No Entregado");
+
+            row.createCell(0).setCellValue(reserva.getMenu().getFechaMenu().toString());
+            row.createCell(1).setCellValue(reserva.getUsuario().getApellido());
+            row.createCell(2).setCellValue(reserva.getUsuario().getNombre());
+            row.createCell(3).setCellValue(reserva.getUsuario().getCc());
+            row.createCell(4).setCellValue(reserva.getUsuario().getEmpresa());
+
+            // Mapea el tipo de comida y el medio de consumo a su descripción
+            String tipoComida = tipoComidaDescripcion.getOrDefault(reserva.getMenu().getComida().getTipo_comida(), "Desconocido");
+            String medioConsumo = medioDescripcion.getOrDefault(reserva.getMedio(), "Desconocido");
+
+            row.createCell(5).setCellValue(tipoComida);
+            row.createCell(6).setCellValue(medioConsumo);
+            row.createCell(7).setCellValue(reserva.getEntregado() != null ? "Entregado" : "No Entregado");
         }
 
         workbook.write(response.getOutputStream());
         workbook.close();
     }
-
-
-
-
 
 }
