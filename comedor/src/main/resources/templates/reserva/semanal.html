@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html xmlns:th="http://thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <link rel="shortcut icon" th:href="@{/images/El-Doce-TV-en-vivo-Online-1.png}" type="image/x-icon">
+
+  <link th:href="@{/bootstrap/css/bootstrap.min.css}" rel="stylesheet">
+  <!-- Custom styles for this template -->
+  <link th:href="@{/bootstrap/css/jumbotron.css}" rel="stylesheet">
+  <link th:href="@{/bootstrap/css/sticky-footer-navbar.css}" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.5.0/font/bootstrap-icons.min.css">
+  <link rel="stylesheet" th:href="@{/css/style.css}">
+
+  <title>Reservas Semanal</title>
+</head>
+<body>
+<header th:replace="fragments/menu :: menu-principal"></header>
+
+</header>
+<h1>Resumen de Reservas Semanal</h1>
+
+<table border="1">
+  <thead>
+  <tr>
+    <th>Día</th>
+    <th>Total Reservas</th>
+    <th>Principal</th>
+    <th>Light</th>
+    <th>Celiaco</th>
+    <th>Fruta</th>
+    <th>Comedor</th>
+    <th>Retira</th>
+    <th>Vianda</th>
+  </tr>
+  </thead>
+  <tbody>
+
+  <tr th:each="entry : ${resumenSemana}">
+    <td th:text="${entry.key}"></td> <!-- Fecha formateada -->
+    <td th:text="${entry.value['totalReservas']}"></td> <!-- Total de reservas para el día -->
+
+    <!-- Mostrar conteo por tipo de comida -->
+    <td th:text="${entry.value['sumaPorTipoComida'][1] != null ? entry.value['sumaPorTipoComida'][1] : 0}"></td>
+    <td th:text="${entry.value['sumaPorTipoComida'][2] != null ? entry.value['sumaPorTipoComida'][2] : 0}"></td>
+    <td th:text="${entry.value['sumaPorTipoComida'][3] != null ? entry.value['sumaPorTipoComida'][3] : 0}"></td>
+    <td th:text="${entry.value['sumaPorTipoComida'][4] != null ? entry.value['sumaPorTipoComida'][4] : 0}"></td>
+
+    <!-- Mostrar conteo por lugar de consumo -->
+    <td th:text="${entry.value['sumaPorLugarConsumo'][1] != null ? entry.value['sumaPorLugarConsumo'][1] : 0}"></td>
+    <td th:text="${entry.value['sumaPorLugarConsumo'][2] != null ? entry.value['sumaPorLugarConsumo'][2] : 0}"></td>
+    <td th:text="${entry.value['sumaPorLugarConsumo'][3] != null ? entry.value['sumaPorLugarConsumo'][3] : 0}"></td>
+  </tr>
+  </tbody>
+</table>
+<footer th:insert="fragments/footer :: footer" class="footer"></footer>
+<script th:src="@{/bootstrap/js/bootstrap.min.js}"></script>
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

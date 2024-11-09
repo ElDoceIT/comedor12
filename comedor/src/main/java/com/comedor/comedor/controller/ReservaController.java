@@ -21,8 +21,6 @@ import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
-import java.time.temporal.TemporalAdjusters;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -347,12 +345,71 @@ public String reservas(Model model) {
         return "reservas/reservas_dia";  // Nombre de la vista
     }
 
+    @GetMapping("/semanal")
+    public String obtenerReservasSemanal(Model model) {
+        LocalDate hoy = LocalDate.now();
+        LocalDate finSemana = hoy.plusDays(7);
+
+        Map<Integer, String> tipoComidaDescripcion = Map.of(
+                1, "Principal",
+                2, "Light",
+                3, "Celiaco",
+                4, "Fruta"
+        );
+
+        Map<Integer, String> medioDescripcion = Map.of(
+                1, "Comedor",
+                2, "Retira",
+                3, "Vianda"
+        );
+
+        // Crear un mapa para almacenar los datos de la semana, con fechas formateadas
+        Map<String, Map<String, Object>> resumenSemana = new LinkedHashMap<>();
+
+        for (LocalDate fecha = hoy; !fecha.isAfter(finSemana); fecha = fecha.plusDays(1)) {
+            // Saltar los fines de semana
+            if (fecha.getDayOfWeek() == DayOfWeek.SATURDAY || fecha.getDayOfWeek() == DayOfWeek.SUNDAY) {
+                continue;
+            }
+
+            LocalDate finalFecha = fecha;
+            List<Reserva> reservasDelDia = reservaRepository.findAll().stream()
+                    .filter(reserva -> reserva.getMenu().getFechaMenu().equals(finalFecha))
+                    .collect(Collectors.toList());
+
+            long totalReservas = reservasDelDia.size();
+            Map<Integer, Long> sumaPorTipoComida = reservasDelDia.stream()
+                    .collect(Collectors.groupingBy(reserva -> reserva.getMenu().getComida().getTipo_comida(), Collectors.counting()));
+
+            Map<Integer, Long> sumaPorLugarConsumo = reservasDelDia.stream()
+                    .collect(Collectors.groupingBy(Reserva::getMedio, Collectors.counting()));
+
+            // Preparar el resumen para el día actual
+            Map<String, Object> resumenDia = new HashMap<>();
+            resumenDia.put("totalReservas", totalReservas);
+            resumenDia.put("sumaPorTipoComida", sumaPorTipoComida);
+            resumenDia.put("sumaPorLugarConsumo", sumaPorLugarConsumo);
+
+            // Formatear la fecha en español para usarla como clave
+            String fechaFormateada = fecha.format(DateTimeFormatter.ofPattern("EEEE dd/MM/yyyy", new Locale("es", "ES")));
+            resumenSemana.put(fechaFormateada, resumenDia);
+        }
+
+        model.addAttribute("resumenSemana", resumenSemana);
+        model.addAttribute("tipoComidaDescripcion", tipoComidaDescripcion);
+        model.addAttribute("medioDescripcion", medioDescripcion);
+
+        return "reserva/semanal";
+    }
 
 
 
 
 
- //Marco el usuario que consumio.
+
+
+
+    //Marco el usuario que consumio.
     @PostMapping("/marcar-consumido/{id}")
    public String marcarComoConsumido(@PathVariable("id") Integer idReserva) {
        Optional<Reserva> reservaOpt = reservaRepository.findById(idReserva);
