@@ -88,8 +88,20 @@
                         <h5>¿Dónde comerá el <span th:text="${#temporals.format(dia.key, 'EEEE')}"></span>?</h5>
                         <div class="tipo-consumo-opciones m-3">
                             <!-- Campo de búsqueda -->
-                            <input type="text" id="busquedaUsuario" class="form-control" placeholder="Buscar por apellido o nombre">
-                            <div id="resultadosBusqueda" class="list-group mt-2" style="display: none;"></div>
+                            <div class="col-md-5">
+                                <div class="form-group">
+                                    <!--<label for="usuario"><h6>Cliente</h6></label>
+                                    <select class="form-control" name="usuario" id="usuario">
+                                      <option selected>usuario</option>
+                                      <option th:each="usuario :${usuarios}" th:value="${usuario.id_usuario}" th:text="${usuario.apellido} +' ' + ${usuario.nombre} "></option>
+                                    </select>      -->
+                                    <label for="usuarioNom"><h6>Cliente</h6></label>
+                                    <input type="text" class="form-control" id="usuarioNom" placeholder="Buscar cliente">
+                                    <div id="sugerencias-usuario" class="list-group"></div>
+
+                                    <!-- Campo oculto para el id del usuario -->
+                                </div><input type="hidden" name="usuario" id="usuarioId">
+                            </div>
 
                             <input class="ml-2 mr-2" type="radio" th:id="${'comedor_' + #temporals.format(dia.key, 'yyyyMMdd')}" name="tipoComida" value="1" required>
                             <label th:for="${'comedor_' + #temporals.format(dia.key, 'yyyyMMdd')}"><img class="nanbtn3" th:src="@{/images/comedor.png}" alt="Comedor">Comedor</label>
@@ -173,6 +185,7 @@
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script th:src="@{/js/buscarNombreApellido.js}"></script>
 </body>
 </html>
 

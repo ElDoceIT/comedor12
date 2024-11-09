@@ -63,6 +63,12 @@
       <li class="nav-item" th:if="${#strings.contains(#authentication.principal.authorities, 'Admin') or #strings.contains(#authentication.principal.authorities, 'Comedor')}">
         <a class="nav-link active" th:href="@{/reservas/semanal}">Reservas</a>
       </li>
+      <li class="nav-item" th:if="${#strings.contains(#authentication.principal.authorities, 'Admin') or #strings.contains(#authentication.principal.authorities, 'Comedor')}">
+        <a class="nav-link active" th:href="@{/reservas/reservacomedor}">ReservaFueraHs</a>
+      </li>
+      <li class="nav-item" th:if="${#strings.contains(#authentication.principal.authorities, 'Admin') or #strings.contains(#authentication.principal.authorities, 'Comedor')}">
+        <a class="nav-link active" th:href="@{/reservas/reservajefes}">ReservaInvitados</a>
+      </li>
 
       <li class="nav-item" th:if="${#strings.contains(#authentication.principal.authorities, 'Admin') or #strings.contains(#authentication.principal.authorities, 'Comedor') or #strings.contains(#authentication.principal.authorities, 'RRHH')}">
         <a class="nav-link active" th:href="@{/reportes/reporte}">Reportes</a>
