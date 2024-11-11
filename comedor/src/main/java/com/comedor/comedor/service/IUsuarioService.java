@@ -14,6 +14,7 @@ public interface IUsuarioService {
     Page<Usuario>buscarPorFiltros(Usuario usuarioExample, Pageable pageable);
     Page<Usuario> buscarTodas(Pageable pageable);
     Usuario obtenerPorDni(Integer dni);
+    Usuario obtenerPorId(Integer id);
     void migratePasswords();
     void actualizarUsuario(Usuario usuario);
     Page<Usuario> buscarUsuariosConFiltros(Integer dni, String apellido, String empresa, Pageable pageable);

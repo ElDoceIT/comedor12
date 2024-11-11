@@ -109,6 +109,10 @@ public String reservas(Model model) {
     }
 
 
+    //reservas fuera de horario forzadas por el comedor
+
+
+
     // aca chequeo mis propias reservas.
     @GetMapping("/misreservas")
     public String MisReservas(Model model, @AuthenticationPrincipal UserDetails userDetails) {
@@ -530,6 +534,52 @@ public String reservas(Model model) {
 
         return "reserva/reservacomedor";
     }
+
+    //post de la reserva forzada
+    @PostMapping("/reservaforzada")
+    public String reservaforzada(
+            @RequestParam("menuSeleccionado") Integer idMenu,
+            @RequestParam("tipoComida") Integer medio,
+            @RequestParam("usuario") Integer idUsuario, // ID del usuario del formulario
+            Model model
+    ) {
+        // Obtener el menú seleccionado
+        Menu menu = menuService.buscarPorId(idMenu);
+        if (menu == null) {
+            model.addAttribute("error", "Menú no encontrado.");
+            return "reserva/reserva_comedor";
+        }
+
+        // Validar el horario: solo permitir reservas antes de las 9 AM
+        LocalDateTime now = LocalDateTime.now();
+        LocalDate fechaMenu = menu.getFechaMenu();
+        // Obtener el usuario seleccionado
+        Usuario usuario = usuarioService.obtenerPorId(idUsuario);
+        if (usuario == null) {
+            model.addAttribute("error", "Usuario no encontrado.");
+            return "reserva/reserva_comedor";
+        }
+
+        // Verificar si ya existe una reserva para el usuario y fecha
+        /*if (reservaService.existeReservaParaUsuarioYFecha(usuario.getId_usuario(), fechaMenu)) {
+            model.addAttribute("errorReservaDuplicada", "Ya tienes una reserva para este día.");
+            return "reserva/reserva_comedor";
+        }*/
+
+        // Crear la reserva
+        Reserva reserva = new Reserva();
+        reserva.setUsuario(usuario);
+        reserva.setMenu(menu);
+        //reserva.menu.setFechaReserva(now);
+        reserva.setMedio(medio);
+        reserva.setForzado(1);
+        reservaService.guardar(reserva);
+
+        // Mensaje de confirmación
+        model.addAttribute("successMessage", "Reserva realizada con éxito.");
+        return "redirect:/reservas"; // Redirigir a la lista de reservas
+    }
+
 
 
 

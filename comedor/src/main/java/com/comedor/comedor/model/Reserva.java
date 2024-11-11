@@ -28,6 +28,9 @@ public class Reserva {
     @Column(name = "cant")
     private int cantidad;
 
+    @Column(name = "forzado")
+    private Integer forzado;
+
     @ManyToOne
     @JoinColumn(name = "id_usuario")
     private Usuario usuario;
@@ -35,6 +38,8 @@ public class Reserva {
     @ManyToOne
     @JoinColumn(name = "id_menu")
     private Menu menu;
+
+
 
 
 
@@ -94,6 +99,14 @@ public class Reserva {
         this.menu = menu;
     }
 
+    public int getForzado() {
+        return forzado;
+    }
+
+    public void setForzado(int forzado) {
+        this.forzado = forzado;
+    }
+
     @Override
     public String toString() {
         return "Reserva{" +
@@ -104,6 +117,7 @@ public class Reserva {
                 ", cantidad=" + cantidad +
                 ", usuario=" + usuario +
                 ", menu=" + menu +
+                ", forzado=" + forzado +
                 '}';
     }
 }

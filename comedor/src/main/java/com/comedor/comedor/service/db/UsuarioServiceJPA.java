@@ -49,6 +49,12 @@ public class UsuarioServiceJPA implements IUsuarioService {
                 .orElseThrow(() -> new UsernameNotFoundException("Usuario no encontrado"));
     }
 
+    @Override
+    public Usuario obtenerPorId(Integer id) {
+        return usuarioRepository.findById(id)
+                .orElseThrow(() -> new UsernameNotFoundException("Usuario no encontrado"));
+    }
+
 
     public void migratePasswords() {
         // Obtener todos los usuarios
