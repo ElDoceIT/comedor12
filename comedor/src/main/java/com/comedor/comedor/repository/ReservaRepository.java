@@ -19,6 +19,11 @@ public interface ReservaRepository extends JpaRepository<Reserva, Integer> {
     boolean existsByUsuarioAndMenu_FechaMenu(Usuario usuario, LocalDate fechaMenu);
     List<Reserva> findByUsuario(Usuario usuario);
     List<Reserva> findByMenu_FechaMenuBetween(LocalDate startDate, LocalDate endDate);
+    //List<Reserva> findByFechaReservaAndForzado(LocalDate fechaMenu, int forzado);
+
+
+    @Query("SELECT r FROM Reserva r JOIN r.menu m WHERE m.fechaMenu = :fechaMenu AND r.forzado = 1")
+    List<Reserva> findReservasForzadasDelDia(@Param("fechaMenu") LocalDate fechaMenu);
 
     @Query("SELECT r FROM Reserva r WHERE r.usuario.dni = :dni AND r.menu.fechaMenu BETWEEN :fechaInicio AND :fechaFin")
     List<Reserva> findReservasByUsuarioAndFechaMenuBetween(

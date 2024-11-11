@@ -514,13 +514,14 @@ public String reservas(Model model) {
         List<Menu> menusDelDia = menuService.getMenusSemana(hoy, hoy);
 
         // Obtener las reservas del usuario para el día actual
-        List<Reserva> reservasUsuario = reservaService.obtenerReservasEntreFechasPorUsuario(dni, hoy, hoy);
+        //List<Reserva> reservasUsuario = reservaService.obtenerReservasEntreFechasPorUsuario(dni, hoy, hoy);
+        List<Reserva> reservasUsuario = reservaService.obtenerReservasForzadasDelDia(hoy);
 
         // Filtrar los menús para excluir los que ya fueron reservados por el usuario
-        List<Menu> menusFiltrados = menusDelDia.stream()
-                .filter(menu -> reservasUsuario.stream()
+       List<Menu> menusFiltrados = menusDelDia.stream()
+              /*  .filter(menu -> reservasUsuario.stream()
                         .noneMatch(reserva -> reserva.getMenu().getFechaMenu().equals(menu.getFechaMenu()))
-                )
+                )*/
                 .collect(Collectors.toList());
 
         // Ordenar las reservas del día actual en orden descendente por fecha de menú (aunque en este caso es solo un día)
@@ -530,7 +531,7 @@ public String reservas(Model model) {
 
         // Agregar los datos al modelo
         model.addAttribute("reservas", reservasFiltradas);
-        model.addAttribute("menusPorDia", Map.of(hoy, menusFiltrados)); // Solo contiene el día actual
+       model.addAttribute("menusPorDia", Map.of(hoy, menusFiltrados)); // Solo contiene el día actual
 
         return "reserva/reservacomedor";
     }
@@ -561,10 +562,11 @@ public String reservas(Model model) {
         }
 
         // Verificar si ya existe una reserva para el usuario y fecha
-        /*if (reservaService.existeReservaParaUsuarioYFecha(usuario.getId_usuario(), fechaMenu)) {
+        //verificar si la reserva del usuario es para un invitado
+        if (reservaService.existeReservaParaUsuarioYFecha(usuario, fechaMenu)) {
             model.addAttribute("errorReservaDuplicada", "Ya tienes una reserva para este día.");
             return "reserva/reserva_comedor";
-        }*/
+        }
 
         // Crear la reserva
         Reserva reserva = new Reserva();
@@ -577,7 +579,7 @@ public String reservas(Model model) {
 
         // Mensaje de confirmación
         model.addAttribute("successMessage", "Reserva realizada con éxito.");
-        return "redirect:/reservas"; // Redirigir a la lista de reservas
+        return "redirect:/reservas/reservacomedor"; // Redirigir a la lista de reservas
     }
 
 

@@ -88,4 +88,9 @@ public class ReservaServiceJPA implements IReservaService {
     public List<Reserva> obtenerReservasEntreFechasPorUsuario(Integer dni, LocalDate fechaInicio, LocalDate fechaFin) {
         return reservaRepository.findReservasByUsuarioAndFechaMenuBetween(dni, fechaInicio, fechaFin);}
 
+    public List<Reserva> obtenerReservasForzadasDelDia(LocalDate fecha) {
+        // Buscar reservas con fecha actual y forzado = 1
+        return reservaRepository.findReservasForzadasDelDia(fecha);
+    }
+
 }

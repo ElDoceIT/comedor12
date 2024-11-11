@@ -20,6 +20,7 @@ public interface IReservaService {
     void guardar(Reserva reserva);
     boolean existeReservaParaUsuarioYFecha(Usuario usuario, LocalDate fechaMenu);
     List<Reserva> obtenerReservasPorUsuario(Usuario usuario);
+    List<Reserva> obtenerReservasForzadasDelDia(LocalDate fecha);
 
     List<Reserva> obtenerReservasEntreFechasPorUsuario(Integer dni, LocalDate fechaInicio, LocalDate fechaFin);
 
