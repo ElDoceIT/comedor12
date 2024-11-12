@@ -139,6 +139,8 @@
                     <th>Tipo</th>
                     <th>Lugar</th>
                     <th>Estado</th>
+                    <th>Nombre</th>
+                    <th>Forzado</th>
                     <th>Editar</th>
                 </tr>
                 </thead>
@@ -164,6 +166,12 @@
                     <td>
                                     <span th:class="${reserva.entregado != null ? 'text-success' : 'text-danger'}"
                                           th:text="${reserva.entregado != null ? 'Entregado ' + reserva.entregado : 'No entregado'}">
+                                    </span>
+                    </td>
+                    <td th:text="${reserva.usuario.apellido} + ${reserva.usuario.nombre}">Nombre</td>
+                    <td>
+                         <span th:class="${reserva.forzado != 1 ? 'text-success' : 'text-danger'}"
+                               th:text="${reserva.forzado != 1 ? 'No Forzado ' + reserva.forzado : 'Forzado'}">
                                     </span>
                     </td>
                     <td class="float-center">

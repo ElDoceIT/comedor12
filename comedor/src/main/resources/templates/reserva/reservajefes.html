@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html xmlns:th="http://thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" th:href="@{/images/El-Doce-TV-en-vivo-Online-1.png}" type="image/x-icon">
+    <link th:href="@{/bootstrap/css/bootstrap.min.css}" rel="stylesheet">
+    <link th:href="@{/bootstrap/css/jumbotron.css}" rel="stylesheet">
+    <link th:href="@{/bootstrap/css/sticky-footer-navbar.css}" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.5.0/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <title>Invitados</title>
+</head>
+<body>
+<header th:replace="fragments/menu :: menu-principal"></header>
+
+<div class="mr-1 mr-md-3 mr-lg-5">
+    <span><p class="m-4 text-right" id="hora-actual" th:text="${#temporals.format(serverTime, 'EEEE dd MMMM yyyy HH:mm:ss')}">Día</p></span>
+</div>
+
+<div class="col-md-12 col-lg-11 m-1 mx-auto">
+    <div class="card1 mt-3">
+        <h3 class="card-header text-center"><strong>Reserva Comedor Invitados <span id="fecha"></span></strong></h3>
+
+        <form th:action="@{/reservas/reservaforzada}" method="post" th:if="${not #lists.isEmpty(menusPorDia)}">
+            <h4 class="m-1">Seleccione su comida y especificaciones: </h4>
+            <hr class="m-0">
+
+            <div th:each="dia : ${menusPorDia}">
+                <div class="card1 mt-2 border-dark m-1 pb-3">
+                    <div class="card-header p-0 text-center">
+                        <h4 class="m-3"><span th:text="'Menú del día ' + ${#temporals.format(dia.key, 'EEEE dd MMMM yyyy')}"></span></h4>
+                    </div>
+
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead class="thead-light1">
+                            <tr>
+                                <th class="text-center">Selección</th>
+                                <th>Tipo</th>
+                                <th>Principal</th>
+                                <th>Entrada</th>
+                                <th>Postre</th>
+                                <th>Lugar de Consumo</th>
+                                <th>Invitados</th>
+                            </tr>
+                            </thead>
+                            <tbody class="table-borderless striped-table">
+                            <tr th:each="menu : ${dia.value}">
+                                <td class="text-center">
+                                    <input class="form-check-input" type="radio" name="menuSeleccionado" th:value="${menu.id_menu}" required>
+                                </td>
+                                <td th:switch="${menu.comida.tipo_comida}">
+                                    <span th:case="1"><img class="nanbtn2" th:src="@{/images/principal.png}" alt="Principal"></span>
+                                    <span th:case="2"><img class="nanbtn2" th:src="@{/images/light.png}" alt="Light"></span>
+                                    <span th:case="3"><img class="nanbtn2" th:src="@{/images/celiaco.png}" alt="Celiaco"></span>
+                                    <span th:case="4"><img class="nanbtn2" th:src="@{/images/frutas.png}" alt="Frutas"></span>
+                                </td>
+                                <td th:text="${menu.comida.principal}"></td>
+                                <td th:text="${menu.comida.entrada}"></td>
+                                <td th:text="${menu.comida.postre}"></td>
+                                <td>
+                                    <select name="lugarConsumo_${menu.id_menu}" class="form-control form-control-sm" style="width: 120px;">
+                                        <option value="comedor">Comedor</option>
+                                        <option value="vianda">Vianda</option>
+                                        <option value="retirar">Retira</option>
+                                    </select>
+                                </td>
+                                <td>
+                                    <input type="number" name="invitados_${menu.id_menu}" class="form-control form-control-sm" placeholder="0" min="0" style="width: 50px;">
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="d-flex justify-content-center mt-4">
+                    <button type="submit" class="btn btn-outline-secondary">Confirmar Menú</button>
+                </div>
+            </div>
+
+
+        </form>
+    </div>
+</div>
+
+<script th:src="@{/bootstrap/js/agregainvitado.js}"></script>
+<footer th:insert="fragments/footer :: footer" class="footer"></footer>
+<script th:src="@{/bootstrap/js/bootstrap.min.js}"></script>
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script th:src="@{/js/buscarNombreApellido.js}"></script>
+</body>
+</html>

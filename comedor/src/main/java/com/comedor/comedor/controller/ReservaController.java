@@ -581,6 +581,76 @@ public String reservas(Model model) {
         model.addAttribute("successMessage", "Reserva realizada con éxito.");
         return "redirect:/reservas/reservacomedor"; // Redirigir a la lista de reservas
     }
+// reserva desde la vista jefes a invitados
+    @GetMapping("/invitados")
+    public String reservasInvitados(Model model, @AuthenticationPrincipal UserDetails userDetails) {
+        Integer dni = Integer.parseInt(userDetails.getUsername());
+        LocalDate hoy = LocalDate.now();
+        LocalTime horaActual = LocalTime.now();
+
+        // Calcular lunes y viernes de la semana actual y la próxima semana
+        LocalDate lunesActual = hoy.with(DayOfWeek.MONDAY);
+        LocalDate viernesActual = hoy.with(DayOfWeek.FRIDAY);
+        LocalDate lunesProxima = lunesActual.plusWeeks(1);
+        LocalDate viernesProxima = viernesActual.plusWeeks(1);
+
+        // Determinar si es después de las 9 AM del viernes, sábado o domingo
+        boolean esFinDeSemana = (hoy.getDayOfWeek() == DayOfWeek.FRIDAY && horaActual.isAfter(LocalTime.of(9, 0))) ||
+                hoy.getDayOfWeek() == DayOfWeek.SATURDAY ||
+                hoy.getDayOfWeek() == DayOfWeek.SUNDAY;
+
+        // Ajustar para mostrar menús de la semana siguiente si es fin de semana
+        LocalDate lunesFiltro = esFinDeSemana ? lunesProxima : lunesActual;
+        LocalDate viernesFiltro = esFinDeSemana ? viernesProxima : viernesActual;
+
+        // Obtener los menús de la semana actual (o siguiente si es fin de semana)
+        List<Menu> menusDisponibles = menuService.getMenusSemana(lunesFiltro, viernesFiltro);
+
+        // Agrupar los menús disponibles por día de la semana
+        Map<LocalDate, List<Menu>> menusPorDia = menusDisponibles.stream()
+                .filter(menu -> !menu.getFechaMenu().isBefore(hoy)) // Excluir días anteriores
+                .filter(menu -> !(menu.getFechaMenu().isEqual(hoy) && horaActual.isAfter(LocalTime.of(9, 0)))) // Excluir día actual después de las 9 AM
+                .collect(Collectors.groupingBy(Menu::getFechaMenu,
+                        () -> new TreeMap<>(Comparator.comparingInt(date -> date.getDayOfWeek().getValue())),
+                        Collectors.toList()));
+
+        // Obtener todas las reservas del usuario para la semana actual y la próxima
+        List<Reserva> reservasUsuario = reservaService.obtenerReservasEntreFechasPorUsuario(dni, lunesActual, viernesProxima);
+
+        // Ordenar las reservas para la vista "Mis Reservas" de la semana actual y la siguiente
+        List<Reserva> reservasFiltradas = reservasUsuario.stream()
+                .sorted(Comparator.comparing((Reserva reserva) -> reserva.getMenu().getFechaMenu()).reversed())
+                .collect(Collectors.toList());
+
+        // Agregar los datos al modelo
+        model.addAttribute("reservas", reservasFiltradas);
+        model.addAttribute("menusPorDia", menusPorDia);
+
+        return "reserva/reservajefes";
+    }
+
+   /* @PostMapping("/reservaInvitados")
+    public String guardarReservaInvitados(@RequestParam("menuId") List<Long> menuIds,
+                                 @RequestParam("cantidad") List<Integer> cantidades,
+                                 @AuthenticationPrincipal UserDetails userDetails) {
+        Integer dni = Integer.parseInt(userDetails.getUsername());
+
+        for (int i = 0; i < menuIds.size(); i++) {
+            Long menuId = menuIds.get(i);
+            int cantidad = cantidades.get(i);
+
+            // Crear y guardar una nueva reserva con la cantidad seleccionada
+            Reserva nuevaReserva = new Reserva();
+            nuevaReserva.setUsuarioId(dni);
+            nuevaReserva.setMenu(menuService.getMenuById(menuId)); // Obtenemos el menú correspondiente
+            nuevaReserva.setCantidad(cantidad); // Seteamos la cantidad
+
+            reservaService.guardarReserva(nuevaReserva);
+        }
+
+        return "redirect:/reserva";
+    }*/
+
 
 
 
