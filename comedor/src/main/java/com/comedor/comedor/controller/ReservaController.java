@@ -383,12 +383,22 @@ public String reservas(Model model) {
                     .filter(reserva -> reserva.getMenu().getFechaMenu().equals(finalFecha))
                     .collect(Collectors.toList());
 
-            long totalReservas = reservasDelDia.size();
-            Map<Integer, Long> sumaPorTipoComida = reservasDelDia.stream()
-                    .collect(Collectors.groupingBy(reserva -> reserva.getMenu().getComida().getTipo_comida(), Collectors.counting()));
+            // Cálculo del total de reservas, sumando el campo 'cantidad' de cada reserva
+            long totalReservas = reservasDelDia.stream()
+                    .mapToInt(Reserva::getCantidad) // Sumamos los valores del campo 'cantidad'
+                    .sum();
 
-            Map<Integer, Long> sumaPorLugarConsumo = reservasDelDia.stream()
-                    .collect(Collectors.groupingBy(Reserva::getMedio, Collectors.counting()));
+            // Calcular la suma por tipo de comida, teniendo en cuenta el campo 'cantidad'
+            Map<Integer, Integer> sumaPorTipoComida = reservasDelDia.stream()
+                    .collect(Collectors.groupingBy(
+                            reserva -> reserva.getMenu().getComida().getTipo_comida(),
+                            Collectors.summingInt(reserva -> reserva.getCantidad()))); // Sumamos el 'cantidad'
+
+            // Calcular la suma por lugar de consumo, teniendo en cuenta el campo 'cantidad'
+            Map<Integer, Integer> sumaPorLugarConsumo = reservasDelDia.stream()
+                    .collect(Collectors.groupingBy(
+                            Reserva::getMedio,
+                            Collectors.summingInt(reserva -> reserva.getCantidad()))); // Sumamos el 'cantidad'
 
             // Preparar el resumen para el día actual
             Map<String, Object> resumenDia = new HashMap<>();
@@ -407,6 +417,8 @@ public String reservas(Model model) {
 
         return "reserva/semanal";
     }
+
+
 
 
 
