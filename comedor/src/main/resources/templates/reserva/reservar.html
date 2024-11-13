@@ -121,6 +121,7 @@
                         <th>Tipo</th>
                         <th>Lugar</th>
                         <th>Estado</th>
+                        <th>Cantidad</th>
                         <th>Editar</th>
                     </tr>
                     </thead>
@@ -148,6 +149,7 @@
                                           th:text="${reserva.entregado != null ? 'Entregado ' + reserva.entregado : 'No entregado'}">
                                     </span>
                         </td>
+                        <td th:text="${reserva.cantidad}">Cantidad</td>
                         <td class="float-center">
                             <form th:action="@{/reservas/eliminar/{id}(id=${reserva.idReserva})}" method="post" onsubmit="return confirm('¿Estás seguro de que deseas eliminar esta reserva?')">
                                 <button class="nanbtn2"><i class="bi bi-trash"></i></button>

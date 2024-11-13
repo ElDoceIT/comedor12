@@ -37,6 +37,7 @@
                         <th class="col-1 p-1">Tipo</th>
                         <th class="p-1">Lugar</th>
                         <th class="p-1">Entregado</th>
+                        <th class="col-2 pl-1 pr-1" >Cantidad</th>
                         <th class="text-right p-1">Eliminar</th>
                     </tr>
                     </thead>
@@ -81,6 +82,7 @@
                               th:text="${reserva.entregado != null ? 'Entregado ' + reserva.entregado : 'No entregado'}">
                         </span>
                         </td>
+                        <td th:text="${reserva.cantidad}">Cantidad</td>
                         <td class="align-middle p-1">
                             <div class="d-flex justify-content-center">
                                 <form th:action="@{/reservas/eliminarUser/{id}(id=${reserva.idReserva})}" method="post" style="display:inline;"
