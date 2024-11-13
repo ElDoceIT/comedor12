@@ -56,7 +56,7 @@ public String reservas(Model model) {
 
     return "reservas/reservas_ver";
 }
-
+//guarda la reserva, hecha por el usuario en hs normales de seleccion
     @PostMapping("/reservar")
     public String reservar(
             @RequestParam("menuSeleccionado") Integer idMenu,
@@ -99,6 +99,8 @@ public String reservas(Model model) {
         reserva.setUsuario(usuario);
         reserva.setF_reserva(now);
         reserva.setMedio(medio);
+        reserva.setCantidad(1);
+        reserva.setForzado(0);
 
         reservaService.guardar(reserva);
 
@@ -572,8 +574,9 @@ public String reservas(Model model) {
         Reserva reserva = new Reserva();
         reserva.setUsuario(usuario);
         reserva.setMenu(menu);
-        //reserva.menu.setFechaReserva(now);
+        reserva.setF_reserva(now);
         reserva.setMedio(medio);
+        reserva.setCantidad(1);
         reserva.setForzado(1);
         reservaService.guardar(reserva);
 
@@ -629,27 +632,96 @@ public String reservas(Model model) {
         return "reserva/reservajefes";
     }
 
-   /* @PostMapping("/reservaInvitados")
-    public String guardarReservaInvitados(@RequestParam("menuId") List<Long> menuIds,
-                                 @RequestParam("cantidad") List<Integer> cantidades,
-                                 @AuthenticationPrincipal UserDetails userDetails) {
+    @PostMapping("/invitadosjefes")
+    public String guardarReservaForzada(@RequestParam Map<String, String> formData,
+                                        @AuthenticationPrincipal UserDetails userDetails) {
         Integer dni = Integer.parseInt(userDetails.getUsername());
+        LocalDateTime now = LocalDateTime.now();
 
-        for (int i = 0; i < menuIds.size(); i++) {
-            Long menuId = menuIds.get(i);
-            int cantidad = cantidades.get(i);
+        formData.forEach((key, value) -> {
+            if (key.startsWith("menuSeleccionado")) {
+                // Extraer el ID del menú
+                Integer idMenu = Integer.parseInt(value);
 
-            // Crear y guardar una nueva reserva con la cantidad seleccionada
-            Reserva nuevaReserva = new Reserva();
-            nuevaReserva.setUsuarioId(dni);
-            nuevaReserva.setMenu(menuService.getMenuById(menuId)); // Obtenemos el menú correspondiente
-            nuevaReserva.setCantidad(cantidad); // Seteamos la cantidad
+                // Obtener el valor de invitados usando la clave dinámica
+                String invitadosKey = "invitados_" + idMenu;
+                Integer invitados = 0;
+                if (formData.containsKey(invitadosKey) && !formData.get(invitadosKey).isEmpty()) {
+                    try {
+                        invitados = Integer.parseInt(formData.get(invitadosKey));
+                    } catch (NumberFormatException e) {
+                        System.out.println("Error al parsear invitados: " + e.getMessage());
+                    }
+                }
 
-            reservaService.guardarReserva(nuevaReserva);
-        }
+                // Obtener el valor de lugarConsumo usando la clave dinámica
+                String lugarConsumoKey = "lugarConsumo_" + idMenu;
+                int lugarConsumo = 1; // Valor predeterminado en caso de que `lugarConsumo` sea null o no válido
+                String lugarConsumoStr = formData.get(lugarConsumoKey);
 
-        return "redirect:/reserva";
-    }*/
+                if (lugarConsumoStr != null) {
+                    switch (lugarConsumoStr) {
+                        case "comedor":
+                            lugarConsumo = 1;
+                            break;
+                        case "vianda":
+                            lugarConsumo = 2;
+                            break;
+                        case "retirar":
+                            lugarConsumo = 3;
+                            break;
+                        default:
+                            lugarConsumo = 1;
+                            break;
+                    }
+                }
+
+                try {
+                    // Obtener el menú seleccionado
+                    Menu menu = menuService.buscarPorId(idMenu);
+
+                    if (menu != null) {
+                        // Obtener el usuario a partir del dni
+                        Usuario usuario = usuarioService.obtenerPorDni(dni);
+                        if (usuario != null) {
+                            // Buscar una reserva existente para el usuario y menú del mismo día y tipo
+                            Reserva reservaExistente = reservaService.buscarReservaPorUsuarioYMenu(dni, menu);
+
+                            if (reservaExistente != null) {
+                                // Si existe, actualizamos la cantidad y ajustamos el campo `forzado`
+                                reservaExistente.setCantidad(reservaExistente.getCantidad() + invitados);
+                                reservaExistente.setForzado(100);
+                                reservaExistente.setMedio(lugarConsumo);
+
+                                reservaService.guardar(reservaExistente);
+
+                            } else {
+                                // Si no existe, creamos una nueva reserva
+                                Reserva nuevaReserva = new Reserva();
+                                nuevaReserva.setUsuario(usuario);
+                                nuevaReserva.setMenu(menu);
+                                nuevaReserva.setF_reserva(now);
+                                nuevaReserva.setCantidad(invitados);
+                                nuevaReserva.setMedio(lugarConsumo);
+                                nuevaReserva.setForzado(100);
+
+                                reservaService.guardar(nuevaReserva);
+                            }
+                        } else {
+                            throw new NoSuchElementException("Usuario no encontrado para el DNI: " + dni);
+                        }
+                    } else {
+                        throw new NoSuchElementException("Menú no encontrado para el ID: " + idMenu);
+                    }
+                } catch (NumberFormatException e) {
+                    System.out.println("Error: El valor de lugarConsumo o invitados no es un número válido.");
+                }
+            }
+        });
+
+        return "redirect:/reservas/invitados";
+    }
+
 
 
 

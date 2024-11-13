@@ -2,10 +2,7 @@ package com.comedor.comedor.service;
 
 
 import com.comedor.comedor.dto.ReservaForm;
-import com.comedor.comedor.model.Comida;
-import com.comedor.comedor.model.Consumo;
-import com.comedor.comedor.model.Reserva;
-import com.comedor.comedor.model.Usuario;
+import com.comedor.comedor.model.*;
 
 import java.time.LocalDate;
 import java.util.Date;
@@ -21,6 +18,7 @@ public interface IReservaService {
     boolean existeReservaParaUsuarioYFecha(Usuario usuario, LocalDate fechaMenu);
     List<Reserva> obtenerReservasPorUsuario(Usuario usuario);
     List<Reserva> obtenerReservasForzadasDelDia(LocalDate fecha);
+    Reserva buscarReservaPorUsuarioYMenu(Integer dni, Menu menu);
 
     List<Reserva> obtenerReservasEntreFechasPorUsuario(Integer dni, LocalDate fechaInicio, LocalDate fechaFin);
 

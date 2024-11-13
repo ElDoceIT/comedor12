@@ -101,6 +101,7 @@
               <th class="col-1 pl-1 pr-1" >Nombre</th>
               <th class="col-1 pl-1 pr-1" >Tipo</th>
               <th class="col-2 pl-1 pr-1" >Lugar</th>
+              <th class="col-2 pl-1 pr-1" >Cantidad</th>
 
             </tr>
             </thead>
@@ -154,6 +155,7 @@
 
                   </span>
               </td>
+              <td th:text="${reserva.cantidad}">Cantidad</td>
 
             </tr>
             </tbody>
@@ -176,6 +178,7 @@
               <th class="col-1 pl-1 pr-1" >Tipo</th>
               <th class="col-1 pl-1 pr-1" >Lugar</th>
               <th class="col-3 pl-1 pr-1" >Consumió</th>
+                <th class="col-3 pl-1 pr-1" >Cantidad</th>
                 <!-- Nueva columna para las acciones -->
             </tr>
             </thead>
@@ -231,6 +234,7 @@
                 <td class="pl-1 pr-1">
                   Entregado:<span th:text="${#temporals.format(reserva.entregado, 'dd-MM-yyyy HH:mm')}"></span>
                 </td>
+                  <td th:text="${reserva.cantidad}">Cantidad</td>
 
               </tr>
             </tbody>

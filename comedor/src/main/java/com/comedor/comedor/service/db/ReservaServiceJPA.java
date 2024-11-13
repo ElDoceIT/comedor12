@@ -30,6 +30,9 @@ public class ReservaServiceJPA implements IReservaService {
     @Autowired
     private MenuRepository menuRepository;
 
+    @Autowired
+    private UsuarioServiceJPA usuarioService;
+
 
     @Override
     public Usuario obtenerUsuarioLogueado() {
@@ -91,6 +94,19 @@ public class ReservaServiceJPA implements IReservaService {
     public List<Reserva> obtenerReservasForzadasDelDia(LocalDate fecha) {
         // Buscar reservas con fecha actual y forzado = 1
         return reservaRepository.findReservasForzadasDelDia(fecha);
+    }
+
+    @Override
+    public Reserva buscarReservaPorUsuarioYMenu(Integer dni, Menu menu) {
+        // Busca el Usuario usando el DNI
+        Usuario usuario = usuarioService.obtenerPorDni(dni);
+
+        if (usuario != null) {
+            // Busca la reserva con el Usuario y el menú
+            Optional<Reserva> reservaOptional = reservaRepository.findByUsuarioAndMenu(usuario, menu);
+            return reservaOptional.orElse(null);
+        }
+        return null; // Si no se encuentra el Usuario, retornamos null
     }
 
 }
