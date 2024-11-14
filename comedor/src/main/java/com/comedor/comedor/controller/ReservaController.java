@@ -285,6 +285,35 @@ public String reservas(Model model) {
     }
 
 
+    //desde la vista de menu semanal
+    @PostMapping("/eliminarforzado/{id}")
+    public String eliminarReservaForzada(@PathVariable("id") Integer idReserva, RedirectAttributes redirectAttributes, Model model) {
+        // Obtiene la reserva
+        Reserva reserva = reservaService.buscarPorId(idReserva);
+
+        if (reserva != null) {
+            // Obtiene el menú relacionado con la reserva
+            Menu menu = menuService.buscarPorId(reserva.getMenu().getId_menu());
+
+            if (menu != null) {
+
+                    // Permite la eliminación si la fecha del menú es posterior a la actual o si es hoy antes de las 9 AM
+                    reservaService.eliminarPorId(idReserva);
+                    return "redirect:/reservas/reservacomedor";
+                }
+            else {
+                // Manejar caso donde el menú no exista
+                model.addAttribute("error", "El menú asociado a la reserva no existe.");
+                return "redirect:/reservas/reservacomedor";
+            }
+        } else {
+            // Manejar caso donde la reserva no exista
+            model.addAttribute("error", "La reserva no existe.");
+            return "redirect:/reservas/reservacomedor";
+        }
+    }
+
+
     @GetMapping("/reservas-dia-actual")
     public String obtenerReservasDelDia(Model model) {
         LocalDate hoy = LocalDate.now();
@@ -539,12 +568,15 @@ public String reservas(Model model) {
                 .collect(Collectors.toList());
 
         // Ordenar las reservas del día actual en orden descendente por fecha de menú (aunque en este caso es solo un día)
-        List<Reserva> reservasFiltradas = reservasUsuario.stream()
+       /* List<Reserva> reservasFiltradas = reservasUsuario.stream()
                 .sorted(Comparator.comparing((Reserva reserva) -> reserva.getMenu().getFechaMenu()).reversed())
+                .collect(Collectors.toList());*/
+        List<Reserva> reservasDelDiaFiltradas = reservasUsuario.stream()
+                .filter(reserva -> reserva.getMenu().getFechaMenu().equals(hoy) && reserva.getForzado() == 1) // Filtrar por la fecha del menú y por 'forzado' igual a 1
                 .collect(Collectors.toList());
 
         // Agregar los datos al modelo
-        model.addAttribute("reservas", reservasFiltradas);
+        model.addAttribute("reservas", reservasDelDiaFiltradas);
        model.addAttribute("menusPorDia", Map.of(hoy, menusFiltrados)); // Solo contiene el día actual
 
         return "reserva/reservacomedor";
@@ -633,9 +665,16 @@ public String reservas(Model model) {
         List<Reserva> reservasUsuario = reservaService.obtenerReservasEntreFechasPorUsuario(dni, lunesActual, viernesProxima);
 
         // Ordenar las reservas para la vista "Mis Reservas" de la semana actual y la siguiente
-        List<Reserva> reservasFiltradas = reservasUsuario.stream()
+        /*List<Reserva> reservasFiltradas = reservasUsuario.stream()
                 .sorted(Comparator.comparing((Reserva reserva) -> reserva.getMenu().getFechaMenu()).reversed())
+                .collect(Collectors.toList());*/
+
+        // Filtrar las reservas para que solo se muestren aquellas con 'forzado' igual a 100 o 101
+        List<Reserva> reservasFiltradas = reservasUsuario.stream()
+                .filter(reserva -> reserva.getForzado() == 100 || reserva.getForzado() == 101) // Filtrado por el campo 'forzado'
+                .sorted(Comparator.comparing((Reserva reserva) -> reserva.getMenu().getFechaMenu()).reversed()) // Ordenar por fecha de menú, de más reciente a más antiguo
                 .collect(Collectors.toList());
+
 
         // Agregar los datos al modelo
         model.addAttribute("reservas", reservasFiltradas);
