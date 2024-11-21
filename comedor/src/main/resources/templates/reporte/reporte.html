@@ -44,10 +44,6 @@
                 <option th:each="empresa : ${empresas}" th:value="${empresa}" th:text="${empresa}"></option>
               </select>
             </div>
-            <!--<div class="col-md-3">
-              <label for="empresa">cc:</label>
-              <input type="text" id="cc" name="cc" th:value="${cc}" class="form-control">
-            </div>-->
             <div class="col-md-3">
               <label for="ceco"><h6>CeCo</h6></label>
               <select class="form-control" name="cc" id="ceco">
@@ -86,6 +82,7 @@
               <th>Tipo de Comida</th>
               <th>Lugar de Consumo</th>
               <th>Estado de Entrega</th>
+              <th>Forzado?</th>
             </tr>
             </thead>
             <tbody class="table-borderless w-100 striped-table text-left" >
@@ -99,6 +96,8 @@
               <td th:text="${medioDescripcion[reserva.medio]}"></td>
               <td th:text="${reserva.entregado != null ? 'Entregado' : 'No Entregado'}"
                   th:classappend="${reserva.entregado == null} ? 'text-danger' : 'text-success'"></td>
+              <td th:text="${reserva.forzado != 0 ? 'Forzado' : 'A Tiempo'}"
+                  th:classappend="${reserva.entregado == 0} ? 'text-danger' : 'text-success'"></td>
             </tr>
             </tbody>
           </table>
@@ -116,7 +115,7 @@
   <div class="col-md-3">
     <a th:href="@{'/reportes/excel'(fechaInicio=${fechaInicio}, fechaFin=${fechaFin}, apellido=${apellido}, empresa=${empresa}, cc=${cc}, entregado=${entregado})}" class="btn btn-primary">Exportar a Excel</a>
   </div>
-  <!--<div class="pagination">
+  <div class="pagination">
     <ul class="pagination justify-content-center">
       <li class="page-item" th:classappend="${currentPage == 0} ? 'disabled'">
         <a class="page-link" th:href="@{'/reportes/reporte'(page=${currentPage - 1}, fechaInicio=${fechaInicio}, fechaFin=${fechaFin}, apellido=${apellido}, empresa=${empresa}, cc=${cc}, entregado=${entregado})}">Anterior</a>
@@ -128,7 +127,7 @@
         <a class="page-link" th:href="@{'/reportes/reporte'(page=${currentPage + 1}, fechaInicio=${fechaInicio}, fechaFin=${fechaFin}, apellido=${apellido}, empresa=${empresa}, cc=${cc}, entregado=${entregado})}">Siguiente</a>
       </li>
     </ul>
-  </div>-->
+  </div>
 </div>
 <footer th:insert="fragments/footer :: footer" class="footer"></footer>
 <script th:src="@{/bootstrap/js/bootstrap.min.js}"></script>

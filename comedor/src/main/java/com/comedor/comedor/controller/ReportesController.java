@@ -4,6 +4,7 @@ package com.comedor.comedor.controller;
 import com.comedor.comedor.model.Reserva;
 import com.comedor.comedor.repository.ReservaRepository;
 import com.comedor.comedor.repository.UsuarioRepository;
+import jakarta.persistence.criteria.Predicate;
 import jakarta.servlet.http.HttpServletResponse;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
@@ -12,6 +13,7 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -21,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import java.io.IOException;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
@@ -49,6 +52,53 @@ public class ReportesController {
             @RequestParam(name = "page", defaultValue = "0") int page,
             Model model) {
 
+        // Paginación de 10 elementos por página
+        PageRequest pageRequest = PageRequest.of(page, 10, Sort.by(Sort.Direction.DESC, "menu.fechaMenu"));
+
+        // Consulta con filtros paginados
+        Page<Reserva> reservasFiltradas = reservaRepository.findAll((root, query, criteriaBuilder) -> {
+            List<Predicate> predicates = new ArrayList<>();
+
+            if (fechaInicio != null) {
+                predicates.add(criteriaBuilder.greaterThanOrEqualTo(root.get("menu").get("fechaMenu"), fechaInicio));
+            }
+            if (fechaFin != null) {
+                predicates.add(criteriaBuilder.lessThanOrEqualTo(root.get("menu").get("fechaMenu"), fechaFin));
+            }
+            if (apellido != null && !apellido.isEmpty()) {
+                predicates.add(criteriaBuilder.like(
+                        criteriaBuilder.lower(root.get("usuario").get("apellido")),
+                        "%" + apellido.toLowerCase() + "%"
+                ));
+            }
+            if (empresa != null && !empresa.isEmpty()) {
+                predicates.add(criteriaBuilder.like(
+                        criteriaBuilder.lower(root.get("usuario").get("empresa")),
+                        "%" + empresa.toLowerCase() + "%"
+                ));
+            }
+            if (cc != null && !cc.isEmpty()) {
+                predicates.add(criteriaBuilder.like(
+                        criteriaBuilder.lower(root.get("usuario").get("cc")),
+                        "%" + cc.toLowerCase() + "%"
+                ));
+            }
+            if (entregado != null) {
+                if (entregado) {
+                    predicates.add(criteriaBuilder.isNotNull(root.get("entregado")));
+                } else {
+                    predicates.add(criteriaBuilder.isNull(root.get("entregado")));
+                }
+            }
+
+            return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
+        }, pageRequest);
+
+        // Resumen de totales
+        long totalReservas = reservasFiltradas.getTotalElements();
+        long totalConsumidas = reservasFiltradas.stream().filter(reserva -> reserva.getEntregado() != null).count();
+        long totalNoConsumidas = totalReservas - totalConsumidas;
+
         List<String> empresas = usuarioRepository.findDistinctEmpresa();
         List<String> cecos = usuarioRepository.findDistinctCC();
 
@@ -65,20 +115,6 @@ public class ReportesController {
                 3, "Vianda"
         );
 
-        PageRequest pageRequest = PageRequest.of(page, 30); // Paginación de 30 elementos
-        List<Reserva> reservasFiltradas = reservaRepository.findAll().stream()
-                .filter(reserva -> (fechaInicio == null || !reserva.getMenu().getFechaMenu().isBefore(fechaInicio)))
-                .filter(reserva -> (fechaFin == null || !reserva.getMenu().getFechaMenu().isAfter(fechaFin)))
-                .filter(reserva -> (apellido == null || reserva.getUsuario().getApellido().toLowerCase().contains(apellido.toLowerCase())))
-                .filter(reserva -> (empresa == null || reserva.getUsuario().getEmpresa().toLowerCase().contains(empresa.toLowerCase())))
-                .filter(reserva -> (cc == null || reserva.getUsuario().getCc().toLowerCase().contains(cc.toLowerCase())))
-                .filter(reserva -> (entregado == null || (entregado ? reserva.getEntregado() != null : reserva.getEntregado() == null)))
-                .collect(Collectors.toList());
-
-        long totalReservas = reservasFiltradas.size();
-        long totalConsumidas = reservasFiltradas.stream().filter(reserva -> reserva.getEntregado() != null).count();
-        long totalNoConsumidas = totalReservas - totalConsumidas;
-
         model.addAttribute("reservasFiltradas", reservasFiltradas);
         model.addAttribute("tipoComidaDescripcion", tipoComidaDescripcion);
         model.addAttribute("medioDescripcion", medioDescripcion);
@@ -90,14 +126,15 @@ public class ReportesController {
         model.addAttribute("apellido", apellido);
         model.addAttribute("empresa", empresa);
         model.addAttribute("cc", cc);
-        model.addAttribute("empresas",empresas);
-        model.addAttribute("cecos",cecos);
+        model.addAttribute("empresas", empresas);
+        model.addAttribute("cecos", cecos);
         model.addAttribute("entregado", entregado);
         model.addAttribute("currentPage", page);
-        //model.addAttribute("totalPages", reservasFiltradas.getTotalPages());
+        model.addAttribute("totalPages", reservasFiltradas.getTotalPages());
 
         return "reporte/reporte";
     }
+
 
     @GetMapping("/excel")
     public void exportarExcel(HttpServletResponse response,
