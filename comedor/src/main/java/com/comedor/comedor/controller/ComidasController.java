@@ -53,7 +53,7 @@ public class ComidasController {
     @PostMapping("/save")
     public String guardarComida(Comida comida){
         comidaRepository.save(comida);
-        return "redirect:/comida/ver";
+        return "redirect:/comida/new";
     }
 
     @GetMapping("/editar/{id}")
