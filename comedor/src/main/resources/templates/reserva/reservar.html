@@ -34,7 +34,7 @@
             </div>
 
             <!-- Formulario para seleccionar el menú -->
-            <h4 th:if="${not #lists.isEmpty(menusPorDia)}" class="m-1">Seleccione su comida: </h4>
+            <h4 th:if="${not #lists.isEmpty(menusPorDia)}" class="m-1">Seleccionar menú: </h4>
             <h4 th:if="${#lists.isEmpty(menusPorDia)}" class="m-1 text-danger">Sin menús pendientes de reservar.</h4>
             <hr class="m-0" th:if="${not #lists.isEmpty(menusPorDia)}">
 
@@ -83,16 +83,31 @@
                         <div class="tipo-consumo-container text-center">
                             <hr>
                             <h5>¿Dónde comerá el <span th:text="${#temporals.format(dia.key, 'EEEE')}"></span>?</h5>
-                            <div class="tipo-consumo-opciones m-3">
-                                <input class="ml-2 mr-2" type="radio" th:id="${'comedor_' + #temporals.format(dia.key, 'yyyyMMdd')}" name="tipoComida" value="1" required>
-                                <label th:for="${'comedor_' + #temporals.format(dia.key, 'yyyyMMdd')}"><img class="nanbtn3" th:src="@{/images/comedor.png}" alt="Comedor">Comedor</label>
+                            <div class="d-flex justify-content-center align-items-center tipo-consumo-opciones pb-3 m-2">
+                                <!-- Bloque Comedor -->
+                                <div class="d-flex flex-column align-items-center border p-1 mx-1 rounded shadow">
+                                    <input type="radio" th:id="${'comedor_' + #temporals.format(dia.key, 'yyyyMMdd')}" name="tipoComida" value="1" required>
+                                    <label class="mt-2" th:for="${'comedor_' + #temporals.format(dia.key, 'yyyyMMdd')}">Comedor</label>
+                                    <img class="nanbtn2 mt-2" th:src="@{/images/comedor.png}" alt="Comedor">
+                                </div>
 
-                                <input class="ml-2 mr-2" type="radio" th:id="${'vianda_' + #temporals.format(dia.key, 'yyyyMMdd')}" name="tipoComida" value="2" required>
-                                <label th:for="${'vianda_' + #temporals.format(dia.key, 'yyyyMMdd')}"><img class="nanbtn3" th:src="@{/images/vianda.svg}" alt="vianda">Vianda</label>
+                                <!-- Bloque Vianda -->
+                                <div class="d-flex flex-column align-items-center border p-1 mx-1 rounded shadow">
+                                    <input type="radio" th:id="${'vianda_' + #temporals.format(dia.key, 'yyyyMMdd')}" name="tipoComida" value="2" required>
+                                    <label class="mt-2" th:for="${'vianda_' + #temporals.format(dia.key, 'yyyyMMdd')}">Vianda</label>
+                                    <img class="nanbtn2 mt-2" th:src="@{/images/vianda.svg}" alt="Vianda">
+                                </div>
 
-                                <input class="ml-2 mr-2" type="radio" th:id="${'retirar_' + #temporals.format(dia.key, 'yyyyMMdd')}" name="tipoComida" value="3" required>
-                                <label th:for="${'retirar_' + #temporals.format(dia.key, 'yyyyMMdd')}"><img class="nanbtn3" th:src="@{/images/retira.png}" alt="retira">Retira</label>
+                                <!-- Bloque Retira -->
+                                <div class="d-flex flex-column align-items-center border p-1 mx-1 rounded shadow">
+                                    <input type="radio" th:id="${'retirar_' + #temporals.format(dia.key, 'yyyyMMdd')}" name="tipoComida" value="3" required>
+                                    <label class="mt-2" th:for="${'retirar_' + #temporals.format(dia.key, 'yyyyMMdd')}">Retira</label>
+                                    <img class="nanbtn2 mt-2" th:src="@{/images/retira.png}" alt="Retira">
+                                </div>
                             </div>
+
+
+
 
                         </div>
 

@@ -200,4 +200,18 @@
     background-color: #808080;
       color: GhostWhite;
     }
+.tipo-consumo-opciones {
+    flex-wrap: nowrap; /* Evita que se apilen */
+    overflow-x: auto; /* Permite scroll horizontal si no caben */
+    gap: 0px; /* Espaciado uniforme entre bloques */
+}
 
+.tipo-consumo-opciones > div {
+    min-width: 60px; /* Ajusta el ancho mínimo de cada bloque */
+    flex-shrink: 0; /* Evita que los bloques se reduzcan más de su contenido */
+}
+.border-custom {
+  border: 1px solid gray;
+  border-radius: 10px; /* Cambia el valor según sea necesario */
+  overflow: hidden;
+}
