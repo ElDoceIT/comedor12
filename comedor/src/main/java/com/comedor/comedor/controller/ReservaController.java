@@ -689,76 +689,66 @@ public String reservas(Model model) {
                                         RedirectAttributes redirectAttributes) {
         Integer dni = Integer.parseInt(userDetails.getUsername());
         LocalDateTime now = LocalDateTime.now();
-        boolean error = false; // Variable para verificar si hay errores
+        boolean reservaRealizada = false; // Para verificar si al menos una reserva es válida
 
-        // Validar datos del formulario
         for (Map.Entry<String, String> entry : formData.entrySet()) {
-            if (entry.getKey().startsWith("invitados_")) {
-                String value = entry.getValue();
-                try {
-                    int invitados = Integer.parseInt(value);
-                    if (invitados <= 0) {
-                        error = true;
-                        break;
-                    }
-                } catch (NumberFormatException e) {
-                    error = true;
-                    break;
-                }
-            }
-        }
-
-        if (error) {
-            redirectAttributes.addFlashAttribute("error", "El número de invitados debe ser mayor a 0.");
-            return "redirect:/reservas/invitados";
-        }
-
-        // Procesar las reservas
-        formData.forEach((key, value) -> {
+            String key = entry.getKey();
             if (key.startsWith("menuSeleccionado_")) {
+                // Extraer los IDs de día y menú
                 String[] parts = key.split("_");
                 if (parts.length >= 3) {
                     try {
-                        String diaKey = parts[1];
+                        String diaKey = parts[1]; // Almacena el valor de fecha como String
                         Integer idMenu = Integer.parseInt(parts[2]);
 
-                        Integer invitados = 0;
-                        String invitadosKey = "invitados_" + diaKey + "_" + idMenu;
-                        if (formData.containsKey(invitadosKey) && !formData.get(invitadosKey).isEmpty()) {
-                            invitados = Integer.parseInt(formData.get(invitadosKey));
-                        }
+                        // Verificar si el checkbox está marcado
+                        boolean checkboxMarcado = formData.get(key) != null && !formData.get(key).isEmpty();
 
-                        String lugarConsumoKey = "lugarConsumo_" + diaKey + "_" + idMenu;
-                        int lugarConsumo = 1; // Default value
-                        String lugarConsumoStr = formData.get(lugarConsumoKey);
-                        if (lugarConsumoStr != null) {
-                            lugarConsumo = switch (lugarConsumoStr) {
-                                case "comedor" -> 1;
-                                case "vianda" -> 2;
-                                case "retirar" -> 3;
-                                default -> 1;
-                            };
-                        }
+                        if (checkboxMarcado) {
+                            Integer invitados = 0;
+                            String invitadosKey = "invitados_" + diaKey + "_" + idMenu;
 
-                        Menu menu = menuService.buscarPorId(idMenu);
-                        if (menu != null) {
-                            Usuario usuario = usuarioService.obtenerPorDni(dni);
-                            if (usuario != null) {
-                                Reserva reservaExistente = reservaService.buscarReservaPorUsuarioYMenu(dni, menu);
-                                if (reservaExistente != null) {
-                                    reservaExistente.setCantidad(reservaExistente.getCantidad() + invitados);
-                                    reservaExistente.setForzado(100);
-                                    reservaExistente.setMedio(lugarConsumo);
-                                    reservaService.guardar(reservaExistente);
-                                } else {
-                                    Reserva nuevaReserva = new Reserva();
-                                    nuevaReserva.setUsuario(usuario);
-                                    nuevaReserva.setMenu(menu);
-                                    nuevaReserva.setF_reserva(now);
-                                    nuevaReserva.setCantidad(invitados);
-                                    nuevaReserva.setMedio(lugarConsumo);
-                                    nuevaReserva.setForzado(100);
-                                    reservaService.guardar(nuevaReserva);
+                            if (formData.containsKey(invitadosKey) && !formData.get(invitadosKey).isEmpty()) {
+                                invitados = Integer.parseInt(formData.get(invitadosKey));
+                            }
+
+                            if (invitados > 0) {
+                                // Validar y obtener el lugar de consumo
+                                String lugarConsumoKey = "lugarConsumo_" + diaKey + "_" + idMenu;
+                                int lugarConsumo = 1; // Default value
+                                String lugarConsumoStr = formData.get(lugarConsumoKey);
+                                if (lugarConsumoStr != null) {
+                                    lugarConsumo = switch (lugarConsumoStr) {
+                                        case "comedor" -> 1;
+                                        case "vianda" -> 2;
+                                        case "retirar" -> 3;
+                                        default -> 1;
+                                    };
+                                }
+
+                                // Continuar con la lógica de obtener el menú, usuario y crear o actualizar la reserva
+                                Menu menu = menuService.buscarPorId(idMenu);
+                                if (menu != null) {
+                                    Usuario usuario = usuarioService.obtenerPorDni(dni);
+                                    if (usuario != null) {
+                                        Reserva reservaExistente = reservaService.buscarReservaPorUsuarioYMenu(dni, menu);
+                                        if (reservaExistente != null) {
+                                            reservaExistente.setCantidad(reservaExistente.getCantidad() + invitados);
+                                            reservaExistente.setForzado(100);
+                                            reservaExistente.setMedio(lugarConsumo);
+                                            reservaService.guardar(reservaExistente);
+                                        } else {
+                                            Reserva nuevaReserva = new Reserva();
+                                            nuevaReserva.setUsuario(usuario);
+                                            nuevaReserva.setMenu(menu);
+                                            nuevaReserva.setF_reserva(now);
+                                            nuevaReserva.setCantidad(invitados);
+                                            nuevaReserva.setMedio(lugarConsumo);
+                                            nuevaReserva.setForzado(100);
+                                            reservaService.guardar(nuevaReserva);
+                                        }
+                                        reservaRealizada = true; // Indicar que al menos una reserva fue válida
+                                    }
                                 }
                             }
                         }
@@ -767,11 +757,16 @@ public String reservas(Model model) {
                     }
                 }
             }
-        });
+        }
+
+        // Verificar si no se realizó ninguna reserva válida
+        if (!reservaRealizada) {
+            redirectAttributes.addFlashAttribute("error", "Debe seleccionar al menos un menú con invitados mayores a 0.");
+            return "redirect:/reservas/invitados";
+        }
 
         return "redirect:/reservas/invitados";
     }
-
 
 
 
