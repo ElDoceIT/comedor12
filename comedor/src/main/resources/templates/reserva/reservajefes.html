@@ -27,6 +27,9 @@
 
         <!-- Iterar sobre cada día, y crear un formulario separado para cada uno -->
         <div th:each="dia : ${menusPorDia}">
+            <div th:if="${error}" class="alert alert-danger" role="alert">
+                <span th:text="${error}"></span>
+            </div>
             <form th:action="@{/reservas/invitadosjefes}" method="post">
                 <div class="card1 mt-2 border-dark m-1 pb-3">
                     <div class="card-header p-0 text-center">

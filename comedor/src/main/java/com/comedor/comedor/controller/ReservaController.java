@@ -685,21 +685,41 @@ public String reservas(Model model) {
 
     @PostMapping("/invitadosjefes")
     public String guardarReservaForzada(@RequestParam Map<String, String> formData,
-                                        @AuthenticationPrincipal UserDetails userDetails) {
+                                        @AuthenticationPrincipal UserDetails userDetails,
+                                        RedirectAttributes redirectAttributes) {
         Integer dni = Integer.parseInt(userDetails.getUsername());
         LocalDateTime now = LocalDateTime.now();
-        // Imprimir los parámetros recibidos para depuración
-        formData.forEach((key, value) -> System.out.println("Clave: " + key + " | Valor: " + value));
+        boolean error = false; // Variable para verificar si hay errores
 
+        // Validar datos del formulario
+        for (Map.Entry<String, String> entry : formData.entrySet()) {
+            if (entry.getKey().startsWith("invitados_")) {
+                String value = entry.getValue();
+                try {
+                    int invitados = Integer.parseInt(value);
+                    if (invitados <= 0) {
+                        error = true;
+                        break;
+                    }
+                } catch (NumberFormatException e) {
+                    error = true;
+                    break;
+                }
+            }
+        }
 
+        if (error) {
+            redirectAttributes.addFlashAttribute("error", "El número de invitados debe ser mayor a 0.");
+            return "redirect:/reservas/invitados";
+        }
+
+        // Procesar las reservas
         formData.forEach((key, value) -> {
             if (key.startsWith("menuSeleccionado_")) {
-                // Extraer los IDs de día y menú
                 String[] parts = key.split("_");
                 if (parts.length >= 3) {
                     try {
-                        //Integer diaKey = Integer.parseInt(parts[1]);
-                        String diaKey = parts[1]; // Almacena el valor de fecha como String
+                        String diaKey = parts[1];
                         Integer idMenu = Integer.parseInt(parts[2]);
 
                         Integer invitados = 0;
@@ -720,7 +740,6 @@ public String reservas(Model model) {
                             };
                         }
 
-                        // Continuar con la lógica de obtener el menú, usuario y crear o actualizar la reserva
                         Menu menu = menuService.buscarPorId(idMenu);
                         if (menu != null) {
                             Usuario usuario = usuarioService.obtenerPorDni(dni);
@@ -749,7 +768,6 @@ public String reservas(Model model) {
                 }
             }
         });
-
 
         return "redirect:/reservas/invitados";
     }
