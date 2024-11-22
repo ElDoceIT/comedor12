@@ -2,8 +2,10 @@ package com.comedor.comedor.controller;
 
 
 import com.comedor.comedor.model.Reserva;
+import com.comedor.comedor.model.Usuario;
 import com.comedor.comedor.repository.ReservaRepository;
 import com.comedor.comedor.repository.UsuarioRepository;
+import com.comedor.comedor.service.db.UsuarioServiceJPA;
 import jakarta.persistence.criteria.Predicate;
 import jakarta.servlet.http.HttpServletResponse;
 import org.apache.poi.ss.usermodel.Row;
@@ -15,6 +17,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -39,6 +43,9 @@ public class ReportesController {
     @Autowired
     private UsuarioRepository usuarioRepository;
 
+    @Autowired
+    private UsuarioServiceJPA usuarioService;
+
 
 
     @GetMapping("/reporte")
@@ -50,7 +57,12 @@ public class ReportesController {
             @RequestParam(name = "cc", required = false) String cc,
             @RequestParam(name = "entregado", required = false) Boolean entregado,
             @RequestParam(name = "page", defaultValue = "0") int page,
-            Model model) {
+            Model model,
+            Authentication authentication) {
+
+        // Obtener la empresa del usuario autenticado
+        Usuario usuarioAutenticado = usuarioService.obtenerPorDni(Integer.parseInt(authentication.getName()));
+        String empresaUsuario = usuarioAutenticado.getEmpresa();
 
         // Paginación de 10 elementos por página
         PageRequest pageRequest = PageRequest.of(page, 10, Sort.by(Sort.Direction.DESC, "menu.fechaMenu"));
@@ -76,7 +88,19 @@ public class ReportesController {
                         criteriaBuilder.lower(root.get("usuario").get("empresa")),
                         "%" + empresa.toLowerCase() + "%"
                 ));
+            } else {
+                // Si el usuario no es administrador, filtrar por su empresa
+                String rolUsuario = authentication.getAuthorities().stream()
+                        .map(GrantedAuthority::getAuthority)
+                        .filter(role -> role.equals("Admin"))
+                        .findFirst()
+                        .orElse(null);
+
+                if (rolUsuario == null) { // No es admin, aplicar filtro por empresa del usuario autenticado
+                    predicates.add(criteriaBuilder.equal(root.get("usuario").get("empresa"), empresaUsuario));
+                }
             }
+
             if (cc != null && !cc.isEmpty()) {
                 predicates.add(criteriaBuilder.like(
                         criteriaBuilder.lower(root.get("usuario").get("cc")),
