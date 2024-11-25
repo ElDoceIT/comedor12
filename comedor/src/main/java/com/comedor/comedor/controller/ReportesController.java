@@ -6,7 +6,9 @@ import com.comedor.comedor.model.Usuario;
 import com.comedor.comedor.repository.ReservaRepository;
 import com.comedor.comedor.repository.UsuarioRepository;
 import com.comedor.comedor.service.db.UsuarioServiceJPA;
+import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.Predicate;
+import jakarta.persistence.criteria.Root;
 import jakarta.servlet.http.HttpServletResponse;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
@@ -47,7 +49,6 @@ public class ReportesController {
     private UsuarioServiceJPA usuarioService;
 
 
-
     @GetMapping("/reporte")
     public String obtenerReservasFiltradas(
             @RequestParam(name = "fechaInicio", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fechaInicio,
@@ -64,68 +65,34 @@ public class ReportesController {
         Usuario usuarioAutenticado = usuarioService.obtenerPorDni(Integer.parseInt(authentication.getName()));
         String empresaUsuario = usuarioAutenticado.getEmpresa();
 
-        // Paginación de 10 elementos por página
-        PageRequest pageRequest = PageRequest.of(page, 30, Sort.by(Sort.Direction.DESC, "menu.fechaMenu"));
+        // Paginación de 30 elementos por página
+        PageRequest pageRequest = PageRequest.of(page, 10, Sort.by(Sort.Direction.DESC, "menu.fechaMenu"));
 
         // Consulta con filtros paginados
         Page<Reserva> reservasFiltradas = reservaRepository.findAll((root, query, criteriaBuilder) -> {
-            List<Predicate> predicates = new ArrayList<>();
-
-            if (fechaInicio != null) {
-                predicates.add(criteriaBuilder.greaterThanOrEqualTo(root.get("menu").get("fechaMenu"), fechaInicio));
-            }
-            if (fechaFin != null) {
-                predicates.add(criteriaBuilder.lessThanOrEqualTo(root.get("menu").get("fechaMenu"), fechaFin));
-            }
-            if (apellido != null && !apellido.isEmpty()) {
-                predicates.add(criteriaBuilder.like(
-                        criteriaBuilder.lower(root.get("usuario").get("apellido")),
-                        "%" + apellido.toLowerCase() + "%"
-                ));
-            }
-            if (empresa != null && !empresa.isEmpty()) {
-                predicates.add(criteriaBuilder.like(
-                        criteriaBuilder.lower(root.get("usuario").get("empresa")),
-                        "%" + empresa.toLowerCase() + "%"
-                ));
-            } else {
-                // Si el usuario no es administrador, filtrar por su empresa
-                String rolUsuario = authentication.getAuthorities().stream()
-                        .map(GrantedAuthority::getAuthority)
-                        .filter(role -> role.equals("Admin"))
-                        .findFirst()
-                        .orElse(null);
-
-                if (rolUsuario == null) { // No es admin, aplicar filtro por empresa del usuario autenticado
-                    predicates.add(criteriaBuilder.equal(root.get("usuario").get("empresa"), empresaUsuario));
-                }
-            }
-
-            if (cc != null && !cc.isEmpty()) {
-                predicates.add(criteriaBuilder.like(
-                        criteriaBuilder.lower(root.get("usuario").get("cc")),
-                        "%" + cc.toLowerCase() + "%"
-                ));
-            }
-            if (entregado != null) {
-                if (entregado) {
-                    predicates.add(criteriaBuilder.isNotNull(root.get("entregado")));
-                } else {
-                    predicates.add(criteriaBuilder.isNull(root.get("entregado")));
-                }
-            }
-
+            List<Predicate> predicates = construirFiltros(fechaInicio, fechaFin, apellido, empresa, cc, entregado, empresaUsuario, authentication, root, criteriaBuilder);
             return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
         }, pageRequest);
 
-        // Resumen de totales
-        long totalReservas = reservasFiltradas.getTotalElements();
-        long totalConsumidas = reservasFiltradas.stream().filter(reserva -> reserva.getEntregado() != null).count();
+        // Consulta sin paginación para calcular totales
+        long totalReservas = reservaRepository.count((root, query, criteriaBuilder) -> {
+            List<Predicate> predicates = construirFiltros(fechaInicio, fechaFin, apellido, empresa, cc, entregado, empresaUsuario, authentication, root, criteriaBuilder);
+            return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
+        });
+
+        long totalConsumidas = reservaRepository.count((root, query, criteriaBuilder) -> {
+            List<Predicate> predicates = construirFiltros(fechaInicio, fechaFin, apellido, empresa, cc, null, empresaUsuario, authentication, root, criteriaBuilder);
+            predicates.add(criteriaBuilder.isNotNull(root.get("entregado"))); // Solo las entregadas
+            return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
+        });
+
         long totalNoConsumidas = totalReservas - totalConsumidas;
 
+        // Listas para filtros adicionales
         List<String> empresas = usuarioRepository.findDistinctEmpresa();
         List<String> cecos = usuarioRepository.findDistinctCC();
 
+        // Mapas para descripciones
         Map<Integer, String> tipoComidaDescripcion = Map.of(
                 1, "Principal",
                 2, "Light",
@@ -139,6 +106,7 @@ public class ReportesController {
                 3, "Vianda"
         );
 
+        // Agregar atributos al modelo
         model.addAttribute("reservasFiltradas", reservasFiltradas);
         model.addAttribute("tipoComidaDescripcion", tipoComidaDescripcion);
         model.addAttribute("medioDescripcion", medioDescripcion);
@@ -158,6 +126,68 @@ public class ReportesController {
 
         return "reporte/reporte";
     }
+
+    private List<Predicate> construirFiltros(
+            LocalDate fechaInicio,
+            LocalDate fechaFin,
+            String apellido,
+            String empresa,
+            String cc,
+            Boolean entregado,
+            String empresaUsuario,
+            Authentication authentication,
+            Root<Reserva> root,
+            CriteriaBuilder criteriaBuilder) {
+
+        List<Predicate> predicates = new ArrayList<>();
+
+        if (fechaInicio != null) {
+            predicates.add(criteriaBuilder.greaterThanOrEqualTo(root.get("menu").get("fechaMenu"), fechaInicio));
+        }
+        if (fechaFin != null) {
+            predicates.add(criteriaBuilder.lessThanOrEqualTo(root.get("menu").get("fechaMenu"), fechaFin));
+        }
+        if (apellido != null && !apellido.isEmpty()) {
+            predicates.add(criteriaBuilder.like(
+                    criteriaBuilder.lower(root.get("usuario").get("apellido")),
+                    "%" + apellido.toLowerCase() + "%"
+            ));
+        }
+        if (empresa != null && !empresa.isEmpty()) {
+            predicates.add(criteriaBuilder.like(
+                    criteriaBuilder.lower(root.get("usuario").get("empresa")),
+                    "%" + empresa.toLowerCase() + "%"
+            ));
+        } else {
+            String rolUsuario = authentication.getAuthorities().stream()
+                    .map(GrantedAuthority::getAuthority)
+                    .filter(role -> role.equals("Admin"))
+                    .findFirst()
+                    .orElse(null);
+
+            if (rolUsuario == null) { // No es admin, aplicar filtro por empresa del usuario autenticado
+                predicates.add(criteriaBuilder.equal(root.get("usuario").get("empresa"), empresaUsuario));
+            }
+        }
+
+        if (cc != null && !cc.isEmpty()) {
+            predicates.add(criteriaBuilder.like(
+                    criteriaBuilder.lower(root.get("usuario").get("cc")),
+                    "%" + cc.toLowerCase() + "%"
+            ));
+        }
+        if (entregado != null) {
+            if (entregado) {
+                predicates.add(criteriaBuilder.isNotNull(root.get("entregado")));
+            } else {
+                predicates.add(criteriaBuilder.isNull(root.get("entregado")));
+            }
+        }
+
+        return predicates;
+    }
+
+
 
 
     @GetMapping("/excel")
