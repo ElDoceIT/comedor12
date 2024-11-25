@@ -117,14 +117,37 @@
   </div>
   <div class="pagination">
     <ul class="pagination justify-content-center">
+      <!-- Botón para ir a la primera página -->
       <li class="page-item" th:classappend="${currentPage == 0} ? 'disabled'">
-        <a class="page-link" th:href="@{'/reportes/reporte'(page=${currentPage - 1}, fechaInicio=${fechaInicio}, fechaFin=${fechaFin}, apellido=${apellido}, empresa=${empresa}, cc=${cc}, entregado=${entregado})}">Anterior</a>
+        <a class="page-link" th:href="@{'/reportes/reporte'(page=0, fechaInicio=${fechaInicio}, fechaFin=${fechaFin}, apellido=${apellido}, empresa=${empresa}, cc=${cc}, entregado=${entregado})}">
+          Primera
+        </a>
       </li>
-      <li class="page-item" th:each="i : ${#numbers.sequence(0, totalPages - 1)}" th:classappend="${i == currentPage} ? 'active'">
-        <a class="page-link" th:href="@{'/reportes/reporte'(page=${i}, fechaInicio=${fechaInicio}, fechaFin=${fechaFin}, apellido=${apellido}, empresa=${empresa}, cc=${cc}, entregado=${entregado})}" th:text="${i + 1}">1</a>
+
+      <!-- Botón para ir a la página anterior -->
+      <li class="page-item" th:classappend="${currentPage == 0} ? 'disabled'">
+        <a class="page-link" th:href="@{'/reportes/reporte'(page=${currentPage - 1}, fechaInicio=${fechaInicio}, fechaFin=${fechaFin}, apellido=${apellido}, empresa=${empresa}, cc=${cc}, entregado=${entregado})}">
+          Anterior
+        </a>
       </li>
+
+      <!-- Mostrar página actual -->
+      <li class="page-item disabled">
+        <span class="page-link">Página <span th:text="${currentPage + 1}"></span> de <span th:text="${totalPages}"></span></span>
+      </li>
+
+      <!-- Botón para ir a la página siguiente -->
       <li class="page-item" th:classappend="${currentPage == totalPages - 1} ? 'disabled'">
-        <a class="page-link" th:href="@{'/reportes/reporte'(page=${currentPage + 1}, fechaInicio=${fechaInicio}, fechaFin=${fechaFin}, apellido=${apellido}, empresa=${empresa}, cc=${cc}, entregado=${entregado})}">Siguiente</a>
+        <a class="page-link" th:href="@{'/reportes/reporte'(page=${currentPage + 1}, fechaInicio=${fechaInicio}, fechaFin=${fechaFin}, apellido=${apellido}, empresa=${empresa}, cc=${cc}, entregado=${entregado})}">
+          Siguiente
+        </a>
+      </li>
+
+      <!-- Botón para ir a la última página -->
+      <li class="page-item" th:classappend="${currentPage == totalPages - 1} ? 'disabled'">
+        <a class="page-link" th:href="@{'/reportes/reporte'(page=${totalPages - 1}, fechaInicio=${fechaInicio}, fechaFin=${fechaFin}, apellido=${apellido}, empresa=${empresa}, cc=${cc}, entregado=${entregado})}">
+          Última
+        </a>
       </li>
     </ul>
   </div>
