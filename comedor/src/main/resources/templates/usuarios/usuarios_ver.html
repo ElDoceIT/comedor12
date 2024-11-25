@@ -95,21 +95,45 @@
                     </table>
                 </div>
 
-                <!-- Paginación -->
-            <nav>
-                <ul class="pagination d-flex flex-wrap justify-content-center pagination-sm">
-                    <li th:classappend="${currentPage == 0} ? 'disabled' : ''" class="page-item">
-                        <a th:href="@{/usuarios/ver(page=${currentPage - 1}, dni=${dni}, apellido=${apellido}, empresa=${empresa})}" class="btn btn-outline-secondary table-light mb-1">Anterior</a>
+            <div class="pagination">
+                <ul class="pagination justify-content-center">
+                    <!-- Botón para ir a la primera página -->
+                    <li class="page-item" th:classappend="${currentPage == 0} ? 'disabled'">
+                        <a class="page-link" th:href="@{/usuarios/ver(page=0, dni=${dni}, apellido=${apellido}, empresa=${empresa})}">
+                            Primera
+                        </a>
                     </li>
+
+                    <!-- Botón para ir a la página anterior -->
+                    <li class="page-item" th:classappend="${currentPage == 0} ? 'disabled'">
+                        <a class="page-link" th:href="@{/usuarios/ver(page=${currentPage - 1}, dni=${dni}, apellido=${apellido}, empresa=${empresa})}">
+                            Anterior
+                        </a>
+                    </li>
+
+                    <!-- Números de página
                     <li th:each="i : ${#numbers.sequence(0, totalPages - 1)}"
                         th:classappend="${i == currentPage} ? 'active' : ''" class="page-item">
-                        <a th:href="@{/usuarios/ver(page=${i}, dni=${dni}, apellido=${apellido}, empresa=${empresa})}" class="btn btn-outline-secondary table-light mb-1" th:text="${i + 1}">1</a>
+                        <a class="page-link" th:href="@{/usuarios/ver(page=${i}, dni=${dni}, apellido=${apellido}, empresa=${empresa})}"
+                           th:text="${i + 1}"></a>
+                    </li> -->
+
+                    <!-- Botón para ir a la página siguiente -->
+                    <li class="page-item" th:classappend="${currentPage == totalPages - 1} ? 'disabled'">
+                        <a class="page-link" th:href="@{/usuarios/ver(page=${currentPage + 1}, dni=${dni}, apellido=${apellido}, empresa=${empresa})}">
+                            Siguiente
+                        </a>
                     </li>
-                    <li th:classappend="${currentPage == totalPages - 1} ? 'disabled' : ''" class="page-item">
-                        <a th:href="@{/usuarios/ver(page=${currentPage + 1}, dni=${dni}, apellido=${apellido}, empresa=${empresa})}" class="btn btn-outline-secondary table-light mb-1">Siguiente</a>
+
+                    <!-- Botón para ir a la última página -->
+                    <li class="page-item" th:classappend="${currentPage == totalPages - 1} ? 'disabled'">
+                        <a class="page-link" th:href="@{/usuarios/ver(page=${totalPages - 1}, dni=${dni}, apellido=${apellido}, empresa=${empresa})}">
+                            Última
+                        </a>
                     </li>
                 </ul>
-            </nav>
+            </div>
+
 
         </div>
     </div>

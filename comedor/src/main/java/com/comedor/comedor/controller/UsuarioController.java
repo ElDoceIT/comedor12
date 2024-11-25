@@ -80,7 +80,7 @@ public class UsuarioController {
    @GetMapping("/ver")
    public String consumosVer(
            @RequestParam(defaultValue = "0") int page,
-           @RequestParam(defaultValue = "10") int size,
+           @RequestParam(defaultValue = "12") int size,
            @RequestParam(required = false) Integer dni,
            @RequestParam(required = false) String apellido,
            @RequestParam(required = false) String empresa,
