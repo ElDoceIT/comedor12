@@ -22,6 +22,12 @@
 <main>
 
     <div class=" col-md-12 col-lg-11 m-1 mx-auto mt-3">
+        <div th:if="${error}" class="alert alert-danger" role="alert">
+            <p th:text="${error}"></p>
+        </div>
+        <div th:if="${success}" class="alert alert-success" role="alert">
+            <p th:text="${success}"></p>
+        </div>
         <div class="card1 mt-3" >
             <h3 class="card-header text-center"><strong>Usuarios<span id="fecha"></span></strong></h3>
                 <form class="form-inline w-100 mt-3" th:action="@{/usuarios/ver}" method="get">

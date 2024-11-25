@@ -13,6 +13,12 @@
 <body>
 <header th:replace="fragments/menu :: menu-principal"></header>
 <div class="col-md-12 col-lg-11 m-1 mx-auto">
+  <div th:if="${error}" class="alert alert-danger" role="alert">
+    <p th:text="${error}"></p>
+  </div>
+  <div th:if="${success}" class="alert alert-success" role="alert">
+    <p th:text="${success}"></p>
+  </div>
   <div class="card1 mt-3 mb-3">
     <h4 class="card-header text-center"><strong>Agregar usuario</strong></h4>
     <div class="card-body">

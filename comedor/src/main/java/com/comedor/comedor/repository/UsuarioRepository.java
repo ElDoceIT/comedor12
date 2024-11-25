@@ -14,6 +14,7 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Integer> {
 
     Optional<Usuario> findByDni(Integer dni);
     Optional<Usuario> findById(Integer id);
+    boolean existsByDni(Integer dni); // Método para verificar existencia por DNI
 
     List<Usuario> findByNombreContainingIgnoreCaseOrApellidoContainingIgnoreCase(String nombre, String apellido);
 

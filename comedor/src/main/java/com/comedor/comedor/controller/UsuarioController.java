@@ -17,8 +17,11 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/usuarios")
@@ -57,9 +60,14 @@ public class UsuarioController {
         List<String> estados = usuarioRepository.findDistinctEstado();
         List<String> cecos = usuarioRepository.findDistinctCC();
 
+        // Convertir estados 1/0 a Activo/Inactivo
+        List<String> estadosProcesados = estados.stream()
+                .map(estado -> estado.equals("1") ? "Activo" : "Inactivo")
+                .collect(Collectors.toList());
+
         model.addAttribute("grupos",grupos);
         model.addAttribute("empresas",empresas);
-        model.addAttribute("estados",estados);
+        model.addAttribute("estados",estadosProcesados);
         model.addAttribute("cecos",cecos);
         return "usuarios/usuarios_new";
     }
@@ -92,19 +100,26 @@ public class UsuarioController {
    }
 
     @PostMapping("/save")
-    public String guardarUsuario(Usuario usuario) {
-        usuarioRepository.save(usuario);
+    public String guardarUsuario(@ModelAttribute Usuario usuario, RedirectAttributes redirectAttributes) {
+        // Verificar si el DNI ya existe
+        if (usuarioRepository.existsByDni(usuario.getDni())) {
+            // Agregar un mensaje de error al RedirectAttributes
+            redirectAttributes.addFlashAttribute("error", "El usuario con DNI " + usuario.getDni() + " ya existe.");
+            return "redirect:/usuarios/new"; // Redirigir al formulario de creación
+        }
 
         // Verificar si la contraseña no está codificada
         if (!usuario.getPass().startsWith("$2a$")) {
             // Codificar la contraseña con BCrypt
             String encodedPassword = passwordEncoder.encode(usuario.getPass());
-            // Actualizar la contraseña codificada
             usuario.setPass(encodedPassword);
-            // Guardar nuevamente el usuario con la contraseña codificada
-            usuarioRepository.save(usuario);
         }
-        return "redirect:/usuarios/ver";
+
+        // Guardar el usuario
+        usuarioRepository.save(usuario);
+
+        redirectAttributes.addFlashAttribute("success", "Usuario guardado exitosamente.");
+        return "redirect:/usuarios/ver"; // Redirigir a la lista de usuarios
     }
 
     @GetMapping("/editar/{id}")
