@@ -77,6 +77,7 @@
               <th>FechaMenu</th>
               <th>Apellido</th>
               <th>Nombre</th>
+              <th>Cant Menu</th>
               <th>CC</th>
               <th>Empresa</th>
               <th>Tipo de Comida</th>
@@ -90,6 +91,7 @@
               <td th:text="${reserva.menu.fechaMenu}"></td>
               <td th:text="${reserva.usuario.apellido}"></td>
               <td th:text="${reserva.usuario.nombre}"></td>
+              <td th:text="${reserva.cantidad}"></td>
               <td th:text="${reserva.usuario.cc}"></td>
               <td th:text="${reserva.usuario.empresa}"></td>
               <td th:text="${tipoComidaDescripcion[reserva.menu.comida.tipo_comida]}"></td>
