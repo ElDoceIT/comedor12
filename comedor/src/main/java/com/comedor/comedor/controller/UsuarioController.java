@@ -67,7 +67,7 @@ public class UsuarioController {
 
         model.addAttribute("grupos",grupos);
         model.addAttribute("empresas",empresas);
-        model.addAttribute("estados",estadosProcesados);
+        model.addAttribute("estados",estados);
         model.addAttribute("cecos",cecos);
         return "usuarios/usuarios_new";
     }
@@ -114,6 +114,7 @@ public class UsuarioController {
             String encodedPassword = passwordEncoder.encode(usuario.getPass());
             usuario.setPass(encodedPassword);
         }
+
 
         // Guardar el usuario
         usuarioRepository.save(usuario);
