@@ -4,6 +4,7 @@ import com.comedor.comedor.dto.ReservaForm;
 import com.comedor.comedor.model.Menu;
 import com.comedor.comedor.model.Reserva;
 import com.comedor.comedor.model.Usuario;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
@@ -23,6 +24,12 @@ public interface ReservaRepository extends JpaRepository<Reserva, Integer>, JpaS
     List<Reserva> findByUsuario(Usuario usuario);
     List<Reserva> findByMenu_FechaMenuBetween(LocalDate startDate, LocalDate endDate);
     //List<Reserva> findByFechaReservaAndForzado(LocalDate fechaMenu, int forzado);
+
+    default Long sumCantidad(Specification<Reserva> specification) {
+        return findAll(specification).stream()
+                .mapToLong(Reserva::getCantidad)
+                .sum();
+    }
 
 
     @Query("SELECT r FROM Reserva r JOIN r.menu m WHERE m.fechaMenu = :fechaMenu AND r.forzado = 1")

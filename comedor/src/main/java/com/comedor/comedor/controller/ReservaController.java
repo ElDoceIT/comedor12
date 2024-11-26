@@ -588,47 +588,45 @@ public String reservas(Model model) {
             @RequestParam("menuSeleccionado") Integer idMenu,
             @RequestParam("tipoComida") Integer medio,
             @RequestParam("usuario") Integer idUsuario, // ID del usuario del formulario
-            Model model
+            RedirectAttributes redirectAttributes
     ) {
         // Obtener el menú seleccionado
         Menu menu = menuService.buscarPorId(idMenu);
         if (menu == null) {
-            model.addAttribute("error", "Menú no encontrado.");
-            return "reserva/reserva_comedor";
+            redirectAttributes.addFlashAttribute("error", "Menú no encontrado.");
+            return "redirect:/reservas/reservacomedor";
         }
 
-        // Validar el horario: solo permitir reservas antes de las 9 AM
-        LocalDateTime now = LocalDateTime.now();
-        LocalDate fechaMenu = menu.getFechaMenu();
-        // Obtener el usuario seleccionado
+        // Validar si existe el usuario
         Usuario usuario = usuarioService.obtenerPorId(idUsuario);
         if (usuario == null) {
-            model.addAttribute("error", "Usuario no encontrado.");
-            return "reserva/reserva_comedor";
+            redirectAttributes.addFlashAttribute("error", "Usuario no encontrado.");
+            return "redirect:/reservas/reservacomedor";
         }
 
         // Verificar si ya existe una reserva para el usuario y fecha
-        //verificar si la reserva del usuario es para un invitado
+        LocalDate fechaMenu = menu.getFechaMenu();
         if (reservaService.existeReservaParaUsuarioYFecha(usuario, fechaMenu)) {
-            model.addAttribute("errorReservaDuplicada", "Ya tienes una reserva para este día.");
-            return "reserva/reserva_comedor";
+            redirectAttributes.addFlashAttribute("error", "El usuario ya tiene una reserva para este día.");
+            return "redirect:/reservas/reservacomedor";
         }
 
         // Crear la reserva
         Reserva reserva = new Reserva();
         reserva.setUsuario(usuario);
         reserva.setMenu(menu);
-        reserva.setF_reserva(now);
+        reserva.setF_reserva(LocalDateTime.now());
         reserva.setMedio(medio);
         reserva.setCantidad(1);
-        reserva.setForzado(1);
+        reserva.setForzado(1); // Marca de reserva forzada
         reservaService.guardar(reserva);
 
         // Mensaje de confirmación
-        model.addAttribute("successMessage", "Reserva realizada con éxito.");
-        return "redirect:/reservas/reservacomedor"; // Redirigir a la lista de reservas
+        redirectAttributes.addFlashAttribute("successMessage", "Reserva forzada realizada con éxito.");
+        return "redirect:/reservas/reservacomedor";
     }
-// reserva desde la vista jefes a invitados
+
+    // reserva desde la vista jefes a invitados
     @GetMapping("/invitados")
     public String reservasInvitados(Model model, @AuthenticationPrincipal UserDetails userDetails) {
         Integer dni = Integer.parseInt(userDetails.getUsername());
