@@ -99,8 +99,7 @@
               <td th:text="${reserva.entregado != null ? 'Entregado' : 'No Entregado'}"
                   th:classappend="${reserva.entregado == null} ? 'text-danger' : 'text-success'"></td>
               <td th:text="${reserva.forzado != 0 ? 'Forzado' : 'A Tiempo'}"
-                  th:classappend="${reserva.entregado == 0} ? 'text-danger' : 'text-success'"></td>
-            </tr>
+                  th:classappend="${reserva.forzado != 0} ? 'text-danger' : (reserva.entregado == 0 ? 'text-danger' : 'text-success')"></td>
             </tbody>
           </table>
         </div>
