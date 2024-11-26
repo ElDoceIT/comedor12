@@ -75,17 +75,20 @@ public class ReportesController {
         }, pageRequest);
 
         // Consulta sin paginación para calcular totales
-        long totalReservas = reservaRepository.count((root, query, criteriaBuilder) -> {
+        // Total de reservas (sumando las cantidades)
+        long totalReservas = reservaRepository.sumCantidad((root, query, criteriaBuilder) -> {
             List<Predicate> predicates = construirFiltros(fechaInicio, fechaFin, apellido, empresa, cc, entregado, empresaUsuario, authentication, root, criteriaBuilder);
             return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
         });
 
-        long totalConsumidas = reservaRepository.count((root, query, criteriaBuilder) -> {
+// Total consumidas (sumando las cantidades entregadas)
+        long totalConsumidas = reservaRepository.sumCantidad((root, query, criteriaBuilder) -> {
             List<Predicate> predicates = construirFiltros(fechaInicio, fechaFin, apellido, empresa, cc, null, empresaUsuario, authentication, root, criteriaBuilder);
             predicates.add(criteriaBuilder.isNotNull(root.get("entregado"))); // Solo las entregadas
             return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
         });
 
+// Total no consumidas
         long totalNoConsumidas = totalReservas - totalConsumidas;
 
         // Listas para filtros adicionales
