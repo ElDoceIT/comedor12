@@ -60,10 +60,7 @@ public class UsuarioController {
         List<String> estados = usuarioRepository.findDistinctEstado();
         List<String> cecos = usuarioRepository.findDistinctCC();
 
-        // Convertir estados 1/0 a Activo/Inactivo
-        List<String> estadosProcesados = estados.stream()
-                .map(estado -> estado.equals("1") ? "Activo" : "Inactivo")
-                .collect(Collectors.toList());
+
 
         model.addAttribute("grupos",grupos);
         model.addAttribute("empresas",empresas);

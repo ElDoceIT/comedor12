@@ -66,7 +66,7 @@ public class ReportesController {
         String empresaUsuario = usuarioAutenticado.getEmpresa();
 
         // Paginación de 30 elementos por página
-        PageRequest pageRequest = PageRequest.of(page, 10, Sort.by(Sort.Direction.DESC, "menu.fechaMenu"));
+        PageRequest pageRequest = PageRequest.of(page, 20, Sort.by(Sort.Direction.DESC, "menu.fechaMenu"));
 
         // Consulta con filtros paginados
         Page<Reserva> reservasFiltradas = reservaRepository.findAll((root, query, criteriaBuilder) -> {
