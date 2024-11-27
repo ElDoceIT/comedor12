@@ -120,6 +120,33 @@ public class UsuarioController {
         return "redirect:/usuarios/ver"; // Redirigir a la lista de usuarios
     }
 
+
+    @PostMapping("/saveeditar")
+    public String editaUsuario(@ModelAttribute Usuario usuario, RedirectAttributes redirectAttributes) {
+        // Verificar si el DNI ya existe pero pertenece a otro usuario
+        Usuario usuarioExistente = usuarioService.obtenerPorDni(usuario.getDni());
+        if (usuarioExistente != null && !usuarioExistente.getId_usuario().equals(usuario.getId_usuario())) {
+            // Agregar un mensaje de error al RedirectAttributes
+            redirectAttributes.addFlashAttribute("error", "El usuario con DNI " + usuario.getDni() + " ya existe.");
+            return "redirect:/usuarios/new"; // Redirigir al formulario de creación o edición
+        }
+
+        // Verificar si la contraseña no está codificada
+        if (!usuario.getPass().startsWith("$2a$")) {
+            // Codificar la contraseña con BCrypt
+            String encodedPassword = passwordEncoder.encode(usuario.getPass());
+            usuario.setPass(encodedPassword);
+        }
+
+        // Guardar el usuario
+        usuarioRepository.save(usuario);
+
+        redirectAttributes.addFlashAttribute("success", "Usuario guardado exitosamente.");
+        return "redirect:/usuarios/ver"; // Redirigir a la lista de usuarios
+    }
+
+
+
     @GetMapping("/editar/{id}")
     public String editarUsuario(@PathVariable("id") int id_usuario, Model model) {
         Usuario usuario= usuarioRepository.findById(id_usuario).get();

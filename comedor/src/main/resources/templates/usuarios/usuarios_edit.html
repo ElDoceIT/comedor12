@@ -16,7 +16,7 @@
     <div class="card1">
         <h4 class="card-header text-center"><strong>Editar usuario</strong></h4>
         <div class="card-body">
-            <form th:action="@{/usuarios/save}" method="post" th:object="${usuario}">
+            <form th:action="@{/usuarios/saveeditar}" method="post" th:object="${usuario}">
                 <input type="hidden" th:field="*{id_usuario}">
                 <input type="hidden" th:field="*{pass}">
                 <div class="row">
