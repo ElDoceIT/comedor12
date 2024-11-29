@@ -47,20 +47,23 @@ public class HomeController {
         LocalDate hoy = LocalDate.now();
         LocalDateTime ahora = LocalDateTime.now();
 
-        // Definir 9:00 AM del viernes de la semana actual
-        LocalDateTime viernesNueveAM = hoy.with(TemporalAdjusters.nextOrSame(DayOfWeek.FRIDAY)).atTime(9, 0);
+        // Definir 9:00 AM del sábado de la semana actual
+        LocalDateTime sabadoNueveAM = hoy.with(TemporalAdjusters.nextOrSame(DayOfWeek.SATURDAY)).atTime(9, 0);
 
-        // Si es sábado, domingo o después de las 9:00 AM del viernes, ajustar a la semana siguiente
-        if (hoy.getDayOfWeek() == DayOfWeek.SATURDAY || hoy.getDayOfWeek() == DayOfWeek.SUNDAY || ahora.isAfter(viernesNueveAM)) {
+        // Si es sábado después de las 9:00 AM o domingo, ajustar a la semana siguiente
+        if ((hoy.getDayOfWeek() == DayOfWeek.SATURDAY && ahora.isAfter(sabadoNueveAM)) || hoy.getDayOfWeek() == DayOfWeek.SUNDAY) {
             hoy = hoy.with(TemporalAdjusters.next(DayOfWeek.MONDAY)); // Mover a la semana siguiente
         }
 
+        // Calcular el rango desde el lunes de la semana actual hasta el domingo de la próxima semana
         LocalDate inicioSemana = hoy.with(TemporalAdjusters.previousOrSame(DayOfWeek.MONDAY));
-        LocalDate finSemana = inicioSemana.plusDays(4); // Asegurarse de que el fin de semana sea el viernes
+        LocalDate finSemana = inicioSemana.plusDays(13); // Desde lunes hasta domingo de la siguiente semana
 
-        // Obtener todos los menús y filtrar por la semana actual y condición publicar=1
+        // Obtener todos los menús y filtrar por las dos semanas, condición publicar=1 y solo desde hoy en adelante
+        LocalDate finalHoy = hoy;
         List<Menu> todosLosMenus = menuRepository.findAll().stream()
-                .filter(menu -> !menu.getFechaMenu().isBefore(inicioSemana) && !menu.getFechaMenu().isAfter(finSemana))
+                .filter(menu -> !menu.getFechaMenu().isBefore(finalHoy)) // Mostrar solo menús desde hoy
+                .filter(menu -> !menu.getFechaMenu().isAfter(finSemana)) // Hasta el fin de las dos semanas
                 .filter(menu -> menu.getPublicar() == 1) // Solo menús públicos
                 .sorted(Comparator.comparingInt(menu -> {
                     switch (menu.getComida().getTipo_comida()) {
@@ -75,7 +78,7 @@ public class HomeController {
 
         // Agrupar los menús por fecha
         Map<LocalDate, List<Menu>> menusPorDia = new LinkedHashMap<>();
-        for (LocalDate dia = inicioSemana; dia.isBefore(finSemana.plusDays(1)); dia = dia.plusDays(1)) {
+        for (LocalDate dia = hoy; dia.isBefore(finSemana.plusDays(1)); dia = dia.plusDays(1)) {
             LocalDate finalDia = dia;
             List<Menu> menusDelDia = todosLosMenus.stream()
                     .filter(menu -> menu.getFechaMenu().isEqual(finalDia))
@@ -92,13 +95,15 @@ public class HomeController {
             model.addAttribute("menusPorDia", menusPorDia);
         }
 
-        // Crear el rango de fechas para mostrar en la vista (de lunes a viernes)
-        String rangoFechas = "del " + inicioSemana.format(DateTimeFormatter.ofPattern("dd/MM")) +
+        // Crear el rango de fechas para mostrar en la vista (desde hoy hasta el último día con menús disponibles)
+        String rangoFechas = "del " + hoy.format(DateTimeFormatter.ofPattern("dd/MM")) +
                 " al " + finSemana.format(DateTimeFormatter.ofPattern("dd/MM"));
         model.addAttribute("rangoFechas", rangoFechas);
 
         return "menu/menu_semanal";
     }
+
+
 
 
 
@@ -132,26 +137,27 @@ public class HomeController {
         LocalDate hoy = LocalDate.now();
         LocalTime horaActual = LocalTime.now();
 
-        // Calcular lunes y viernes de la semana actual y la próxima semana
+        // Calcular lunes y viernes de la semana actual
         LocalDate lunesActual = hoy.with(DayOfWeek.MONDAY);
         LocalDate viernesActual = hoy.with(DayOfWeek.FRIDAY);
-        LocalDate lunesProxima = lunesActual.plusWeeks(1);
-        LocalDate viernesProxima = viernesActual.plusWeeks(1);
+
+        // Calcular el límite extendido (7 días más después del viernes actual)
+        LocalDate finExtendido = viernesActual.plusDays(7);
 
         // Determinar si es después de las 9 AM del viernes, sábado o domingo
         boolean esFinDeSemana = (hoy.getDayOfWeek() == DayOfWeek.FRIDAY && horaActual.isAfter(LocalTime.of(9, 0))) ||
                 hoy.getDayOfWeek() == DayOfWeek.SATURDAY ||
                 hoy.getDayOfWeek() == DayOfWeek.SUNDAY;
 
-        // Ajustar para mostrar menús de la semana siguiente si es fin de semana
-        LocalDate lunesFiltro = esFinDeSemana ? lunesProxima : lunesActual;
-        LocalDate viernesFiltro = esFinDeSemana ? viernesProxima : viernesActual;
+        // Ajustar para mostrar menús extendidos según el contexto
+        LocalDate lunesFiltro = esFinDeSemana ? lunesActual.plusWeeks(1) : lunesActual;
+        LocalDate viernesFiltro = esFinDeSemana ? finExtendido.plusWeeks(1) : finExtendido;
 
-        // Obtener los menús de la semana actual (o siguiente si es fin de semana)
+        // Obtener los menús desde el lunes actual hasta el rango extendido
         List<Menu> menusDisponibles = menuService.getMenusSemana(lunesFiltro, viernesFiltro);
 
-        // Obtener todas las reservas del usuario para la semana actual y la próxima
-        List<Reserva> reservasUsuario = reservaService.obtenerReservasEntreFechasPorUsuario(dni, lunesActual, viernesProxima);
+        // Obtener todas las reservas del usuario desde el lunes actual hasta el rango extendido
+        List<Reserva> reservasUsuario = reservaService.obtenerReservasEntreFechasPorUsuario(dni, lunesFiltro, viernesFiltro);
 
         // Filtrar los menús para excluir:
         // 1. Menús ya reservados por el usuario.
@@ -171,7 +177,7 @@ public class HomeController {
                         () -> new TreeMap<>(Comparator.comparingInt(date -> date.getDayOfWeek().getValue())),
                         Collectors.toList()));
 
-        // Ordenar las reservas para la vista "Mis Reservas" de la semana actual y la siguiente
+        // Ordenar las reservas para la vista "Mis Reservas" desde la semana actual hasta la próxima semana
         List<Reserva> reservasFiltradas = reservasUsuario.stream()
                 .sorted(Comparator.comparing((Reserva reserva) -> reserva.getMenu().getFechaMenu()).reversed())
                 .collect(Collectors.toList());
