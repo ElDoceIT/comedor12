@@ -403,7 +403,7 @@ public String reservas(Model model) {
 
         for (LocalDate fecha = hoy; !fecha.isAfter(finSemana); fecha = fecha.plusDays(1)) {
             // Saltar los fines de semana
-            if (fecha.getDayOfWeek() == DayOfWeek.SATURDAY || fecha.getDayOfWeek() == DayOfWeek.SUNDAY) {
+            if (fecha.getDayOfWeek() == DayOfWeek.SUNDAY) {
                 continue;
             }
 
