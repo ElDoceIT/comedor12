@@ -228,6 +228,8 @@ public class ReportesController {
         header.createCell(5).setCellValue("Tipo de Comida");
         header.createCell(6).setCellValue("Lugar de Consumo");
         header.createCell(7).setCellValue("Estado de Entrega");
+        header.createCell(8).setCellValue("Cantidad"); // Nuevo campo
+        header.createCell(9).setCellValue("Forzado");  // Nuevo campo
 
         // Mapeo para convertir valores numéricos en descripciones
         Map<Integer, String> tipoComidaDescripcion = Map.of(
@@ -261,10 +263,17 @@ public class ReportesController {
             row.createCell(5).setCellValue(tipoComida);
             row.createCell(6).setCellValue(medioConsumo);
             row.createCell(7).setCellValue(reserva.getEntregado() != null ? "Entregado" : "No Entregado");
+
+            // Agregar cantidad y forzado
+            row.createCell(8).setCellValue(reserva.getCantidad()); // Asigna el valor de "cantidad"
+            // Representar el campo "forzado"
+            String estadoForzado = (reserva.getForzado() == 1) ? "Forzado" : "No Forzado";
+            row.createCell(9).setCellValue(estadoForzado);
         }
 
         workbook.write(response.getOutputStream());
         workbook.close();
     }
+
 
 }
