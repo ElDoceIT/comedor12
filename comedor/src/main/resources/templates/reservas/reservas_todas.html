@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html xmlns:th="http://thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <link rel="shortcut icon" th:href="@{/images/El-Doce-TV-en-vivo-Online-1.png}" type="image/x-icon">
+
+  <link th:href="@{/bootstrap/css/bootstrap.min.css}" rel="stylesheet">
+  <link th:href="@{/bootstrap/css/jumbotron.css}" rel="stylesheet">
+  <link th:href="@{/bootstrap/css/sticky-footer-navbar.css}" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.5.0/font/bootstrap-icons.min.css">
+  <link rel="stylesheet" th:href="@{/css/style.css}">
+
+  <title>Ingreso comida</title>
+</head>
+<body>
+<header th:replace="fragments/menu :: menu-principal"></header>
+
+
+<div class="col-md-12 col-lg-11 m-1 mx-auto">
+  <div class="card1 mt-3">
+    <span th:text="${fechaFormateada}">Fecha seleccionada</span>
+    <div class="card-header text-center">
+      <h3>Reservas del Día :
+        <span th:text="${totalReservas}"></span> - Consumidas:
+        <span th:text="${totalConsumidas}"></span>
+      </h3>
+
+      <form action="/reservas/reservas-todas" method="get">
+        <input type="date" name="fecha" required>
+        <button type="submit">Buscar</button>
+      </form>
+
+
+      <div class="d-flex justify-content-center align-items-center flex-row flex-wrap list-group list-group-horizontal">
+        <!-- Primer bloque -->
+        <ul class="list-group list-group-horizontal flex-wrap  border-custom">
+          <li class="list-group-item text-center border-0 p-2" th:each="entry : ${sumaPorTipoComida}">
+        <span th:switch="${entry.key}">
+          <span th:case="1">
+            <img class="nanbtn3" th:src="@{/images/principal.svg}" alt="Principal">
+          </span>
+          <span th:case="2">
+            <img class="nanbtn3" th:src="@{/images/light.svg}" alt="Light">
+          </span>
+          <span th:case="3">
+            <img class="nanbtn3" th:src="@{/images/celiaco.svg}" alt="Celiaco">
+          </span>
+          <span th:case="4">
+            <img class="nanbtn3" th:src="@{/images/frutas.svg}" alt="Frutas">
+          </span>
+          <span th:case="*">
+            <span th:text="${tipoComidaDescripcion[reserva.menu.comida.tipo_comida]}"></span>
+          </span>
+        </span>
+            <span th:text="${entry.value}">0</span>
+          </li>
+        </ul>
+
+        <!-- Segundo bloque -->
+        <ul class="list-group list-group-horizontal flex-wrap border-custom">
+          <li class="list-group-item text-center border-0 p-2" th:each="entry : ${sumaPorLugarConsumo}">
+        <span th:switch="${entry.key}">
+          <span th:case="1">
+            <img class="nanbtn3" th:src="@{/images/comedor.png}" alt="Comedor">
+          </span>
+          <span th:case="2">
+            <img class="nanbtn3" th:src="@{/images/retira.png}" alt="Retira">
+          </span>
+          <span th:case="3">
+            <img class="nanbtn3" th:src="@{/images/vianda.svg}" alt="Vianda">
+          </span>
+          <span th:case="*">
+            <span th:text="'Valor de medio desconocido: ' + ${reserva.medio}"></span>
+          </span>
+        </span>
+            <span th:text="${entry.value}">0</span>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Tabla de reservas -->
+    <div class="card1 m-1 border-dark mt-1 overflow-hidden">
+      <div class="card-header p-0 text-center">
+        <h5 class="m-2">Detalle de Reservas No Consumidas</h5>
+      </div>
+      <div class="table-responsive">
+        <table class="table">
+          <thead class="thead-light1">
+          <tr>
+            <th class="col-1 pl-1 pr-1" >Apellido</th>
+            <th class="col-1 pl-1 pr-1" >Nombre</th>
+            <th class="col-1 pl-1 pr-1" >Tipo</th>
+            <th class="col-2 pl-1 pr-1" >Lugar</th>
+            <th class="col-2 pl-1 pr-1 text-center" >Cantidad</th>
+
+          </tr>
+          </thead>
+          <tbody class=" w-100 striped-table">
+          <tr th:each="reserva  : ${reservasNoConsumidas}">
+            <td class="pl-1 pr-1" th:text="${reserva.usuario.apellido}"></td>
+            <td class="pl-1 pr-1" th:text="${reserva.usuario.nombre}"></td>
+            <td class="pl-1 pr-1" >
+                <span th:switch="${reserva.menu.comida.tipo_comida}">
+                    <span th:case="1">
+                        <img class="nanbtn2" th:src="@{/images/principal.svg}" alt="Principal">
+
+                    </span>
+                    <span th:case="2">
+                        <img class="nanbtn2" th:src="@{/images/light.svg}" alt="Light">
+
+                    </span>
+                    <span th:case="3">
+                        <img class="nanbtn2" th:src="@{/images/celiaco.svg}" alt="Celiaco">
+
+                    </span>
+                    <span th:case="4">
+                        <img class="nanbtn2" th:src="@{/images/frutas.svg}" alt="Frutas">
+
+                    </span>
+                    <span th:case="*">
+                        <span th:text="${tipoComidaDescripcion[reserva.menu.comida.tipo_comida]}"></span> <!-- Default case -->
+                    </span>
+                </span>
+            </td>
+
+            <td class="pl-1 pr-1">
+                  <span th:switch="${reserva.medio}">
+                    <span th:case="1">
+                        <img class="nanbtn2" th:src="@{/images/comedor.png}" alt="Comedor">
+                    </span>
+                    <span th:case="2">
+                        <img class="nanbtn2" th:src="@{/images/retira.png}" alt="retira">
+                    </span>
+                    <span th:case="3">
+                        <img class="nanbtn2" th:src="@{/images/vianda.svg}" alt="vianda">
+                    </span>
+                    <span th:case="*">
+                        <span th:text="'Valor de medio desconocido: ' + ${reserva.medio}"></span>
+                    </span>
+
+                  </span>
+            </td>
+            <td class="text-center" th:text="${reserva.cantidad}">Cantidad</td>
+
+          </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <!-- Tabla de reservas consumidas -->
+    <div class="card1 m-1 border-dark mt-3 overflow-hidden">
+      <div class="card-header p-0 text-center">
+        <h5 class="mt-2">Reservas Consumidas</h5>
+      </div>
+      <div class="table-responsive">
+        <table class="table">
+          <thead class="thead-light" >
+          <tr>
+            <th class="col-1 pl-1 pr-1" >Apellido</th>
+            <th class="col-1 pl-1 pr-1" >Nombre</th>
+            <th class="col-2 pl-1 pr-1" >Menú</th>
+            <th class="col-1 pl-1 pr-1" >Tipo</th>
+            <th class="col-1 pl-1 pr-1" >Lugar</th>
+            <th class="col-3 pl-1 pr-1" >Consumió</th>
+            <th class="col-3 pl-1 pr-1" >Cantidad</th>
+            <!-- Nueva columna para las acciones -->
+          </tr>
+          </thead>
+          <tbody class="table-borderless w-100 striped-table">
+          <tr th:each="reserva : ${reservasConsumidas}">
+            <td class="pl-1 pr-1" th:text="${reserva.usuario.apellido}"></td>
+            <td class="pl-1 pr-1" th:text="${reserva.usuario.nombre}"></td>
+            <td class="pl-1 pr-1" th:text="${reserva.menu.comida.principal}"></td>
+            <td class="pl-1 pr-1">
+    <span th:switch="${reserva.menu.comida.tipo_comida}">
+        <span th:case="1">
+            <img class="nanbtn2" th:src="@{/images/principal.svg}" alt="Principal">
+        </span>
+        <span th:case="2">
+            <img class="nanbtn2" th:src="@{/images/light.svg}" alt="Light">
+        </span>
+        <span th:case="3">
+            <img class="nanbtn2" th:src="@{/images/celiaco.svg}" alt="Celiaco">
+        </span>
+        <span th:case="4">
+            <img class="nanbtn2" th:src="@{/images/frutas.svg}" alt="Frutas">
+        </span>
+        <span th:case="*">
+            <!-- Si quieres un caso por defecto, puedes dejar una imagen o dejar vacío -->
+            <span th:text="${tipoComidaDescripcion[reserva.menu.comida.tipo_comida]}"></span>
+        </span>
+    </span>
+            </td>
+            <td class="pl-1 pr-1">
+                  <span th:switch="${reserva.medio}">
+                    <span th:case="1">
+                        <img class="nanbtn2" th:src="@{/images/comedor.png}" alt="Comedor">
+                    </span>
+                    <span th:case="2">
+                        <img class="nanbtn2" th:src="@{/images/retira.png}" alt="retira">
+                    </span>
+                    <span th:case="3">
+                        <img class="nanbtn2" th:src="@{/images/vianda.svg}" alt="vianda">
+                    </span>
+                    <span th:case="*">
+                        <span th:text="'Valor de medio desconocido: ' + ${reserva.medio}"></span>
+                    </span>
+
+                  </span>
+            </td>
+            <td class="pl-1 pr-1">
+              Entregado:<span th:text="${#temporals.format(reserva.entregado, 'dd-MM-yyyy HH:mm')}"></span>
+            </td>
+            <td th:text="${reserva.cantidad}">Cantidad</td>
+
+          </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+<footer th:insert="fragments/footer :: footer" class="footer"></footer>
+<script th:src="@{/bootstrap/js/bootstrap.min.js}"></script>
+<!-- Scripts necesarios -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

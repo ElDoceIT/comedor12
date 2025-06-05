@@ -23,6 +23,9 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.*;
 import java.util.stream.Collectors;
+import java.time.format.TextStyle;
+import java.util.Locale;
+
 
 @Controller
 @RequestMapping("/reservas")
@@ -151,9 +154,10 @@ public String reservas(Model model) {
         LocalDate now = LocalDate.now();
         for (int day = 1; day <= now.lengthOfMonth(); day++) {
             LocalDate fecha = LocalDate.of(now.getYear(), now.getMonth(), day);
-            if (fecha.getDayOfWeek().getValue() >= 1 && fecha.getDayOfWeek().getValue() <= 5) { // Lunes a Viernes
+            // saco esto xq quiero mostrar reservas de sabado y domingo.
+            //if (fecha.getDayOfWeek().getValue() >= 1 && fecha.getDayOfWeek().getValue() <= 5) { // Lunes a Viernes
                 fechasConMenu.add(fecha);
-            }
+            //}
         }
 
         for (Reserva reserva : reservasMes) {
@@ -403,9 +407,10 @@ public String reservas(Model model) {
 
         for (LocalDate fecha = hoy; !fecha.isAfter(finSemana); fecha = fecha.plusDays(1)) {
             // Saltar los fines de semana
-            if (fecha.getDayOfWeek() == DayOfWeek.SUNDAY) {
-                continue;
-            }
+            // saco el no mostrar domingo.
+           // if (fecha.getDayOfWeek() == DayOfWeek.SUNDAY) {
+           //     continue;
+           // }
 
             LocalDate finalFecha = fecha;
             List<Reserva> reservasDelDia = reservaRepository.findAll().stream()
@@ -765,6 +770,76 @@ public String reservas(Model model) {
 
         return "redirect:/reservas/invitados";
     }
+
+    @GetMapping("/reservas-todas")
+    public String obtenerReservasPorFecha(
+            @RequestParam(value = "fecha", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fecha,
+            Model model) {
+
+        if (fecha == null) {
+            fecha = LocalDate.now(); // usar la fecha actual por defecto
+        }
+
+        Map<Integer, String> tipoComidaDescripcion = Map.of(
+                1, "Principal",
+                2, "Light",
+                3, "Celiaco",
+                4, "Fruta"
+        );
+
+        Map<Integer, String> medioDescripcion = Map.of(
+                1, "Comedor",
+                2, "Retira",
+                3, "Vianda"
+        );
+
+        List<Reserva> reservasDelDia = reservaRepository.findByMenu_FechaMenu(fecha);
+
+        reservasDelDia.sort(Comparator.comparing((Reserva r) -> r.getUsuario().getApellido())
+                .thenComparing(r -> r.getUsuario().getNombre())
+                .thenComparing(r -> r.getMenu().getComida().getPrincipal()));
+
+        Map<Integer, Long> sumaPorTipoComida = reservasDelDia.stream()
+                .collect(Collectors.groupingBy(reserva -> reserva.getMenu().getComida().getTipo_comida(), Collectors.counting()));
+
+        Map<Integer, Long> sumaPorLugarConsumo = reservasDelDia.stream()
+                .collect(Collectors.groupingBy(Reserva::getMedio, Collectors.counting()));
+
+        List<Reserva> reservasNoConsumidas = reservasDelDia.stream()
+                .filter(reserva -> reserva.getEntregado() == null)
+                .collect(Collectors.toList());
+
+        List<Reserva> reservasConsumidas = reservasDelDia.stream()
+                .filter(reserva -> reserva.getEntregado() != null)
+                .collect(Collectors.toList());
+
+        long totalReservas = reservasDelDia.size();
+        long totalConsumidas = reservasConsumidas.size();
+
+        String diaSemana = fecha.getDayOfWeek()
+                .getDisplayName(TextStyle.FULL, new Locale("es", "ES")); // "sábado"
+        int dia = fecha.getDayOfMonth(); // 21
+        String mes = fecha.getMonth().getDisplayName(TextStyle.FULL, new Locale("es", "ES")); // "junio"
+        int anio = fecha.getYear();
+
+        String fechaFormateada = diaSemana + " " + dia + " de " + mes + " de " + anio;
+
+        model.addAttribute("fechaFormateada", fechaFormateada);
+
+        model.addAttribute("reservas", reservasDelDia);
+        model.addAttribute("reservasNoConsumidas", reservasNoConsumidas);
+        model.addAttribute("reservasConsumidas", reservasConsumidas);
+        model.addAttribute("sumaPorTipoComida", sumaPorTipoComida);
+        model.addAttribute("sumaPorLugarConsumo", sumaPorLugarConsumo);
+        model.addAttribute("tipoComidaDescripcion", tipoComidaDescripcion);
+        model.addAttribute("medioDescripcion", medioDescripcion);
+        model.addAttribute("totalReservas", totalReservas);
+        model.addAttribute("totalConsumidas", totalConsumidas);
+        model.addAttribute("fechaSeleccionada", fecha);
+
+        return "reservas/reservas_todas";
+    }
+
 
 
 

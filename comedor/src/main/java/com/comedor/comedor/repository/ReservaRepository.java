@@ -31,6 +31,9 @@ public interface ReservaRepository extends JpaRepository<Reserva, Integer>, JpaS
                 .sum();
     }
 
+    List<Reserva> findByMenu_FechaMenu(LocalDate fecha);
+
+
 
     @Query("SELECT r FROM Reserva r JOIN r.menu m WHERE m.fechaMenu = :fechaMenu AND r.forzado = 1")
     List<Reserva> findReservasForzadasDelDia(@Param("fechaMenu") LocalDate fechaMenu);
