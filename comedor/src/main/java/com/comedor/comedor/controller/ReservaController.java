@@ -151,9 +151,10 @@ public String reservas(Model model) {
         LocalDate now = LocalDate.now();
         for (int day = 1; day <= now.lengthOfMonth(); day++) {
             LocalDate fecha = LocalDate.of(now.getYear(), now.getMonth(), day);
-            if (fecha.getDayOfWeek().getValue() >= 1 && fecha.getDayOfWeek().getValue() <= 5) { // Lunes a Viernes
+            // saco esto xq quiero mostrar reservas de sabado y domingo.
+            //if (fecha.getDayOfWeek().getValue() >= 1 && fecha.getDayOfWeek().getValue() <= 5) { // Lunes a Viernes
                 fechasConMenu.add(fecha);
-            }
+            //}
         }
 
         for (Reserva reserva : reservasMes) {
@@ -403,9 +404,10 @@ public String reservas(Model model) {
 
         for (LocalDate fecha = hoy; !fecha.isAfter(finSemana); fecha = fecha.plusDays(1)) {
             // Saltar los fines de semana
-            if (fecha.getDayOfWeek() == DayOfWeek.SUNDAY) {
-                continue;
-            }
+            // saco el no mostrar domingo.
+           // if (fecha.getDayOfWeek() == DayOfWeek.SUNDAY) {
+           //     continue;
+           // }
 
             LocalDate finalFecha = fecha;
             List<Reserva> reservasDelDia = reservaRepository.findAll().stream()
