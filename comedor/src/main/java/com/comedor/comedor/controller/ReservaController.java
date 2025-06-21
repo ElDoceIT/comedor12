@@ -351,12 +351,15 @@ public String reservas(Model model) {
                 .collect(Collectors.toList());
 
         // Calcular la suma de cada tipo de comida
-        Map<Integer, Long> sumaPorTipoComida = reservasDelDia.stream()
-                .collect(Collectors.groupingBy(reserva -> reserva.getMenu().getComida().getTipo_comida(), Collectors.counting()));
-
+        Map<Integer, Integer> sumaPorTipoComida = reservasDelDia.stream()
+                .collect(Collectors.groupingBy(
+                        reserva -> reserva.getMenu().getComida().getTipo_comida(),
+                        Collectors.summingInt(Reserva::getCantidad)));
         // Calcular la suma por lugar de consumo
-        Map<Integer, Long> sumaPorLugarConsumo = reservasDelDia.stream()
-                .collect(Collectors.groupingBy(Reserva::getMedio, Collectors.counting()));
+        Map<Integer, Integer> sumaPorLugarConsumo = reservasDelDia.stream()
+                .collect(Collectors.groupingBy(
+                        Reserva::getMedio,
+                        Collectors.summingInt(Reserva::getCantidad)));
 
         // Ordenar las reservas por apellido, nombre y menú principal
         reservasNoConsumidas.sort(Comparator.comparing((Reserva r) -> r.getUsuario().getApellido())
@@ -364,12 +367,16 @@ public String reservas(Model model) {
                 .thenComparing(r -> r.getMenu().getComida().getPrincipal()));
 
         // Total de reservas
-        long totalReservas = reservasDelDia.size();
+        int totalReservas = reservasDelDia.stream()
+                .mapToInt(Reserva::getCantidad)
+                .sum();
 
         // Contar reservas consumidas (entregado != null)
-        long totalConsumidas = reservasDelDia.stream()
+        int totalConsumidas = reservasDelDia.stream()
                 .filter(reserva -> reserva.getEntregado() != null)
-                .count();
+                .mapToInt(Reserva::getCantidad)
+                .sum();
+
 
         // Agregar los resultados y descripciones al modelo
         model.addAttribute("reservasNoConsumidas", reservasNoConsumidas);
@@ -799,11 +806,17 @@ public String reservas(Model model) {
                 .thenComparing(r -> r.getUsuario().getNombre())
                 .thenComparing(r -> r.getMenu().getComida().getPrincipal()));
 
-        Map<Integer, Long> sumaPorTipoComida = reservasDelDia.stream()
-                .collect(Collectors.groupingBy(reserva -> reserva.getMenu().getComida().getTipo_comida(), Collectors.counting()));
+        Map<Integer, Integer> sumaPorTipoComida = reservasDelDia.stream()
+                .collect(Collectors.groupingBy(
+                        reserva -> reserva.getMenu().getComida().getTipo_comida(),
+                        Collectors.summingInt(Reserva::getCantidad)));
 
-        Map<Integer, Long> sumaPorLugarConsumo = reservasDelDia.stream()
-                .collect(Collectors.groupingBy(Reserva::getMedio, Collectors.counting()));
+
+        Map<Integer, Integer> sumaPorLugarConsumo = reservasDelDia.stream()
+                .collect(Collectors.groupingBy(
+                        Reserva::getMedio,
+                        Collectors.summingInt(Reserva::getCantidad)));
+
 
         List<Reserva> reservasNoConsumidas = reservasDelDia.stream()
                 .filter(reserva -> reserva.getEntregado() == null)
@@ -813,8 +826,15 @@ public String reservas(Model model) {
                 .filter(reserva -> reserva.getEntregado() != null)
                 .collect(Collectors.toList());
 
-        long totalReservas = reservasDelDia.size();
-        long totalConsumidas = reservasConsumidas.size();
+        int totalReservas = reservasDelDia.stream()
+                .mapToInt(Reserva::getCantidad)
+                .sum();
+
+        int totalConsumidas = reservasDelDia.stream()
+                .filter(reserva -> reserva.getEntregado() != null)
+                .mapToInt(Reserva::getCantidad)
+                .sum();
+
 
         String diaSemana = fecha.getDayOfWeek()
                 .getDisplayName(TextStyle.FULL, new Locale("es", "ES")); // "sábado"
